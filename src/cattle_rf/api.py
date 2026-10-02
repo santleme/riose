@@ -5,13 +5,14 @@ from __future__ import annotations
 from dataclasses import asdict
 from datetime import date
 import json
+import math
 from pathlib import Path
 from typing import Any, Literal
 import sqlite3
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .contracts import Anchor, FarmConfig
 from .db import Store
@@ -62,24 +63,44 @@ class EventCreate(BaseModel):
 
 class AnchorInput(BaseModel):
     anchor_id: str = Field(min_length=1, max_length=64)
-    x: float
-    y: float
-    height_m: float = Field(default=3.0, gt=0)
+    x: float = Field(allow_inf_nan=False)
+    y: float = Field(allow_inf_nan=False)
+    height_m: float = Field(default=3.0, gt=0, allow_inf_nan=False)
     kind: str = "esp32-c6-subghz"
     enabled: bool = True
 
 
 class SimulationRequest(BaseModel):
-    width_m: float = 1000.0
-    height_m: float = 1000.0
+    width_m: float = Field(default=1000.0, gt=0, le=100_000, allow_inf_nan=False)
+    height_m: float = Field(default=1000.0, gt=0, le=100_000, allow_inf_nan=False)
     animal_count: int = Field(default=1, ge=1, le=1000)
     anchor_count: int = Field(default=4, ge=1, le=40)
-    duration_s: float = Field(default=600, gt=0)
-    sample_period_s: float = Field(default=30, gt=0)
+    duration_s: float = Field(default=600, gt=0, le=86_400, allow_inf_nan=False)
+    sample_period_s: float = Field(default=30, ge=0.1, allow_inf_nan=False)
     seed: int = 7
-    packet_loss_probability: float = Field(default=0.05, ge=0, le=1)
+    packet_loss_probability: float = Field(default=0.05, ge=0, le=1, allow_inf_nan=False)
     method: str = "weighted_centroid"
     anchors: list[AnchorInput] | None = Field(default=None, min_length=1, max_length=40)
+
+    @model_validator(mode="after")
+    def validate_observation_budget(self) -> "SimulationRequest":
+        # The simulator stores observations and truth in memory before writing
+        # them to SQLite. Bound the work accepted by this local API, including
+        # the three synthetic training episodes used by tree-based estimators.
+        max_records = 250_000
+        steps = max(1, math.ceil(self.duration_s / self.sample_period_s))
+        records = steps * self.animal_count * self.anchor_count
+        if self.method in {"extra_trees", "gradient_boosting"}:
+            training_steps = max(1, math.ceil(
+                max(600.0, self.duration_s) / min(30.0, self.sample_period_s)
+            ))
+            training_animals = max(300, min(self.animal_count, 1000))
+            records += 3 * training_steps * training_animals * self.anchor_count
+        if records > max_records:
+            raise ValueError(
+                f"simulation exceeds the local API budget of {max_records} generated observations"
+            )
+        return self
 
 
 class CSIRequest(BaseModel):
