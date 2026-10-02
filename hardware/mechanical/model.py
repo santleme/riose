@@ -101,6 +101,27 @@ def _get_mm(spec: dict[str, Any], path: str, *aliases: str) -> Parameter:
     return _mm(_parameter(spec, [path, *aliases], name=path), path)
 
 
+def _coordinate_mm(spec: dict[str, Any], path: str, fallback: float) -> Parameter:
+    """Read an optional assumed coordinate, allowing the meaningful value 0."""
+    raw = _node(spec, path)
+    if raw is None:
+        return Parameter(fallback, "mm", "derived candidate placement", "ASSUMED")
+    if not isinstance(raw, dict) or not {"value", "unit", "source", "status"} <= raw.keys():
+        raise SpecError(f"{path} must contain value, unit, source and status")
+    try:
+        value = float(raw["value"])
+    except (TypeError, ValueError) as exc:
+        raise SpecError(f"{path}.value must be numeric") from exc
+    if not math.isfinite(value):
+        raise SpecError(f"{path}.value must be finite")
+    parameter = Parameter(value, str(raw["unit"]), str(raw["source"]), str(raw["status"]).upper())
+    if parameter.status == "MEASURED":
+        raise SpecError(f"{path} is MEASURED, which is forbidden in MVP 2")
+    if parameter.status not in {"DATASHEET", "ASSUMED", "SIMULATED"}:
+        raise SpecError(f"{path}.status must be DATASHEET, ASSUMED or SIMULATED")
+    return _mm(parameter, path)
+
+
 def _density(spec: dict[str, Any], key: str, fallback: float) -> tuple[float, str, str, str, list[str]]:
     raw = _node(spec, f"materials.{key}")
     if raw is None:
@@ -141,6 +162,10 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
     ah = _get_mm(spec, f"{root}.antenna.height_mm")
     at = _get_mm(spec, f"{root}.antenna.thickness_mm")
     ak = _get_mm(spec, f"{root}.antenna.keepout_mm")
+    clearance_path = f"{root}.minimum_clearance_mm"
+    clearance = (_get_mm(spec, clearance_path) if _node(spec, clearance_path) is not None
+                 else Parameter(0.5, "mm", "generic assumed candidate clearance fallback", "ASSUMED"))
+    hole_x = _coordinate_mm(spec, f"{root}.enclosure.mounting_hole_center_x_mm", 0.0)
     dims: dict[str, tuple[Parameter, Parameter, Parameter]] = {
         "mcu": tuple(_get_mm(spec, f"{root}.components.mcu.{axis}_mm") for axis in ("width", "height", "thickness")),
         "radio": tuple(_get_mm(spec, f"{root}.components.radio.{axis}_mm") for axis in ("width", "height", "thickness")),
@@ -153,9 +178,9 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
     warnings: list[str] = [
         "Bounding-box placement and mass properties are estimates; validate clearances and retention in a reviewed design.",
         "Battery cylinder is approximated by a rectangular envelope with length along X.",
-        "PCB is placed toward the left cavity edge to reserve the assumed right-side battery location; no PCB origin is specified.",
+        "Part locations are a parameterized assumed candidate layout, not a reviewed mechanical drawing.",
         "Antenna keepout may extend beyond the PCB edge into empty cavity; mounted-package intersections remain fit blockers.",
-        "Mounting hole position is assumed at the upper end of the enclosure; review the retention interface.",
+        "Mounting hole is assumed near the upper end; validate its position and retention interface.",
     ]
     den_shell = _density(spec, "enclosure_density_g_cm3", 1.2)
     den_pcb = _density(spec, "pcb_density_g_cm3", 1.85)
@@ -167,18 +192,18 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
     # Body represented as a hollow rectangular shell. Other parts are simple
     # envelopes; PCB-mounted component mass is not subtracted from the PCB.
     inner_w, inner_h, inner_t = ew.value - 2 * wall.value, eh.value - 2 * wall.value, et.value - 2 * wall.value
-    # Keep the left-aligned packing heuristic, but constrain its placement so
-    # the antenna keepout does not cross the cavity wall merely because the
-    # board was anchored flush to the left. The hardware spec does not declare
-    # an origin, so this remains an explicit placement estimate.
-    pcb_left_aligned_x = -inner_w / 2 + pw.value / 2
-    antenna_keepout_half_width = aw.value / 2 + ak.value
-    pcb_x = max(pcb_left_aligned_x, -inner_w / 2 + antenna_keepout_half_width)
+    # The explicitly assumed candidate packs the PCB above the cell in Y;
+    # the cell's long axis is X. Optional coordinates support small fixture
+    # specs while the product spec records the reviewed candidate positions.
+    default_pcb_top = inner_h / 2 - hole_d.value - clearance.value
+    pcb_x = _coordinate_mm(spec, f"{root}.layout_candidate.pcb_center_x_mm", 0.0)
+    pcb_y = _coordinate_mm(spec, f"{root}.layout_candidate.pcb_center_y_mm", default_pcb_top - ph.value / 2)
+    battery_x = _coordinate_mm(spec, f"{root}.layout_candidate.battery_center_x_mm", 0.0)
+    battery_y = _coordinate_mm(spec, f"{root}.layout_candidate.battery_center_y_mm", -inner_h / 2 + bd.value / 2 + clearance.value)
     boxes: list[Box] = [
         Box("enclosure", 0, 0, 0, ew.value, eh.value, et.value, "enclosure", ew.source, ew.status),
-        Box("pcb", pcb_x, 0, wall.value, pw.value, ph.value, pt.value, "pcb", pw.source, pw.status),
-        # Side-by-side with PCB; an overlap means the selected envelopes do not fit.
-        Box("battery", inner_w / 2 - bl.value / 2, 0, wall.value, bl.value, bd.value, bd.value, "battery", bl.source, bl.status),
+        Box("pcb", pcb_x.value, pcb_y.value, wall.value, pw.value, ph.value, pt.value, "pcb", pw.source, pw.status),
+        Box("battery", battery_x.value, battery_y.value, wall.value, bl.value, bd.value, bd.value, "battery", bl.source, bl.status),
     ]
     hole_y = eh.value / 2 - wall.value - hole_d.value / 2
 
@@ -186,8 +211,8 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
     cursor_x = board.x - pw.value / 2
     cursor_y = board.y - ph.value / 2
     row_height = 0.0
-    gap = 0.5  # explicitly an assumed placement clearance, not a reviewed design value
-    warnings.append("Component placement gap of 0.5 mm is an ASSUMED layout heuristic.")
+    gap = clearance.value
+    warnings.append(f"Component placement clearance of {gap:g} mm is an ASSUMED layout rule.")
     for name in ("mcu", "radio", "imu"):
         a, b, c = dims[name]
         if cursor_x + a.value > board.x + pw.value / 2:
@@ -213,8 +238,22 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
                 and bounds["z"][0] >= wall.value - 1e-9 and bounds["z"][1] <= et.value - wall.value + 1e-9)
 
     issues: list[str] = []
-    if hole_d.value <= 0 or hole_y + hole_d.value / 2 > eh.value / 2 + 1e-9:
+    if (hole_d.value <= 0
+            or abs(hole_x.value) + hole_d.value / 2 > ew.value / 2 + 1e-9
+            or hole_y + hole_d.value / 2 > eh.value / 2 + 1e-9):
         issues.append("mounting hole is outside the enclosure envelope")
+    # The cylindrical mounting hole is cut through the complete shell. Check
+    # projected XY clearance to every physical package, including the PCB.
+    hole_radius_with_clearance = hole_d.value / 2 + clearance.value
+    for box in boxes[1:]:
+        if box.name == "antenna_keepout":
+            continue
+        bounds = box.bounds()
+        closest_x = min(max(hole_x.value, bounds["x"][0]), bounds["x"][1])
+        closest_y = min(max(hole_y, bounds["y"][0]), bounds["y"][1])
+        distance = math.hypot(hole_x.value - closest_x, hole_y - closest_y)
+        if distance < hole_radius_with_clearance - 1e-9:
+            issues.append(f"mounting hole violates clearance to {box.name} envelope")
     if pw.value > inner_w or ph.value > inner_h or pt.value > inner_t:
         issues.append("PCB envelope exceeds enclosure cavity")
     for box in boxes[1:]:
@@ -232,6 +271,13 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
     for box in boxes[3:6]:
         if _overlap(box, antenna_keepout):
             issues.append(f"{box.name} package violates antenna keepout")
+    # Check the only separately packed pair using the declared layout rule;
+    # a positive gap is required even when their boxes do not intersect.
+    pcb_bounds, battery_bounds = board.bounds(), boxes[2].bounds()
+    dx = max(0.0, pcb_bounds["x"][0] - battery_bounds["x"][1], battery_bounds["x"][0] - pcb_bounds["x"][1])
+    dy = max(0.0, pcb_bounds["y"][0] - battery_bounds["y"][1], battery_bounds["y"][0] - pcb_bounds["y"][1])
+    if math.hypot(dx, dy) < clearance.value - 1e-9:
+        issues.append("battery violates minimum clearance to pcb envelope")
     # Check solid part overlaps, with PCB/component contact intentionally allowed.
     physical = [box for box in boxes if box.name not in {"enclosure", "antenna_keepout"}]
     for i, first in enumerate(physical):
@@ -271,10 +317,16 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
         "mechanical.enclosure.width_mm": ew, "mechanical.enclosure.height_mm": eh,
         "mechanical.enclosure.thickness_mm": et, "mechanical.enclosure.wall_thickness_mm": wall,
         "mechanical.enclosure.mounting_hole_diameter_mm": hole_d,
+        "mechanical.enclosure.mounting_hole_center_x_mm": hole_x,
         "mechanical.pcb.width_mm": pw, "mechanical.pcb.height_mm": ph, "mechanical.pcb.thickness_mm": pt,
         "mechanical.battery.diameter_mm": bd, "mechanical.battery.length_mm": bl,
+        "mechanical.minimum_clearance_mm": clearance,
         "mechanical.antenna.width_mm": aw, "mechanical.antenna.height_mm": ah,
         "mechanical.antenna.thickness_mm": at, "mechanical.antenna.keepout_mm": ak,
+        "mechanical.layout_candidate.pcb_center_x_mm": pcb_x,
+        "mechanical.layout_candidate.pcb_center_y_mm": pcb_y,
+        "mechanical.layout_candidate.battery_center_x_mm": battery_x,
+        "mechanical.layout_candidate.battery_center_y_mm": battery_y,
     }
     for name, group in dims.items():
         for axis, parameter in zip(("width_mm", "height_mm", "thickness_mm"), group):
@@ -302,7 +354,7 @@ def build_report(spec: dict[str, Any]) -> dict[str, Any]:
             "battery": {"density_g_cm3": den_batt[0], "source": den_batt[2], "status": den_batt[3]},
             "component": {"density_g_cm3": den_parts[0], "source": den_parts[2], "status": den_parts[3]},
         },
-        "mounting_hole": {"diameter_mm": hole_d.value, "center_mm": {"x": 0.0, "y": hole_y}, "axis": "z", "source": hole_d.source, "status": hole_d.status},
+        "mounting_hole": {"diameter_mm": hole_d.value, "center_mm": {"x": hole_x.value, "y": hole_y}, "axis": "z", "source": hole_x.source, "status": hole_x.status},
         "warnings": sorted(set(warnings)),
         "cadquery_available": _cadquery_available(),
     }

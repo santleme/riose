@@ -17,6 +17,7 @@ results/datasets/
 results/mvp2/firmware/zephyr-build/
 results/mvp2/mechanical/*.step
 results/mvp2/mechanical/*.stl
+results/mvp2/antenna/ANTENNA_*/
 results/mvp2/power/*/power_waveform.dat
 *.sqlite3
 *.sqlite3-wal

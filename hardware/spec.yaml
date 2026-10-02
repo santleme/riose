@@ -55,9 +55,10 @@ mechanical:
   enclosure:
     width_mm: {value: 38.0, unit: mm, source: "Commercial Allflex envelope reference; not RIOSE design", status: ASSUMED}
     height_mm: {value: 68.0, unit: mm, source: "Commercial Allflex envelope reference; not RIOSE design", status: ASSUMED}
-    thickness_mm: {value: 15.0, unit: mm, source: "Commercial Allflex envelope reference; not RIOSE design", status: ASSUMED}
+    thickness_mm: {value: 18.5, unit: mm, source: "Assumed candidate depth for TLL-5902 diameter plus internal clearance and shell walls; not RIOSE design", status: ASSUMED}
     wall_thickness_mm: {value: 1.2, unit: mm, source: "Provisional enclosure shell assumption", status: ASSUMED}
     mounting_hole_diameter_mm: {value: 4.0, unit: mm, source: "Provisional geometry assumption; fit review required", status: ASSUMED}
+    mounting_hole_center_x_mm: {value: 15.0, unit: mm, source: "Assumed lateral mounting-hole position; fit review required", status: ASSUMED}
   pcb:
     width_mm: {value: 30.0, unit: mm, source: "Provisional internal layout assumption", status: ASSUMED}
     height_mm: {value: 48.0, unit: mm, source: "Provisional internal layout assumption", status: ASSUMED}
@@ -65,6 +66,11 @@ mechanical:
   battery:
     diameter_mm: {value: 14.5, unit: mm, source: "Tadiran TLL-5902 datasheet mechanical drawing: 1/2 AA cell diameter https://tadiranbat.com/wp-content/uploads/2022/03/tll-5902.pdf", status: DATASHEET}
     length_mm: {value: 25.2, unit: mm, source: "Tadiran TLL-5902 datasheet mechanical drawing: 1/2 AA cell length https://tadiranbat.com/wp-content/uploads/2022/03/tll-5902.pdf", status: DATASHEET}
+  layout_candidate:
+    pcb_center_x_mm: {value: -1.8, unit: mm, source: "Assumed candidate placement; 32 mm antenna keepout remains inside the cavity", status: ASSUMED}
+    pcb_center_y_mm: {value: -7.5, unit: mm, source: "Assumed candidate placement in lower Y bay", status: ASSUMED}
+    battery_center_x_mm: {value: -4.7, unit: mm, source: "Assumed candidate placement offset toward the side opposite the mounting hole", status: ASSUMED}
+    battery_center_y_mm: {value: 24.25, unit: mm, source: "Assumed candidate placement in upper Y bay; battery length lies along X", status: ASSUMED}
   components:
     mcu: {width_mm: {value: 7.0, unit: mm, source: "Provisional package envelope", status: ASSUMED}, height_mm: {value: 7.0, unit: mm, source: "Provisional package envelope", status: ASSUMED}, thickness_mm: {value: 1.0, unit: mm, source: "Provisional package envelope", status: ASSUMED}}
     radio: {width_mm: {value: 4.0, unit: mm, source: "Provisional chip envelope, not radio module", status: ASSUMED}, height_mm: {value: 4.0, unit: mm, source: "Provisional chip envelope, not radio module", status: ASSUMED}, thickness_mm: {value: 1.0, unit: mm, source: "Provisional chip envelope", status: ASSUMED}}

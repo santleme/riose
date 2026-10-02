@@ -32,8 +32,13 @@ shell, or the existing homogeneous dielectric animal sensitivity slab.
 
 These are reproducible numerical assumptions, not a released antenna design.
 Conductor loss, cell internals, selected PCB stackup, enclosure details and
-animal anatomy are not modeled. The PCB, battery and enclosure dimensions have
-not passed a combined fit review. The animal case is not tissue validation.
+animal anatomy are not modeled. The simplified mechanical bounding-box
+candidate now passes the model's cavity, PCB, and mounting-hole checks with an
+assumed 0.5 mm clearance. The current assumed enclosure candidate is 38 by 68
+by 18.5 mm, with its lower wall still touching the simulation ground plane at
+z=-1.2 mm. Neither that geometric result nor the RF simulations validate
+terminals, tolerances, retention, materials, or physical assembly. The animal
+case is not tissue validation.
 Thus a solver run can describe only this assumed candidate and cannot change
 the physical prototype gate to ready. A `COMPLETED` antenna row means the
 openEMS run completed and the declared two-mesh S11 comparison passed; it does
@@ -59,6 +64,19 @@ mesh and returned no RF metrics. Metric and raw-file paths are relative to the
 scenario directory and are verified there before a row can be marked
 `COMPLETED`.
 
+Before `fdtd.Run()` allocates native solver fields, the adapter counts the
+final smoothed mesh and applies a fail-closed memory preflight. Its planning
+estimate is 128 bytes per cell, with a default cap of 128 MiB. This leaves the
+largest recorded 2 mm candidate mesh (505,760 cells, about 61.7 MiB estimated)
+under the cap, while rejecting the 1 mm free-space pilot (2,322,540 cells,
+about 283.5 MiB estimated). A rejected mesh returns `FAILED` with no RF metrics.
+The cap can be changed in MiB with
+`RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB`; invalid values also fail closed.
+This estimate is a conservative planning guard, not a measured or guaranteed
+process-RSS limit: actual native memory depends on solver internals and the
+environment. It does not change mesh spacing, domain, PML, timestep, or solver
+criteria.
+
 ### Free-space convergence pilot
 
 The simulation-only candidate was also run outside the five-scenario CLI at
@@ -83,11 +101,13 @@ convergence; the battery surrogate hit the timestep limit before that
 criterion, so the fine mesh did not start. No scenario produced accepted RF
 metrics. Detailed solver output was kept in temporary run directories, not
 treated as release artifacts. The summarized evidence and candidate/spec
-hashes are in `results/mvp2/antenna/openems_candidate_pilot.json`. The pilot
-predates the corrected TLL-5902 package envelope in
-`candidate_model.json`; its battery scenario is historical and is not evidence
-for the updated candidate. Rerun it only after the physical layout and material
-assumptions are reviewed.
+hashes are in `results/mvp2/antenna/openems_candidate_pilot.json`. Treat the
+entire pilot as historical: it predates both the corrected TLL-5902 package
+envelope and the updated assumed enclosure depth in `candidate_model.json`.
+Its solver results are not evidence for the current candidate. The integrated
+run did simulate the updated assumptions, but it did not establish converged
+RF performance for four of the five scenarios. Rerun after the physical layout
+and material assumptions are reviewed.
 
 Set `RIOSE_OPENEMS_ADAPTER=module.name` to load a Python module exposing
 `simulate(spec=..., scenario=..., output_dir=...)`. It may report `COMPLETED`

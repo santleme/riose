@@ -31,7 +31,7 @@
       "value": "meandered_quarter_wave_monopole"
     }
   },
-  "created_utc": "2026-10-02T19:03:34.836187+00:00",
+  "created_utc": "2026-10-02T21:28:37.171613+00:00",
   "experiment": "RIOSE_MVP2_OPENEMS_ANTENNA",
   "geometry_contract": {
     "consumed_geometry": "Adapter may consume mechanical PCB, battery, and enclosure records or a validated mesh export.",
@@ -48,6 +48,11 @@
     "Assumed geometry/material properties are not measured physical results.",
     "A missing solver or adapter produces no RF metrics; null fields are intentional."
   ],
+  "mesh_acceptance_criteria": {
+    "max_resonance_relative_delta": 0.02,
+    "max_s11_min_delta_db": 1.0,
+    "solver_energy_stop_db": -40.0
+  },
   "result_class": "NO_SIMULATION_RESULT",
   "scenario_order": [
     "ANTENNA_FREE_SPACE",
@@ -63,7 +68,7 @@
       "center_frequency_status": "ASSUMED",
       "clearance_mm": 2.0,
       "clearance_status": "ASSUMED",
-      "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+      "detail": "mesh refinement did not meet declared numerical convergence criteria",
       "efficiency_fraction": null,
       "element_length_mm": 82.0,
       "element_length_status": "ASSUMED",
@@ -78,7 +83,7 @@
       "s11_curve_path": null,
       "s11_min_db": null,
       "scenario": "ANTENNA_FREE_SPACE",
-      "status": "ADAPTER_NOT_CONFIGURED",
+      "status": "FAILED",
       "topology": "meandered_quarter_wave_monopole",
       "topology_status": "ASSUMED",
       "vswr_min": null
@@ -89,7 +94,7 @@
       "center_frequency_status": "ASSUMED",
       "clearance_mm": 2.0,
       "clearance_status": "ASSUMED",
-      "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+      "detail": "mesh refinement did not meet declared numerical convergence criteria",
       "efficiency_fraction": null,
       "element_length_mm": 82.0,
       "element_length_status": "ASSUMED",
@@ -104,7 +109,7 @@
       "s11_curve_path": null,
       "s11_min_db": null,
       "scenario": "ANTENNA_WITH_PCB",
-      "status": "ADAPTER_NOT_CONFIGURED",
+      "status": "FAILED",
       "topology": "meandered_quarter_wave_monopole",
       "topology_status": "ASSUMED",
       "vswr_min": null
@@ -115,7 +120,7 @@
       "center_frequency_status": "ASSUMED",
       "clearance_mm": 2.0,
       "clearance_status": "ASSUMED",
-      "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+      "detail": "openEMS candidate simulation failed closed: RuntimeError: openEMS did not reach the -40 dB field-energy criterion before its timestep limit; log=/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/antenna/ANTENNA_WITH_BATTERY/mesh_4mm/solver.log; tail: RunFDTD: Warning: Max. number of timesteps was reached before the end-criteria of -40dB was reached...  \tYou may want to choose a higher number of max. timesteps...  Time for 160000 iterations with 63168.00 cells : 180.04 sec Speed: 56.14 MCells/s ",
       "efficiency_fraction": null,
       "element_length_mm": 82.0,
       "element_length_status": "ASSUMED",
@@ -130,7 +135,7 @@
       "s11_curve_path": null,
       "s11_min_db": null,
       "scenario": "ANTENNA_WITH_BATTERY",
-      "status": "ADAPTER_NOT_CONFIGURED",
+      "status": "FAILED",
       "topology": "meandered_quarter_wave_monopole",
       "topology_status": "ASSUMED",
       "vswr_min": null
@@ -141,25 +146,222 @@
       "center_frequency_status": "ASSUMED",
       "clearance_mm": 2.0,
       "clearance_status": "ASSUMED",
-      "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
-      "efficiency_fraction": null,
+      "detail": "openEMS simulated ASSUMED candidate; numerical mesh comparison passed; no physical validation",
+      "efficiency_fraction": 0.0005960024787822002,
       "element_length_mm": 82.0,
       "element_length_status": "ASSUMED",
       "feed_mm": 2.0,
       "feed_status": "ASSUMED",
-      "gain_dbi": null,
-      "input_impedance_imag_ohm": null,
-      "input_impedance_real_ohm": null,
-      "radiation_pattern_path": null,
-      "resonant_frequency_hz": null,
-      "result_class": "NO_SIMULATION_RESULT",
-      "s11_curve_path": null,
-      "s11_min_db": null,
+      "gain_dbi": -28.582386323576923,
+      "input_impedance_imag_ohm": 93.40303472365488,
+      "input_impedance_real_ohm": 35.695837706229725,
+      "radiation_pattern_path": "mesh_2mm/radiation_pattern.csv",
+      "resonant_frequency_hz": 2034960000.0,
+      "result_class": "SIMULATED",
+      "s11_curve_path": "mesh_2mm/s11.csv",
+      "s11_min_db": -2.551692347241711,
       "scenario": "ANTENNA_WITH_ENCLOSURE",
-      "status": "ADAPTER_NOT_CONFIGURED",
+      "solver_evidence": {
+        "candidate_model_provenance": {
+          "path": "hardware/antenna/candidate_model.json",
+          "sha256": "3c68e45cb8d49f64e2961ff38617910d6aead3e4647a772e4259d661a09b62d5",
+          "status": "ASSUMED"
+        },
+        "converged": true,
+        "geometry": {
+          "board_mm": [
+            30.0,
+            48.0,
+            1.6
+          ],
+          "board_origin_mm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "candidate": "planar_four_run_monopole_v1",
+          "candidate_model_provenance": {
+            "path": "hardware/antenna/candidate_model.json",
+            "sha256": "3c68e45cb8d49f64e2961ff38617910d6aead3e4647a772e4259d661a09b62d5",
+            "status": "ASSUMED"
+          },
+          "conductor_model": "PEC",
+          "enclosure_surrogate": {
+            "conductivity_s_m": 0.01,
+            "epsilon_r": 3.5,
+            "offset_mm": [
+              -19.0,
+              -34.0,
+              -1.2
+            ],
+            "omitted_features": [
+              "cap seams",
+              "holes",
+              "ribs",
+              "molding details"
+            ],
+            "outer_dimensions_mm": [
+              38.0,
+              68.0,
+              18.5
+            ],
+            "shape": "closed six-wall rectangular shell",
+            "status": "ASSUMED",
+            "wall_mm": 1.2
+          },
+          "feed_point_mm": [
+            -9.0,
+            -4.0
+          ],
+          "ground_plane_mm": [
+            30.0,
+            48.0
+          ],
+          "limitations": [
+            "ASSUMED parametric simulation candidate; not a released routed antenna design.",
+            "Perfect-conductor trace/ground and battery surrogate omit conductor and cell losses.",
+            "The TLL-5902 package envelope is represented as a PEC cuboid; battery internals, terminals, tolerances, and combined PCB/enclosure fit have not been validated.",
+            "Generic dielectric placeholders are not selected or characterized materials.",
+            "The animal case is a homogeneous sensitivity slab, not tissue or anatomy validation."
+          ],
+          "scenario": "ANTENNA_WITH_ENCLOSURE",
+          "status": "ASSUMED_UNVALIDATED",
+          "substrate": {
+            "epsilon_r": 4.2,
+            "loss_tangent": 0.02,
+            "status": "ASSUMED"
+          },
+          "trace_centerline_mm": [
+            [
+              -9.0,
+              -4.0
+            ],
+            [
+              9.0,
+              -4.0
+            ],
+            [
+              9.0,
+              -0.6666666667
+            ],
+            [
+              -9.0,
+              -0.6666666667
+            ],
+            [
+              -9.0,
+              2.6666666667
+            ],
+            [
+              9.0,
+              2.6666666667
+            ],
+            [
+              9.0,
+              6.0
+            ],
+            [
+              -9.0,
+              6.0
+            ]
+          ],
+          "trace_width_mm": 1.0
+        },
+        "geometry_hash": "fad2ae6e3ddaa526044e42e2239e0d83471d87bd5ba20afe9843a72c978c6807",
+        "geometry_status": "ASSUMED_UNVALIDATED",
+        "mesh": {
+          "coarse": {
+            "cells": 102240,
+            "estimated_bytes_per_cell": 128,
+            "estimated_memory_bytes": 13086720,
+            "estimated_memory_mib": 12.48046875,
+            "max_estimated_memory_mib": 128.0,
+            "memory_estimate_is_hard_rss_limit": false,
+            "resolution_mm": 4.0,
+            "x": 48,
+            "y": 71,
+            "z": 30
+          },
+          "comparison": {
+            "criteria": {
+              "resonance_max_relative_delta": 0.02,
+              "s11_min_max_delta_db": 1.0
+            },
+            "resonant_frequency_relative_delta": 0.0,
+            "s11_min_delta_db": 0.9886217559452442
+          },
+          "fine": {
+            "cells": 503388,
+            "estimated_bytes_per_cell": 128,
+            "estimated_memory_bytes": 64433664,
+            "estimated_memory_mib": 61.44873046875,
+            "max_estimated_memory_mib": 128.0,
+            "memory_estimate_is_hard_rss_limit": false,
+            "resolution_mm": 2.0,
+            "x": 79,
+            "y": 108,
+            "z": 59
+          }
+        },
+        "model_limitations": [
+          "ASSUMED parametric simulation candidate; not a released routed antenna design.",
+          "Perfect-conductor trace/ground and battery surrogate omit conductor and cell losses.",
+          "The TLL-5902 package envelope is represented as a PEC cuboid; battery internals, terminals, tolerances, and combined PCB/enclosure fit have not been validated.",
+          "Generic dielectric placeholders are not selected or characterized materials.",
+          "The animal case is a homogeneous sensitivity slab, not tissue or anatomy validation."
+        ],
+        "raw_solver_files": [
+          "mesh_4mm/input_impedance.csv",
+          "mesh_4mm/openems/et",
+          "mesh_4mm/openems/ht",
+          "mesh_4mm/openems/nf2ff.h5",
+          "mesh_4mm/openems/nf2ff_E_0.h5",
+          "mesh_4mm/openems/nf2ff_E_1.h5",
+          "mesh_4mm/openems/nf2ff_E_2.h5",
+          "mesh_4mm/openems/nf2ff_E_3.h5",
+          "mesh_4mm/openems/nf2ff_E_4.h5",
+          "mesh_4mm/openems/nf2ff_E_5.h5",
+          "mesh_4mm/openems/nf2ff_H_0.h5",
+          "mesh_4mm/openems/nf2ff_H_1.h5",
+          "mesh_4mm/openems/nf2ff_H_2.h5",
+          "mesh_4mm/openems/nf2ff_H_3.h5",
+          "mesh_4mm/openems/nf2ff_H_4.h5",
+          "mesh_4mm/openems/nf2ff_H_5.h5",
+          "mesh_4mm/openems/port_it_1",
+          "mesh_4mm/openems/port_ut_1",
+          "mesh_4mm/radiation_pattern.csv",
+          "mesh_4mm/radiation_pattern_raw.h5",
+          "mesh_4mm/s11.csv",
+          "mesh_4mm/solver.log",
+          "mesh_2mm/input_impedance.csv",
+          "mesh_2mm/openems/et",
+          "mesh_2mm/openems/ht",
+          "mesh_2mm/openems/nf2ff.h5",
+          "mesh_2mm/openems/nf2ff_E_0.h5",
+          "mesh_2mm/openems/nf2ff_E_1.h5",
+          "mesh_2mm/openems/nf2ff_E_2.h5",
+          "mesh_2mm/openems/nf2ff_E_3.h5",
+          "mesh_2mm/openems/nf2ff_E_4.h5",
+          "mesh_2mm/openems/nf2ff_E_5.h5",
+          "mesh_2mm/openems/nf2ff_H_0.h5",
+          "mesh_2mm/openems/nf2ff_H_1.h5",
+          "mesh_2mm/openems/nf2ff_H_2.h5",
+          "mesh_2mm/openems/nf2ff_H_3.h5",
+          "mesh_2mm/openems/nf2ff_H_4.h5",
+          "mesh_2mm/openems/nf2ff_H_5.h5",
+          "mesh_2mm/openems/port_it_1",
+          "mesh_2mm/openems/port_ut_1",
+          "mesh_2mm/radiation_pattern.csv",
+          "mesh_2mm/radiation_pattern_raw.h5",
+          "mesh_2mm/s11.csv",
+          "mesh_2mm/solver.log"
+        ],
+        "solver_version": "0.37.0rc3"
+      },
+      "status": "COMPLETED",
       "topology": "meandered_quarter_wave_monopole",
       "topology_status": "ASSUMED",
-      "vswr_min": null
+      "vswr_min": 6.8568363866072355
     },
     {
       "assumptions": "Experimental homogeneous dielectric approximation; not animal tissue validation",
@@ -167,7 +369,7 @@
       "center_frequency_status": "ASSUMED",
       "clearance_mm": 2.0,
       "clearance_status": "ASSUMED",
-      "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+      "detail": "openEMS candidate simulation failed closed: RuntimeError: S11 minimum lies on the sweep boundary; resonance is not bracketed",
       "efficiency_fraction": null,
       "element_length_mm": 82.0,
       "element_length_status": "ASSUMED",
@@ -182,7 +384,7 @@
       "s11_curve_path": null,
       "s11_min_db": null,
       "scenario": "ANTENNA_NEAR_ANIMAL_APPROXIMATION",
-      "status": "ADAPTER_NOT_CONFIGURED",
+      "status": "FAILED",
       "topology": "meandered_quarter_wave_monopole",
       "topology_status": "ASSUMED",
       "vswr_min": null
@@ -190,14 +392,14 @@
   ],
   "schema_version": "riose.antenna.experiments/v1",
   "solver": {
-    "adapter": null,
+    "adapter": "hardware.antenna.openems_adapter",
     "execution_mode": "headless",
     "name": "openEMS",
     "python_bindings_available": true
   },
   "spec_provenance": {
     "path": "/home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/spec.yaml",
-    "sha256": "60e0f22cef0930fb29ac577df8a14ba96cf1e05b582d936c8bb9b5c1b98b3d51",
+    "sha256": "d5af1cc24253f70e6a337551038096504267dc1311178b53ef1f585b6340aef8",
     "status": "LOADED"
   },
   "status": "PARTIAL_OR_BLOCKED"

@@ -33,6 +33,64 @@ FREQUENCY_MAX_RATIO = 2.5
 AIR_MARGIN_MM = 48.0
 FDTD_END_CRITERIA = 1e-4
 FDTD_END_CRITERIA_DB = -40.0
+# Planning estimate for field, update-coefficient, material and boundary arrays.
+# This is intentionally conservative, but is not a hard bound on native RSS.
+ESTIMATED_BYTES_PER_CELL = 128
+DEFAULT_MAX_ESTIMATED_MEMORY_MIB = 128.0
+MAX_ESTIMATED_MEMORY_ENV = "RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB"
+
+
+class MeshBudgetExceeded(RuntimeError):
+    """Raised before openEMS field allocation when a mesh exceeds its budget."""
+
+
+def _mesh_budget(axis_cells: dict[str, int], *, limit_mib: float | None = None) -> dict[str, Any]:
+    """Estimate mesh memory and fail closed before ``fdtd.Run`` if over budget.
+
+    The estimate is a planning guard, not a process-memory guarantee. The cap
+    defaults to 128 MiB and can be overridden in MiB with
+    ``RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB``.
+    """
+    if set(axis_cells) != {"x", "y", "z"}:
+        raise ValueError("mesh budget requires x, y, and z cell counts")
+    counts: dict[str, int] = {}
+    for axis, value in axis_cells.items():
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"mesh cell count for {axis} must be a positive integer")
+        counts[axis] = value
+
+    cells = math.prod(counts.values())
+    estimate_bytes = cells * ESTIMATED_BYTES_PER_CELL
+    estimate_mib = estimate_bytes / (1024 ** 2)
+    if limit_mib is None:
+        raw_limit = os.environ.get(MAX_ESTIMATED_MEMORY_ENV)
+        try:
+            limit_mib = (DEFAULT_MAX_ESTIMATED_MEMORY_MIB if raw_limit is None
+                         else float(raw_limit))
+        except ValueError as exc:
+            raise ValueError(f"{MAX_ESTIMATED_MEMORY_ENV} must be a positive number of MiB") from exc
+    if isinstance(limit_mib, bool) or not math.isfinite(float(limit_mib)) or float(limit_mib) <= 0:
+        raise ValueError(f"{MAX_ESTIMATED_MEMORY_ENV} must be a positive number of MiB")
+    limit_mib = float(limit_mib)
+
+    budget = {
+        **counts,
+        "cells": cells,
+        "estimated_memory_bytes": estimate_bytes,
+        "estimated_memory_mib": estimate_mib,
+        "estimated_bytes_per_cell": ESTIMATED_BYTES_PER_CELL,
+        "max_estimated_memory_mib": limit_mib,
+        "memory_estimate_is_hard_rss_limit": False,
+    }
+    if estimate_mib > limit_mib:
+        raise MeshBudgetExceeded(
+            "mesh budget rejected before openEMS field allocation: "
+            f"{cells:,} cells estimate {estimate_mib:.1f} MiB "
+            f"({ESTIMATED_BYTES_PER_CELL} estimated bytes/cell), above the "
+            f"{limit_mib:.1f} MiB cap from {MAX_ESTIMATED_MEMORY_ENV}; "
+            "estimate is conservative planning data, not a hard RSS limit"
+        )
+    return budget
 
 
 @contextmanager
@@ -306,6 +364,10 @@ def _run_resolution(candidate: dict[str, Any], scenario: str, out_dir: Path,
                               priority=20, edges2grid="xyz")
     # The near-field box is created only after the final mesh and boundary setup.
     nf2ff = fdtd.CreateNF2FFBox()
+    # Count the final smoothed grid before Run(), where openEMS allocates its
+    # large native FDTD field arrays. Keep both actual dimensions and the
+    # explicitly estimated (not guaranteed) memory footprint in evidence.
+    mesh_budget = _mesh_budget(_mesh_count(csx))
     solver_log_path = root / "solver.log"
     with _capture_native_output(solver_log_path):
         fdtd.Run(str(sim_dir), cleanup=True, verbose=0, numThreads=1)
@@ -364,7 +426,6 @@ def _run_resolution(candidate: dict[str, Any], scenario: str, out_dir: Path,
     # Retain all solver outputs (FDTD XML, probe files, field dumps and logs)
     # beneath mesh_<resolution>mm/openems rather than reducing to CSV summaries.
     files = sorted(path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file())
-    mesh = _mesh_count(csx)
     return {
         "resonant_frequency_hz": resonant,
         "s11_min_db": float(s11_db[idx]),
@@ -375,7 +436,7 @@ def _run_resolution(candidate: dict[str, Any], scenario: str, out_dir: Path,
         "gain_dbi": float(gain_dbi),
         "s11_curve_path": s11_path.relative_to(out_dir).as_posix(),
         "radiation_pattern_path": pattern_path.relative_to(out_dir).as_posix(),
-        "_mesh": {**mesh, "cells": math.prod(mesh.values()), "resolution_mm": resolution_mm},
+        "_mesh": {**mesh_budget, "resolution_mm": resolution_mm},
         "_raw_files": [f"{root.name}/{path}" for path in files],
         "_pattern_source": str(raw_nf2ff),
     }

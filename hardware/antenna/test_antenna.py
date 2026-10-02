@@ -11,14 +11,42 @@ from hardware.antenna import SCENARIOS
 from hardware.antenna import run as antenna_run
 from hardware.antenna.capabilities import detect_capabilities
 from hardware.antenna.openems_adapter import (
+    DEFAULT_MAX_ESTIMATED_MEMORY_MIB,
+    ESTIMATED_BYTES_PER_CELL,
+    MeshBudgetExceeded,
     SOLVER_RESOLUTIONS_MM,
     _capture_native_output,
     _fdtd_energy_criterion_reached,
+    _mesh_budget,
     _scenario_domain,
     _solid_or_shell,
     _solid_or_shell_description,
     describe_candidate,
 )
+
+
+def test_openems_mesh_budget_allows_existing_two_mm_candidate_envelope(monkeypatch):
+    monkeypatch.delenv("RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB", raising=False)
+    budget = _mesh_budget({"x": 505_760, "y": 1, "z": 1})
+    assert DEFAULT_MAX_ESTIMATED_MEMORY_MIB == 128.0
+    assert budget["cells"] == 505_760
+    assert budget["estimated_bytes_per_cell"] == ESTIMATED_BYTES_PER_CELL == 128
+    assert budget["estimated_memory_mib"] < budget["max_estimated_memory_mib"]
+    assert budget["memory_estimate_is_hard_rss_limit"] is False
+
+
+def test_openems_mesh_budget_rejects_known_one_mm_pilot_mesh(monkeypatch):
+    monkeypatch.delenv("RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB", raising=False)
+    with pytest.raises(MeshBudgetExceeded, match="before openEMS field allocation") as exc_info:
+        _mesh_budget({"x": 2_322_540, "y": 1, "z": 1})
+    assert "283.5 MiB" in str(exc_info.value)
+    assert "128.0 MiB cap" in str(exc_info.value)
+
+
+def test_openems_mesh_budget_env_override_is_in_mib(monkeypatch):
+    monkeypatch.setenv("RIOSE_OPENEMS_MAX_ESTIMATED_MEMORY_MIB", "300")
+    budget = _mesh_budget({"x": 2_322_540, "y": 1, "z": 1})
+    assert budget["max_estimated_memory_mib"] == 300.0
 
 
 def test_openems_adapter_rejects_fdtd_run_that_hits_timestep_limit():

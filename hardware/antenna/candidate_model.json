@@ -98,15 +98,15 @@
       "status": "ASSUMED"
     },
     "enclosure_dimensions_mm": {
-      "value": [38.0, 68.0, 15.0],
+      "value": [38.0, 68.0, 18.5],
       "unit": "mm",
-      "source": "Provisional commercial-envelope reference from hardware/spec.yaml",
+      "source": "Provisional assumed mechanical candidate from hardware/spec.yaml; not a released enclosure",
       "status": "ASSUMED"
     },
     "enclosure_offset_mm": {
       "value": [-19.0, -34.0, -1.2],
       "unit": "mm",
-      "source": "Centered XY six-wall enclosure; bottom wall touches the assumed ground plane",
+      "source": "Centered XY six-wall enclosure; bottom wall remains at z=-1.2 mm and touches the assumed ground plane",
       "status": "ASSUMED"
     },
     "enclosure_wall_mm": {

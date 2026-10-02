@@ -36,7 +36,13 @@ def _report(spec: dict[str, Any], summary: dict[str, Any]) -> str:
     mechanical = stages.get("mechanical", {})
     antenna = stages.get("antenna", {})
     antenna_rows = antenna.get("scenarios", [])
+    antenna_completed = sum(row.get("status") == "COMPLETED" for row in antenna_rows)
     failed_checks = mechanical.get("fit", {}).get("issues", [])
+    if antenna_rows:
+        antenna_answer = (f"{antenna_completed}/{len(antenna_rows)} cenários passaram a comparação numérica de malha; "
+                          "resultados simulados não validam desempenho físico.")
+    else:
+        antenna_answer = antenna.get("detail", "Nenhum cenário de RF produziu resultado do solver.")
     energy_answer = (f"`{charge:.6g} µAh` pela integração SIMULATED de correntes ASSUMED/trace; "
                     f"ngspice: {power.get('ngspice_status', 'NOT_RUN')}." if charge is not None else
                     "Sem integração disponível; conferir o estágio power e seus bloqueadores.")
@@ -69,10 +75,10 @@ def _report(spec: dict[str, Any], summary: dict[str, Any]) -> str:
               f"3. Energia digital estimada na janela observada: {energy_answer}",
               f"4. Estabilidade do rail: ngspice `{power.get('ngspice_status', 'NOT_RUN')}`; sem medição física ou resultado de rail quando não executado.",
               f"5. Evento com maior carga integrada: {largest_answer}",
-              f"6. A antena cabe: análise geométrica `{mechanical.get('status', 'NOT_RUN')}`; {('; '.join(failed_checks) if failed_checks else 'sem conflito de envelope reportado')}.",
-              f"7. Frequência de ressonância/S11: openEMS `{antenna.get('status', 'NOT_RUN')}`; métricas permanecem nulas sem adaptador configurado e simulação concluída.",
+              f"6. O envelope mecânico estimado cabe: análise de caixas delimitadoras `{mechanical.get('status', 'NOT_RUN')}`; {('; '.join(failed_checks) if failed_checks else 'sem conflito de envelope reportado')}.",
+              f"7. Frequência de ressonância/S11: openEMS `{antenna.get('status', 'NOT_RUN')}`; {antenna_answer}",
               f"8. Degradação por PCB/bateria/carcaça/animal: {len(antenna_rows)} cenários listados; resultados exigem openEMS; aproximação animal é experimental.",
-              f"9. Encaixe físico digital: `{'PASS' if mechanical.get('fit', {}).get('fits') else 'BLOCKED'}`; CadQuery disponível `{mechanical.get('cadquery_available', False)}`.",
+              f"9. Encaixe geométrico estimado: `{'PASS' if mechanical.get('fit', {}).get('fits') else 'BLOCKED'}`; CadQuery disponível `{mechanical.get('cadquery_available', False)}`. O resultado não valida montagem física.",
               f"10. Falhas encontradas: {summary.get('failure_count', 'ver failures.csv')} entradas; falhas de host cobertas `{', '.join(fault_stage.get('completed_host_cases', []))}`; pendentes `{', '.join(fault_stage.get('pending_cases', []))}`.",
               "11. Hipóteses a revisar: parâmetros ASSUMED e limites provisórios em hardware/spec.yaml; dimensões, antena e encaixe aguardam aprovação.",
               f"12. Parâmetros por status: `{json.dumps(summary['parameter_statuses'], sort_keys=True)}`; provenance completa na spec.",

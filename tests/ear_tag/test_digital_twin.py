@@ -208,7 +208,7 @@ def test_run_resolves_spec_and_output_before_tools_use_checkout_cwd(tmp_path, mo
     assert Path(output_argument).is_absolute()
 
 
-def test_report_explains_missing_antenna_adapter_without_claiming_solver_absence():
+def test_report_does_not_invent_antenna_metrics_when_scenarios_are_missing():
     summary = {
         "gate": {"state": "NOT_READY_FOR_PHYSICAL_PROTOTYPE", "blockers": []},
         "stages": {"antenna": {"status": "PARTIAL_OR_BLOCKED"}},
@@ -217,4 +217,20 @@ def test_report_explains_missing_antenna_adapter_without_claiming_solver_absence
         "parameter_statuses": {},
     }
     report = _report({}, summary)
-    assert "sem adaptador configurado e simulação concluída" in report
+    assert "Nenhum cenário de RF produziu resultado do solver." in report
+
+
+def test_report_summarizes_completed_antenna_scenarios_without_claiming_physical_validation():
+    summary = {
+        "gate": {"state": "NOT_READY_FOR_PHYSICAL_PROTOTYPE", "blockers": []},
+        "stages": {"antenna": {"status": "PARTIAL_OR_BLOCKED", "scenarios": [
+            {"scenario": "ANTENNA_WITH_ENCLOSURE", "status": "COMPLETED"},
+            {"scenario": "ANTENNA_WITH_BATTERY", "status": "FAILED"},
+        ]}},
+        "spec_sha256": "test",
+        "environment": {"platform": "test", "gpu": {}},
+        "parameter_statuses": {},
+    }
+    report = _report({}, summary)
+    assert "1/2 cenários passaram a comparação numérica de malha" in report
+    assert "não validam desempenho físico" in report

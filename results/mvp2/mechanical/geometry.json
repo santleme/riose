@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "analysis": "SIMULATED_GEOMETRY_ESTIMATE",
-  "gate": "NOT_READY_FOR_PHYSICAL_PROTOTYPE",
+  "gate": "CONDITIONALLY_READY_PENDING_THRESHOLD_APPROVAL",
   "gate_note": "Mechanical dimensions, antenna and fit require explicit review before READY_FOR_PHYSICAL_PROTOTYPE.",
   "specification_statuses": [
     "ASSUMED",
@@ -21,9 +21,9 @@
       "status": "ASSUMED"
     },
     "mechanical.enclosure.thickness_mm": {
-      "value": 15.0,
+      "value": 18.5,
       "unit": "mm",
-      "source": "Commercial Allflex envelope reference; not RIOSE design",
+      "source": "Assumed candidate depth for TLL-5902 diameter plus internal clearance and shell walls; not RIOSE design",
       "status": "ASSUMED"
     },
     "mechanical.enclosure.wall_thickness_mm": {
@@ -36,6 +36,12 @@
       "value": 4.0,
       "unit": "mm",
       "source": "Provisional geometry assumption; fit review required",
+      "status": "ASSUMED"
+    },
+    "mechanical.enclosure.mounting_hole_center_x_mm": {
+      "value": 15.0,
+      "unit": "mm",
+      "source": "Assumed lateral mounting-hole position; fit review required",
       "status": "ASSUMED"
     },
     "mechanical.pcb.width_mm": {
@@ -68,6 +74,12 @@
       "source": "Tadiran TLL-5902 datasheet mechanical drawing: 1/2 AA cell length https://tadiranbat.com/wp-content/uploads/2022/03/tll-5902.pdf",
       "status": "DATASHEET"
     },
+    "mechanical.minimum_clearance_mm": {
+      "value": 0.5,
+      "unit": "mm",
+      "source": "Provisional layout rule; pending review",
+      "status": "ASSUMED"
+    },
     "mechanical.antenna.width_mm": {
       "value": 28.0,
       "unit": "mm",
@@ -90,6 +102,30 @@
       "value": 2.0,
       "unit": "mm",
       "source": "Provisional RF clearance placeholder",
+      "status": "ASSUMED"
+    },
+    "mechanical.layout_candidate.pcb_center_x_mm": {
+      "value": -1.8,
+      "unit": "mm",
+      "source": "Assumed candidate placement; 32 mm antenna keepout remains inside the cavity",
+      "status": "ASSUMED"
+    },
+    "mechanical.layout_candidate.pcb_center_y_mm": {
+      "value": -7.5,
+      "unit": "mm",
+      "source": "Assumed candidate placement in lower Y bay",
+      "status": "ASSUMED"
+    },
+    "mechanical.layout_candidate.battery_center_x_mm": {
+      "value": -4.7,
+      "unit": "mm",
+      "source": "Assumed candidate placement offset toward the side opposite the mounting hole",
+      "status": "ASSUMED"
+    },
+    "mechanical.layout_candidate.battery_center_y_mm": {
+      "value": 24.25,
+      "unit": "mm",
+      "source": "Assumed candidate placement in upper Y bay; battery length lies along X",
       "status": "ASSUMED"
     },
     "mechanical.components.mcu.width_mm": {
@@ -150,12 +186,12 @@
   "envelope_mm": {
     "width": 38.0,
     "height": 68.0,
-    "thickness": 15.0
+    "thickness": 18.5
   },
   "internal_cavity_mm": {
     "width": 35.6,
     "height": 65.6,
-    "thickness": 12.6
+    "thickness": 16.1
   },
   "parts": [
     {
@@ -165,11 +201,11 @@
       "z": 0,
       "width": 38.0,
       "height": 68.0,
-      "thickness": 15.0,
+      "thickness": 18.5,
       "material": "enclosure",
       "source": "Commercial Allflex envelope reference; not RIOSE design",
       "status": "ASSUMED",
-      "volume_mm3": 38760.0,
+      "volume_mm3": 47804.0,
       "bounds_mm": {
         "x": [
           -19.0,
@@ -181,14 +217,14 @@
         ],
         "z": [
           0,
-          15.0
+          18.5
         ]
       }
     },
     {
       "name": "pcb",
-      "x": -1.8000000000000007,
-      "y": 0,
+      "x": -1.8,
+      "y": -7.5,
       "z": 1.2,
       "width": 30.0,
       "height": 48.0,
@@ -203,8 +239,8 @@
           13.2
         ],
         "y": [
-          -24.0,
-          24.0
+          -31.5,
+          16.5
         ],
         "z": [
           1.2,
@@ -214,8 +250,8 @@
     },
     {
       "name": "battery",
-      "x": 5.200000000000001,
-      "y": 0,
+      "x": -4.7,
+      "y": 24.25,
       "z": 1.2,
       "width": 25.2,
       "height": 14.5,
@@ -226,12 +262,12 @@
       "volume_mm3": 5298.299999999999,
       "bounds_mm": {
         "x": [
-          -7.399999999999999,
-          17.8
+          -17.3,
+          7.8999999999999995
         ],
         "y": [
-          -7.25,
-          7.25
+          17.0,
+          31.5
         ],
         "z": [
           1.2,
@@ -242,7 +278,7 @@
     {
       "name": "mcu",
       "x": -13.3,
-      "y": -20.5,
+      "y": -28.0,
       "z": 2.8,
       "width": 7.0,
       "height": 7.0,
@@ -257,8 +293,8 @@
           -9.8
         ],
         "y": [
-          -24.0,
-          -17.0
+          -31.5,
+          -24.5
         ],
         "z": [
           2.8,
@@ -269,7 +305,7 @@
     {
       "name": "radio",
       "x": -7.300000000000001,
-      "y": -22.0,
+      "y": -29.5,
       "z": 2.8,
       "width": 4.0,
       "height": 4.0,
@@ -284,8 +320,8 @@
           -5.300000000000001
         ],
         "y": [
-          -24.0,
-          -20.0
+          -31.5,
+          -27.5
         ],
         "z": [
           2.8,
@@ -296,7 +332,7 @@
     {
       "name": "imu",
       "x": -3.8000000000000007,
-      "y": -23.0,
+      "y": -30.5,
       "z": 2.8,
       "width": 2.0,
       "height": 2.0,
@@ -311,8 +347,8 @@
           -2.8000000000000007
         ],
         "y": [
-          -24.0,
-          -22.0
+          -31.5,
+          -29.5
         ],
         "z": [
           2.8,
@@ -322,8 +358,8 @@
     },
     {
       "name": "antenna",
-      "x": -1.8000000000000007,
-      "y": 17.0,
+      "x": -1.8,
+      "y": 9.5,
       "z": 2.8,
       "width": 28.0,
       "height": 10.0,
@@ -338,8 +374,8 @@
           12.2
         ],
         "y": [
-          12.0,
-          22.0
+          4.5,
+          14.5
         ],
         "z": [
           2.8,
@@ -349,8 +385,8 @@
     },
     {
       "name": "antenna_keepout",
-      "x": -1.8000000000000007,
-      "y": 17.0,
+      "x": -1.8,
+      "y": 9.5,
       "z": 2.8,
       "width": 32.0,
       "height": 14.0,
@@ -365,8 +401,8 @@
           14.2
         ],
         "y": [
-          10.0,
-          24.0
+          2.5,
+          16.5
         ],
         "z": [
           2.8,
@@ -376,32 +412,29 @@
     }
   ],
   "fit": {
-    "fits": false,
-    "issues": [
-      "battery envelope exceeds enclosure cavity",
-      "unexpected envelope overlap: pcb / battery"
-    ]
+    "fits": true,
+    "issues": []
   },
   "volume_mm3": {
-    "enclosure": 9334.464000000004,
+    "enclosure": 10204.704000000005,
     "pcb": 2304.0,
     "battery": 4161.2750891287005,
     "components": 123.8
   },
   "mass_estimate_g": {
     "parts": {
-      "enclosure": 11.201356800000003,
+      "enclosure": 12.245644800000006,
       "pcb": 4.2624,
       "battery": 10.403187722821752,
       "components": 0.2476
     },
-    "total": 26.114544522821756,
+    "total": 27.158832522821758,
     "status": "ASSUMED"
   },
   "center_of_mass_mm": {
-    "x_mm": 1.710325681523585,
-    "y_mm": -0.03591102265561044,
-    "z_mm": 6.939173382843407
+    "x_mm": -2.14763216527255,
+    "y_mm": 8.008978371792988,
+    "z_mm": 7.74979522705845
   },
   "materials": {
     "enclosure": {
@@ -428,20 +461,20 @@
   "mounting_hole": {
     "diameter_mm": 4.0,
     "center_mm": {
-      "x": 0.0,
+      "x": 15.0,
       "y": 30.799999999999997
     },
     "axis": "z",
-    "source": "Provisional geometry assumption; fit review required",
+    "source": "Assumed lateral mounting-hole position; fit review required",
     "status": "ASSUMED"
   },
   "warnings": [
     "Antenna keepout may extend beyond the PCB edge into empty cavity; mounted-package intersections remain fit blockers.",
     "Battery cylinder is approximated by a rectangular envelope with length along X.",
     "Bounding-box placement and mass properties are estimates; validate clearances and retention in a reviewed design.",
-    "Component placement gap of 0.5 mm is an ASSUMED layout heuristic.",
-    "Mounting hole position is assumed at the upper end of the enclosure; review the retention interface.",
-    "PCB is placed toward the left cavity edge to reserve the assumed right-side battery location; no PCB origin is specified."
+    "Component placement clearance of 0.5 mm is an ASSUMED layout rule.",
+    "Mounting hole is assumed near the upper end; validate its position and retention interface.",
+    "Part locations are a parameterized assumed candidate layout, not a reviewed mechanical drawing."
   ],
   "cadquery_available": true
 }

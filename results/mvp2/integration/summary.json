@@ -172,7 +172,7 @@
       }
     }
   },
-  "failure_count": 9,
+  "failure_count": 7,
   "gate": {
     "approval": {
       "antenna": "PENDING",
@@ -182,13 +182,9 @@
     },
     "blockers": [
       "adversarial_fault_injection: PARTIAL",
-      "antenna: PARTIAL_OR_BLOCKED",
-      "mechanical: FAILED",
-      "mechanical: envelope_fit"
+      "antenna: PARTIAL_OR_BLOCKED"
     ],
-    "failed_checks": [
-      "mechanical: envelope_fit"
-    ],
+    "failed_checks": [],
     "meaning": "Digital plausibility for a first prototype only; not product validation or measured evidence.",
     "state": "NOT_READY_FOR_PHYSICAL_PROTOTYPE"
   },
@@ -204,7 +200,7 @@
     "root": "/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2"
   },
   "parameter_statuses": {
-    "ASSUMED": 73,
+    "ASSUMED": 78,
     "DATASHEET": 18,
     "SIMULATED": 3
   },
@@ -212,7 +208,7 @@
   "result_class": "SIMULATED",
   "schema_version": "riose.mvp2.digital-twin/v1",
   "spec_path": "/home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/spec.yaml",
-  "spec_sha256": "85cfe45443600a11bf828851bb9ac988735e988235a9cfaae1dca6f2b264c3fa",
+  "spec_sha256": "d5af1cc24253f70e6a337551038096504267dc1311178b53ef1f585b6340aef8",
   "stages": {
     "adversarial_fault_injection": {
       "completed_host_cases": [
@@ -251,7 +247,7 @@
         "--output",
         "/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/antenna"
       ],
-      "detail": "ANTENNA_FREE_SPACE: ADAPTER_NOT_CONFIGURED (Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured); ANTENNA_WITH_PCB: ADAPTER_NOT_CONFIGURED (Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured); ANTENNA_WITH_BATTERY: ADAPTER_NOT_CONFIGURED (Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured); ANTENNA_WITH_ENCLOSURE: ADAPTER_NOT_CONFIGURED (Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured); ANTENNA_NEAR_ANIMAL_APPROXIMATION: ADAPTER_NOT_CONFIGURED (Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured)",
+      "detail": "ANTENNA_FREE_SPACE: FAILED (mesh refinement did not meet declared numerical convergence criteria); ANTENNA_WITH_PCB: FAILED (mesh refinement did not meet declared numerical convergence criteria); ANTENNA_WITH_BATTERY: FAILED (openEMS candidate simulation failed closed: RuntimeError: openEMS did not reach the -40 dB field-energy criterion before its timestep limit; log=/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/antenna/ANTENNA_WITH_BATTERY/mesh_4mm/solver.log; tail: RunFDTD: Warning: Max. number of timesteps was reached before the end-criteria of -40dB was reached...  \tYou may want to choose a higher number of max. timesteps...  Time for 160000 iterations with 63168.00 cells : 180.04 sec Speed: 56.14 MCells/s ); ANTENNA_NEAR_ANIMAL_APPROXIMATION: FAILED (openEMS candidate simulation failed closed: RuntimeError: S11 minimum lies on the sweep boundary; resonance is not bracketed)",
       "required": true,
       "result_class": "NO_SIMULATION_RESULT",
       "return_code": 2,
@@ -262,7 +258,7 @@
           "center_frequency_status": "ASSUMED",
           "clearance_mm": 2.0,
           "clearance_status": "ASSUMED",
-          "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+          "detail": "mesh refinement did not meet declared numerical convergence criteria",
           "efficiency_fraction": null,
           "element_length_mm": 82.0,
           "element_length_status": "ASSUMED",
@@ -277,7 +273,7 @@
           "s11_curve_path": null,
           "s11_min_db": null,
           "scenario": "ANTENNA_FREE_SPACE",
-          "status": "ADAPTER_NOT_CONFIGURED",
+          "status": "FAILED",
           "topology": "meandered_quarter_wave_monopole",
           "topology_status": "ASSUMED",
           "vswr_min": null
@@ -288,7 +284,7 @@
           "center_frequency_status": "ASSUMED",
           "clearance_mm": 2.0,
           "clearance_status": "ASSUMED",
-          "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+          "detail": "mesh refinement did not meet declared numerical convergence criteria",
           "efficiency_fraction": null,
           "element_length_mm": 82.0,
           "element_length_status": "ASSUMED",
@@ -303,7 +299,7 @@
           "s11_curve_path": null,
           "s11_min_db": null,
           "scenario": "ANTENNA_WITH_PCB",
-          "status": "ADAPTER_NOT_CONFIGURED",
+          "status": "FAILED",
           "topology": "meandered_quarter_wave_monopole",
           "topology_status": "ASSUMED",
           "vswr_min": null
@@ -314,7 +310,7 @@
           "center_frequency_status": "ASSUMED",
           "clearance_mm": 2.0,
           "clearance_status": "ASSUMED",
-          "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+          "detail": "openEMS candidate simulation failed closed: RuntimeError: openEMS did not reach the -40 dB field-energy criterion before its timestep limit; log=/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/antenna/ANTENNA_WITH_BATTERY/mesh_4mm/solver.log; tail: RunFDTD: Warning: Max. number of timesteps was reached before the end-criteria of -40dB was reached...  \tYou may want to choose a higher number of max. timesteps...  Time for 160000 iterations with 63168.00 cells : 180.04 sec Speed: 56.14 MCells/s ",
           "efficiency_fraction": null,
           "element_length_mm": 82.0,
           "element_length_status": "ASSUMED",
@@ -329,7 +325,7 @@
           "s11_curve_path": null,
           "s11_min_db": null,
           "scenario": "ANTENNA_WITH_BATTERY",
-          "status": "ADAPTER_NOT_CONFIGURED",
+          "status": "FAILED",
           "topology": "meandered_quarter_wave_monopole",
           "topology_status": "ASSUMED",
           "vswr_min": null
@@ -340,25 +336,222 @@
           "center_frequency_status": "ASSUMED",
           "clearance_mm": 2.0,
           "clearance_status": "ASSUMED",
-          "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
-          "efficiency_fraction": null,
+          "detail": "openEMS simulated ASSUMED candidate; numerical mesh comparison passed; no physical validation",
+          "efficiency_fraction": 0.0005960024787822002,
           "element_length_mm": 82.0,
           "element_length_status": "ASSUMED",
           "feed_mm": 2.0,
           "feed_status": "ASSUMED",
-          "gain_dbi": null,
-          "input_impedance_imag_ohm": null,
-          "input_impedance_real_ohm": null,
-          "radiation_pattern_path": null,
-          "resonant_frequency_hz": null,
-          "result_class": "NO_SIMULATION_RESULT",
-          "s11_curve_path": null,
-          "s11_min_db": null,
+          "gain_dbi": -28.582386323576923,
+          "input_impedance_imag_ohm": 93.40303472365488,
+          "input_impedance_real_ohm": 35.695837706229725,
+          "radiation_pattern_path": "mesh_2mm/radiation_pattern.csv",
+          "resonant_frequency_hz": 2034960000.0,
+          "result_class": "SIMULATED",
+          "s11_curve_path": "mesh_2mm/s11.csv",
+          "s11_min_db": -2.551692347241711,
           "scenario": "ANTENNA_WITH_ENCLOSURE",
-          "status": "ADAPTER_NOT_CONFIGURED",
+          "solver_evidence": {
+            "candidate_model_provenance": {
+              "path": "hardware/antenna/candidate_model.json",
+              "sha256": "3c68e45cb8d49f64e2961ff38617910d6aead3e4647a772e4259d661a09b62d5",
+              "status": "ASSUMED"
+            },
+            "converged": true,
+            "geometry": {
+              "board_mm": [
+                30.0,
+                48.0,
+                1.6
+              ],
+              "board_origin_mm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "candidate": "planar_four_run_monopole_v1",
+              "candidate_model_provenance": {
+                "path": "hardware/antenna/candidate_model.json",
+                "sha256": "3c68e45cb8d49f64e2961ff38617910d6aead3e4647a772e4259d661a09b62d5",
+                "status": "ASSUMED"
+              },
+              "conductor_model": "PEC",
+              "enclosure_surrogate": {
+                "conductivity_s_m": 0.01,
+                "epsilon_r": 3.5,
+                "offset_mm": [
+                  -19.0,
+                  -34.0,
+                  -1.2
+                ],
+                "omitted_features": [
+                  "cap seams",
+                  "holes",
+                  "ribs",
+                  "molding details"
+                ],
+                "outer_dimensions_mm": [
+                  38.0,
+                  68.0,
+                  18.5
+                ],
+                "shape": "closed six-wall rectangular shell",
+                "status": "ASSUMED",
+                "wall_mm": 1.2
+              },
+              "feed_point_mm": [
+                -9.0,
+                -4.0
+              ],
+              "ground_plane_mm": [
+                30.0,
+                48.0
+              ],
+              "limitations": [
+                "ASSUMED parametric simulation candidate; not a released routed antenna design.",
+                "Perfect-conductor trace/ground and battery surrogate omit conductor and cell losses.",
+                "The TLL-5902 package envelope is represented as a PEC cuboid; battery internals, terminals, tolerances, and combined PCB/enclosure fit have not been validated.",
+                "Generic dielectric placeholders are not selected or characterized materials.",
+                "The animal case is a homogeneous sensitivity slab, not tissue or anatomy validation."
+              ],
+              "scenario": "ANTENNA_WITH_ENCLOSURE",
+              "status": "ASSUMED_UNVALIDATED",
+              "substrate": {
+                "epsilon_r": 4.2,
+                "loss_tangent": 0.02,
+                "status": "ASSUMED"
+              },
+              "trace_centerline_mm": [
+                [
+                  -9.0,
+                  -4.0
+                ],
+                [
+                  9.0,
+                  -4.0
+                ],
+                [
+                  9.0,
+                  -0.6666666667
+                ],
+                [
+                  -9.0,
+                  -0.6666666667
+                ],
+                [
+                  -9.0,
+                  2.6666666667
+                ],
+                [
+                  9.0,
+                  2.6666666667
+                ],
+                [
+                  9.0,
+                  6.0
+                ],
+                [
+                  -9.0,
+                  6.0
+                ]
+              ],
+              "trace_width_mm": 1.0
+            },
+            "geometry_hash": "fad2ae6e3ddaa526044e42e2239e0d83471d87bd5ba20afe9843a72c978c6807",
+            "geometry_status": "ASSUMED_UNVALIDATED",
+            "mesh": {
+              "coarse": {
+                "cells": 102240,
+                "estimated_bytes_per_cell": 128,
+                "estimated_memory_bytes": 13086720,
+                "estimated_memory_mib": 12.48046875,
+                "max_estimated_memory_mib": 128.0,
+                "memory_estimate_is_hard_rss_limit": false,
+                "resolution_mm": 4.0,
+                "x": 48,
+                "y": 71,
+                "z": 30
+              },
+              "comparison": {
+                "criteria": {
+                  "resonance_max_relative_delta": 0.02,
+                  "s11_min_max_delta_db": 1.0
+                },
+                "resonant_frequency_relative_delta": 0.0,
+                "s11_min_delta_db": 0.9886217559452442
+              },
+              "fine": {
+                "cells": 503388,
+                "estimated_bytes_per_cell": 128,
+                "estimated_memory_bytes": 64433664,
+                "estimated_memory_mib": 61.44873046875,
+                "max_estimated_memory_mib": 128.0,
+                "memory_estimate_is_hard_rss_limit": false,
+                "resolution_mm": 2.0,
+                "x": 79,
+                "y": 108,
+                "z": 59
+              }
+            },
+            "model_limitations": [
+              "ASSUMED parametric simulation candidate; not a released routed antenna design.",
+              "Perfect-conductor trace/ground and battery surrogate omit conductor and cell losses.",
+              "The TLL-5902 package envelope is represented as a PEC cuboid; battery internals, terminals, tolerances, and combined PCB/enclosure fit have not been validated.",
+              "Generic dielectric placeholders are not selected or characterized materials.",
+              "The animal case is a homogeneous sensitivity slab, not tissue or anatomy validation."
+            ],
+            "raw_solver_files": [
+              "mesh_4mm/input_impedance.csv",
+              "mesh_4mm/openems/et",
+              "mesh_4mm/openems/ht",
+              "mesh_4mm/openems/nf2ff.h5",
+              "mesh_4mm/openems/nf2ff_E_0.h5",
+              "mesh_4mm/openems/nf2ff_E_1.h5",
+              "mesh_4mm/openems/nf2ff_E_2.h5",
+              "mesh_4mm/openems/nf2ff_E_3.h5",
+              "mesh_4mm/openems/nf2ff_E_4.h5",
+              "mesh_4mm/openems/nf2ff_E_5.h5",
+              "mesh_4mm/openems/nf2ff_H_0.h5",
+              "mesh_4mm/openems/nf2ff_H_1.h5",
+              "mesh_4mm/openems/nf2ff_H_2.h5",
+              "mesh_4mm/openems/nf2ff_H_3.h5",
+              "mesh_4mm/openems/nf2ff_H_4.h5",
+              "mesh_4mm/openems/nf2ff_H_5.h5",
+              "mesh_4mm/openems/port_it_1",
+              "mesh_4mm/openems/port_ut_1",
+              "mesh_4mm/radiation_pattern.csv",
+              "mesh_4mm/radiation_pattern_raw.h5",
+              "mesh_4mm/s11.csv",
+              "mesh_4mm/solver.log",
+              "mesh_2mm/input_impedance.csv",
+              "mesh_2mm/openems/et",
+              "mesh_2mm/openems/ht",
+              "mesh_2mm/openems/nf2ff.h5",
+              "mesh_2mm/openems/nf2ff_E_0.h5",
+              "mesh_2mm/openems/nf2ff_E_1.h5",
+              "mesh_2mm/openems/nf2ff_E_2.h5",
+              "mesh_2mm/openems/nf2ff_E_3.h5",
+              "mesh_2mm/openems/nf2ff_E_4.h5",
+              "mesh_2mm/openems/nf2ff_E_5.h5",
+              "mesh_2mm/openems/nf2ff_H_0.h5",
+              "mesh_2mm/openems/nf2ff_H_1.h5",
+              "mesh_2mm/openems/nf2ff_H_2.h5",
+              "mesh_2mm/openems/nf2ff_H_3.h5",
+              "mesh_2mm/openems/nf2ff_H_4.h5",
+              "mesh_2mm/openems/nf2ff_H_5.h5",
+              "mesh_2mm/openems/port_it_1",
+              "mesh_2mm/openems/port_ut_1",
+              "mesh_2mm/radiation_pattern.csv",
+              "mesh_2mm/radiation_pattern_raw.h5",
+              "mesh_2mm/s11.csv",
+              "mesh_2mm/solver.log"
+            ],
+            "solver_version": "0.37.0rc3"
+          },
+          "status": "COMPLETED",
           "topology": "meandered_quarter_wave_monopole",
           "topology_status": "ASSUMED",
-          "vswr_min": null
+          "vswr_min": 6.8568363866072355
         },
         {
           "assumptions": "Experimental homogeneous dielectric approximation; not animal tissue validation",
@@ -366,7 +559,7 @@
           "center_frequency_status": "ASSUMED",
           "clearance_mm": 2.0,
           "clearance_status": "ASSUMED",
-          "detail": "Bindings detected, but RIOSE_OPENEMS_ADAPTER is not configured",
+          "detail": "openEMS candidate simulation failed closed: RuntimeError: S11 minimum lies on the sweep boundary; resonance is not bracketed",
           "efficiency_fraction": null,
           "element_length_mm": 82.0,
           "element_length_status": "ASSUMED",
@@ -381,15 +574,15 @@
           "s11_curve_path": null,
           "s11_min_db": null,
           "scenario": "ANTENNA_NEAR_ANIMAL_APPROXIMATION",
-          "status": "ADAPTER_NOT_CONFIGURED",
+          "status": "FAILED",
           "topology": "meandered_quarter_wave_monopole",
           "topology_status": "ASSUMED",
           "vswr_min": null
         }
       ],
       "status": "PARTIAL_OR_BLOCKED",
-      "stderr": "",
-      "stdout": "{\"output\": \"/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/antenna\", \"result_class\": \"NO_SIMULATION_RESULT\", \"scenarios\": 5, \"status\": \"PARTIAL_OR_BLOCKED\"}\n"
+      "stderr": "usage: run.py [-h] [--spec SPEC] [--output OUTPUT]\n              [--scenario {ANTENNA_FREE_SPACE,ANTENNA_WITH_PCB,ANTENNA_WITH_BATTERY,ANTENNA_WITH_ENCLOSURE,ANTENNA_NEAR_ANIMAL_APPROXIMATION}]\nrun.py: error: dict contains fields not in fieldnames: 'solver_evidence'\n",
+      "stdout": ""
     },
     "firmware_scenarios": {
       "detail": "C FSM traces exported for all four requested profiles",
@@ -867,12 +1060,9 @@
       "checks": [
         {
           "name": "envelope_fit",
-          "passed": false,
+          "passed": true,
           "status": "SIMULATED",
-          "value": [
-            "battery envelope exceeds enclosure cavity",
-            "unexpected envelope overlap: pcb / battery"
-          ]
+          "value": []
         }
       ],
       "command": [
@@ -887,24 +1077,21 @@
         "--stl",
         "/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/mechanical/ear_tag_assumed.stl"
       ],
-      "detail": "battery envelope exceeds enclosure cavity; unexpected envelope overlap: pcb / battery",
+      "detail": "Bounding-box fit estimate completed",
       "dimensions_status": [
         "ASSUMED",
         "DATASHEET"
       ],
       "fit": {
-        "fits": false,
-        "issues": [
-          "battery envelope exceeds enclosure cavity",
-          "unexpected envelope overlap: pcb / battery"
-        ]
+        "fits": true,
+        "issues": []
       },
       "required": true,
       "result_class": "SIMULATED_GEOMETRY_ESTIMATE",
       "return_code": 0,
-      "status": "FAILED",
+      "status": "COMPLETED",
       "stderr": "",
-      "stdout": "{\"report\": \"/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/mechanical/geometry.json\", \"gate\": \"NOT_READY_FOR_PHYSICAL_PROTOTYPE\", \"fits\": false, \"cadquery_available\": true}\n"
+      "stdout": "{\"report\": \"/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/mechanical/geometry.json\", \"gate\": \"CONDITIONALLY_READY_PENDING_THRESHOLD_APPROVAL\", \"fits\": true, \"cadquery_available\": true}\n"
     },
     "mvp1_c_tests": {
       "command": [
@@ -1190,12 +1377,12 @@
       "detail": "Renode platform smoke and Zephyr ELF execution completed",
       "firmware_elf": "/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/firmware/zephyr-build/zephyr/zephyr.elf",
       "firmware_elf_supplied": true,
-      "log_excerpt": "d 228753 using port 49152: /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n+++++ Starting test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals'\n+++++ Finished test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals' in 1.48 seconds with status \u001b[92mOK\u001b[0m\n+++++ Starting test 'platform-smoke.Loads Firmware When Provided'\n+++++ Finished test 'platform-smoke.Loads Firmware When Provided' in 0.23 seconds with status \u001b[92mOK\u001b[0m\nSuite /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot finished successfully in 1.93 seconds.\n+++++ Finished suite \u001b[95m1/1\u001b[0m\nCleaning up suites\nClosing Renode pid 228753\nRenode pid 228753 closed\nAggregating all robot results\nOutput:  /home/lucas_coimbra/.codex/worktrees/0208/riose/robot_output.xml\nLog:     /home/lucas_coimbra/.codex/worktrees/0208/riose/log.html\nReport:  /home/lucas_coimbra/.codex/worktrees/0208/riose/report.html\nTests finished successfully :)\n",
+      "log_excerpt": "d 298481 using port 49152: /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n+++++ Starting test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals'\n+++++ Finished test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals' in 1.51 seconds with status \u001b[92mOK\u001b[0m\n+++++ Starting test 'platform-smoke.Loads Firmware When Provided'\n+++++ Finished test 'platform-smoke.Loads Firmware When Provided' in 0.23 seconds with status \u001b[92mOK\u001b[0m\nSuite /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot finished successfully in 1.96 seconds.\n+++++ Finished suite \u001b[95m1/1\u001b[0m\nCleaning up suites\nClosing Renode pid 298481\nRenode pid 298481 closed\nAggregating all robot results\nOutput:  /home/lucas_coimbra/.codex/worktrees/0208/riose/robot_output.xml\nLog:     /home/lucas_coimbra/.codex/worktrees/0208/riose/log.html\nReport:  /home/lucas_coimbra/.codex/worktrees/0208/riose/report.html\nTests finished successfully :)\n",
       "required": true,
       "return_code": 0,
       "status": "PASSED",
       "stderr": "",
-      "stdout": "Preparing suites\nWill run the following 1 test files:\n  - /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n\nStarting suites\nRunning suite on Renode pid 228753 using port 49152: /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n+++++ Starting test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals'\n+++++ Finished test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals' in 1.48 seconds with status \u001b[92mOK\u001b[0m\n+++++ Starting test 'platform-smoke.Loads Firmware When Provided'\n+++++ Finished test 'platform-smoke.Loads Firmware When Provided' in 0.23 seconds with status \u001b[92mOK\u001b[0m\nSuite /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot finished successfully in 1.93 seconds.\n+++++ Finished suite \u001b[95m1/1\u001b[0m\nCleaning up suites\nClosing Renode pid 228753\nRenode pid 228753 closed\nAggregating all robot results\nOutput:  /home/lucas_coimbra/.codex/worktrees/0208/riose/robot_output.xml\nLog:     /home/lucas_coimbra/.codex/worktrees/0208/riose/log.html\nReport:  /home/lucas_coimbra/.codex/worktrees/0208/riose/report.html\nTests finished successfully :)\n"
+      "stdout": "Preparing suites\nWill run the following 1 test files:\n  - /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n\nStarting suites\nRunning suite on Renode pid 298481 using port 49152: /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot\n+++++ Starting test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals'\n+++++ Finished test 'platform-smoke.Loads MCU Surrogate And Custom Peripherals' in 1.51 seconds with status \u001b[92mOK\u001b[0m\n+++++ Starting test 'platform-smoke.Loads Firmware When Provided'\n+++++ Finished test 'platform-smoke.Loads Firmware When Provided' in 0.23 seconds with status \u001b[92mOK\u001b[0m\nSuite /home/lucas_coimbra/.codex/worktrees/0208/riose/hardware/renode/tests/platform-smoke.robot finished successfully in 1.96 seconds.\n+++++ Finished suite \u001b[95m1/1\u001b[0m\nCleaning up suites\nClosing Renode pid 298481\nRenode pid 298481 closed\nAggregating all robot results\nOutput:  /home/lucas_coimbra/.codex/worktrees/0208/riose/robot_output.xml\nLog:     /home/lucas_coimbra/.codex/worktrees/0208/riose/log.html\nReport:  /home/lucas_coimbra/.codex/worktrees/0208/riose/report.html\nTests finished successfully :)\n"
     },
     "synthetic_motion": {
       "path": "/home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/firmware/motion_profiles.csv",
@@ -1238,8 +1425,8 @@
       "required": true,
       "return_code": 0,
       "status": "PASSED",
-      "stderr": "/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\nLoading Zephyr default modules (Zephyr base (cached)).\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n",
-      "stdout": "b/libc/common/CMakeFiles/lib__libc__common.dir/source/stdlib/malloc.c.obj\n[75/161] Building C object zephyr/drivers/console/CMakeFiles/drivers__console.dir/uart_console.c.obj\n[76/161] Building C object zephyr/drivers/hwinfo/CMakeFiles/drivers__hwinfo.dir/hwinfo_weak_impl.c.obj\n[77/161] Building C object zephyr/drivers/interrupt_controller/CMakeFiles/drivers__interrupt_controller.dir/intc_exti_stm32.c.obj\n[78/161] Building C object zephyr/drivers/clock_control/CMakeFiles/drivers__clock_control.dir/clock_stm32l0_l1.c.obj\n[79/161] Building C object zephyr/drivers/gpio/CMakeFiles/drivers__gpio.dir/gpio_hogs.c.obj\n[80/161] Building C object zephyr/drivers/clock_control/CMakeFiles/drivers__clock_control.dir/clock_stm32_ll_common.c.obj\n[81/161] Building C object zephyr/drivers/i2c/CMakeFiles/drivers__i2c.dir/i2c_common.c.obj\n[82/161] Building C object zephyr/drivers/pinctrl/CMakeFiles/drivers__pinctrl.dir/pinctrl_stm32.c.obj\n[83/161] Building C object zephyr/drivers/i2c/CMakeFiles/drivers__i2c.dir/i2c_ll_stm32.c.obj\n[84/161] Building C object zephyr/drivers/hwinfo/CMakeFiles/drivers__hwinfo.dir/hwinfo_stm32.c.obj\n[85/161] Building C object zephyr/drivers/i2c/CMakeFiles/drivers__i2c.dir/i2c_ll_stm32_common.c.obj\n[86/161] Building C object zephyr/drivers/reset/CMakeFiles/drivers__reset.dir/reset_stm32.c.obj\n[87/161] Building C object zephyr/drivers/gpio/CMakeFiles/drivers__gpio.dir/gpio_stm32.c.obj\n[88/161] Building C object zephyr/drivers/counter/CMakeFiles/drivers__counter.dir/counter_ll_stm32_rtc.c.obj\n[89/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/soc/system_stm32l0xx.c.obj\n[90/161] Building C object zephyr/drivers/timer/CMakeFiles/drivers__timer.dir/sys_clock_init.c.obj\n[91/161] Building C object zephyr/drivers/i2c/CMakeFiles/drivers__i2c.dir/i2c_ll_stm32_v2.c.obj\n[92/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/drivers/src/stm32l0xx_hal_rcc_ex.c.obj\n[93/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/drivers/src/stm32l0xx_ll_utils.c.obj\n[94/161] Building C object zephyr/drivers/timer/CMakeFiles/drivers__timer.dir/cortex_m_systick.c.obj\n[95/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/device.c.obj\n[96/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/drivers/src/stm32l0xx_hal.c.obj\n[97/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/version.c.obj\n[98/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/main_weak.c.obj\n[99/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/drivers/src/stm32l0xx_ll_rtc.c.obj\n[100/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/banner.c.obj\n[101/161] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__stm32__stm32cube.dir/stm32l0xx/drivers/src/stm32l0xx_hal_rcc.c.obj\n[102/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/busy_wait.c.obj\n[103/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/errno.c.obj\n[104/161] Building C object zephyr/drivers/watchdog/CMakeFiles/drivers__watchdog.dir/wdt_iwdg_stm32.c.obj\n[105/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/float.c.obj\n[106/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/fatal.c.obj\n[107/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mem_slab.c.obj\n[108/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/kheap.c.obj\n[109/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/init.c.obj\n[110/161] Building C object zephyr/drivers/serial/CMakeFiles/drivers__serial.dir/uart_stm32.c.obj\n[111/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/idle.c.obj\n[112/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/system_work_q.c.obj\n[113/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/stack.c.obj\n[114/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/sem.c.obj\n[115/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/msg_q.c.obj\n[116/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mutex.c.obj\n[117/161] Linking C static library app/libapp.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[118/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/queue.c.obj\n[119/161] Linking C static library zephyr/arch/arch/arm/core/libarch__arm__core.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[120/161] Linking C static library zephyr/arch/common/libarch__common.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[121/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/thread.c.obj\n[122/161] Building C object zephyr/CMakeFiles/zephyr_pre0.dir/misc/empty_file.c.obj\n[123/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/condvar.c.obj\n[124/161] Linking C static library zephyr/libzephyr.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[125/161] Building C object zephyr/drivers/spi/CMakeFiles/drivers__spi.dir/spi_ll_stm32.c.obj\n[126/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/xip.c.obj\n[127/161] Linking C static library zephyr/lib/libc/picolibc/liblib__libc__picolibc.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[128/161] Linking C static library zephyr/arch/arch/arm/core/cortex_m/libarch__arm__core__cortex_m.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[129/161] Linking C static library zephyr/lib/libc/common/liblib__libc__common.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[130/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timeslicing.c.obj\n[131/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mailbox.c.obj\n[132/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/atomic_c.c.obj\n[133/161] Linking C static library zephyr/drivers/counter/libdrivers__counter.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[134/161] Linking C static library zephyr/drivers/clock_control/libdrivers__clock_control.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[135/161] Linking C static library zephyr/drivers/console/libdrivers__console.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[136/161] Linking C static library zephyr/drivers/gpio/libdrivers__gpio.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[137/161] Linking C static library zephyr/drivers/interrupt_controller/libdrivers__interrupt_controller.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[138/161] Linking C static library zephyr/drivers/reset/libdrivers__reset.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[139/161] Linking C static library zephyr/drivers/pinctrl/libdrivers__pinctrl.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[140/161] Linking C static library zephyr/drivers/spi/libdrivers__spi.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[141/161] Linking C static library zephyr/drivers/i2c/libdrivers__i2c.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[142/161] Linking C static library zephyr/drivers/watchdog/libdrivers__watchdog.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[143/161] Linking C static library zephyr/drivers/serial/libdrivers__serial.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[144/161] Linking C static library zephyr/drivers/timer/libdrivers__timer.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[145/161] Linking C static library zephyr/drivers/hwinfo/libdrivers__hwinfo.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[146/161] Linking C static library modules/hal_stm32/stm32cube/lib..__modules__hal__stm32__stm32cube.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[147/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/pipe.c.obj\n[148/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/dynamic_disabled.c.obj\n[149/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mempool.c.obj\n[150/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timeout.c.obj\n[151/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timer.c.obj\n[152/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/work.c.obj\n[153/161] Building C object zephyr/kernel/CMakeFiles/kernel.dir/sched.c.obj\n[154/161] Linking C static library zephyr/kernel/libkernel.a\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[155/161] Linking C executable zephyr/zephyr_pre0.elf\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[156/161] Generating linker.cmd\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n[157/161] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld\n[158/161] Building C object zephyr/CMakeFiles/zephyr_final.dir/misc/empty_file.c.obj\n[159/161] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj\n[160/161] Linking C executable zephyr/zephyr.elf\nMemory region         Used Size  Region Size  %age Used\n           FLASH:       30476 B        32 KB     93.01%\n             RAM:        3008 B         8 KB     36.72%\n        IDT_LIST:          0 GB        32 KB      0.00%\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\nGenerating files from /home/lucas_coimbra/.codex/worktrees/0208/riose/results/mvp2/firmware/zephyr-build/zephyr/zephyr.elf for board: nucleo_l031k6\n/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n"
+      "stderr": "/usr/bin/cmake: /home/lucas_coimbra/.local/share/mamba/envs/riose-mvp2-cad/lib/libcurl.so.4: no version information available (required by /usr/bin/cmake)\n",
+      "stdout": "ninja: no work to do.\n"
     }
   }
 }
