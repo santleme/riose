@@ -249,12 +249,11 @@ def create_app(db_path: str | Path = "data/cattle_rf.sqlite3") -> FastAPI:
         events = simulate_fence(episode.ground_truth, zones, body.warning_distance_m)
         records = []
         for event in events:
-            suffix = event.tag_id.rsplit("-", 1)[-1]
-            animal_id = f"cow-{suffix}"
-            if app.state.store.get_animal(animal_id) is None:
+            animal = app.state.store.get_animal_by_hardware_id(event.tag_id)
+            if animal is None:
                 continue
             stored = app.state.store.append_animal_event(
-                animal_id, "VIRTUAL_FENCE_SIMULATED",
+                animal["animal_id"], "VIRTUAL_FENCE_SIMULATED",
                 {"zone_id": event.zone_id, "state": event.state.value,
                  "response": event.simulated_response, "evidence": "SIMULATED"},
                 event.timestamp_s,

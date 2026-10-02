@@ -119,6 +119,14 @@ class Store:
                     event["payload"] = None
             return result
 
+    def get_animal_by_hardware_id(self, hardware_id: str) -> dict[str, Any] | None:
+        """Look up an animal using the tag identifier emitted by simulations."""
+        with self._lock:
+            row = self.connection.execute(
+                "SELECT animal_id FROM animals WHERE hardware_id=?", (hardware_id,)
+            ).fetchone()
+            return self.get_animal(row["animal_id"]) if row is not None else None
+
     def list_animals(self) -> list[dict[str, Any]]:
         with self._lock:
             return [dict(row) for row in self.connection.execute("SELECT * FROM animals ORDER BY animal_id")]

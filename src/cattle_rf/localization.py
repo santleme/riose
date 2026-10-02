@@ -10,7 +10,7 @@ from __future__ import annotations
 from bisect import bisect_left
 from collections import defaultdict
 from dataclasses import dataclass
-from math import hypot, isfinite
+from math import hypot, isfinite, log10
 from typing import Mapping, Sequence
 
 import numpy as np
@@ -28,6 +28,13 @@ METHODS = (
 )
 
 EPOCH_TOLERANCE_S = 1.0
+
+# Match the default simulated radio setup: 14 dBm transmit power, 915 MHz,
+# and free-space loss at the 1 m reference distance.
+_DEFAULT_PATH_LOSS_EXPONENT = 2.7
+_DEFAULT_RSSI_AT_1M_DBM = 14.0 - (
+    32.44 + 20.0 * log10(915.0) + 20.0 * log10(1.0 / 1000.0)
+)
 
 
 @dataclass(slots=True)
@@ -263,8 +270,12 @@ def _multilateration(usable: Sequence[tuple[RFObservation, Anchor]]) -> tuple[fl
     except ImportError:  # pragma: no cover - declared core dependency
         return None
     # This is a rough log-distance inversion, not a ranging capability claim.
+    # Calibrate to the simulator's default 14 dBm / 915 MHz link budget;
+    # the previous -44 dBm intercept made default simulated ranges about ten
+    # times too short before multilateration even began.
     rssi = np.asarray([float(o.rssi_dbm) for o, _ in usable])
-    distances = np.clip(10 ** ((-44.0 - rssi) / (10.0 * 2.7)), 1.0, 10000.0)
+    distances = np.clip(10 ** ((_DEFAULT_RSSI_AT_1M_DBM - rssi) /
+                              (10.0 * _DEFAULT_PATH_LOSS_EXPONENT)), 1.0, 10000.0)
     initial = _weighted_centroid(usable)
     result = least_squares(lambda p: (np.linalg.norm(coords - p, axis=1) - distances),
                            np.asarray(initial), loss="soft_l1", f_scale=10.0, max_nfev=100)
