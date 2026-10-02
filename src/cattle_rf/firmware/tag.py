@@ -112,6 +112,7 @@ class TagController:
         self.last_beacon_s: float | None = None
         self.stationary_s = 0.0
         self._normal_current_state = TagState.DEEP_SLEEP
+        self._self_test_ok: bool | None = None
 
     @property
     def beacon_period_s(self) -> float:
@@ -125,7 +126,8 @@ class TagController:
         if self.state != TagState.BOOT:
             return self.state
         self.state = TagState.SELF_TEST
-        self.state = TagState.IDLE if self.hal.self_test() else TagState.DEEP_SLEEP
+        self._self_test_ok = self.hal.self_test()
+        self.state = TagState.IDLE if self._self_test_ok else TagState.DEEP_SLEEP
         return self.state
 
     def set_radio_mode(self, state: TagState) -> None:
@@ -144,6 +146,10 @@ class TagController:
             raise ValueError("elapsed_s must be non-negative")
         if self.state == TagState.BOOT:
             self.boot()
+        if self._self_test_ok is False:
+            # A failed self-test is a latched startup fault. Keep the tag
+            # asleep instead of allowing subsequent steps to transmit.
+            return TagState.DEEP_SLEEP
         if self.state == TagState.SELF_TEST:
             return self.state
 

@@ -10,6 +10,13 @@ from typing import Iterable
 
 from .contracts import GroundTruth, RFObservation
 
+FEATURE_FIELDS = (
+    "timestamp_s", "tag_id", "anchor_id", "rssi_dbm", "snr_db",
+    "packet_received", "imu_accel_norm_g", "behavior_state", "tof_ns",
+    "phase_rad", "status",
+)
+GROUND_TRUTH_FIELDS = ("timestamp_s", "tag_id", "x", "y")
+
 
 def write_episode_dataset(observations: Iterable[RFObservation], truth: Iterable[GroundTruth],
                           output_dir: str | Path, split: str,
@@ -36,8 +43,8 @@ def write_episode_dataset(observations: Iterable[RFObservation], truth: Iterable
                   for t in truth]
     feature_csv = features_dir / "observations.csv"
     truth_csv = truth_dir / "labels.csv"
-    write_csv(feature_csv, obs_rows)
-    write_csv(truth_csv, truth_rows)
+    write_csv(feature_csv, obs_rows, FEATURE_FIELDS)
+    write_csv(truth_csv, truth_rows, GROUND_TRUTH_FIELDS)
     outputs = {"features_csv": str(feature_csv), "ground_truth_csv": str(truth_csv)}
     try:
         import pyarrow as pa
@@ -46,9 +53,17 @@ def write_episode_dataset(observations: Iterable[RFObservation], truth: Iterable
         outputs["parquet"] = "unavailable; CSV fallback written"
     else:
         feature_parquet = features_dir / "observations.parquet"
-        pq.write_table(pa.Table.from_pylist(obs_rows), feature_parquet)
+        parquet_schema = pa.schema([
+            ("timestamp_s", pa.float64()), ("tag_id", pa.string()),
+            ("anchor_id", pa.string()), ("rssi_dbm", pa.float64()),
+            ("snr_db", pa.float64()), ("packet_received", pa.bool_()),
+            ("imu_accel_norm_g", pa.float64()), ("behavior_state", pa.string()),
+            ("tof_ns", pa.float64()), ("phase_rad", pa.float64()),
+            ("status", pa.string()),
+        ])
+        pq.write_table(pa.Table.from_pylist(obs_rows, schema=parquet_schema), feature_parquet)
         outputs["features_parquet"] = str(feature_parquet)
-    manifest = {"split": split, "feature_fields": list(obs_rows[0]) if obs_rows else [],
+    manifest = {"split": split, "feature_fields": list(FEATURE_FIELDS),
                 "feature_file": str(feature_csv), "ground_truth_file": str(truth_csv),
                 "scenario": scenario or {}, "status": "SIMULATED"}
     manifest_path = root / split / "manifest.json"
@@ -57,8 +72,8 @@ def write_episode_dataset(observations: Iterable[RFObservation], truth: Iterable
     return outputs
 
 
-def write_csv(path: Path, rows: list[dict]) -> None:
-    fields = list(rows[0]) if rows else []
+def write_csv(path: Path, rows: list[dict], fields: Iterable[str] | None = None) -> None:
+    fields = list(fields) if fields is not None else (list(rows[0]) if rows else [])
     with path.open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields)
         if fields:
