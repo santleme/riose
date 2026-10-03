@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f2f2f0">
   <link rel="icon" href="data:,">
   <link rel="preload" href="/assets/fonts/sora-latin-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="modulepreload" href="/assets/product-scene.js?v=20261003-3">
+  <link rel="modulepreload" href="/assets/product-scene.js?v=20261003-4">
   <link rel="modulepreload" href="/assets/vendor/three.module.js">
   <meta name="description" content="RIOSE develops radio-based technology for livestock monitoring in GPS-denied environments.">
   <title>RIOSE — Livestock technology</title>
@@ -406,7 +406,7 @@
         <img class="scene-fallback" src="/assets/riose-ear-tag-fallback.webp" alt="Matte yellow RIOSE livestock ear tag with black attachment pin" draggable="false" fetchpriority="high" decoding="async">
         <canvas id="product-canvas" aria-hidden="true"></canvas>
       </div>
-      <p class="visually-hidden" id="scene-help">Drag or touch the product to rotate it. The outer shell becomes translucent as you turn toward a side or rear angle. Pause there briefly for a subtle exploded engineering view with technical labels. The internal assembly is conceptual; the available reference only confirms a circuit board, a main chip, copper traces and fixing points. Use arrow keys to rotate and plus or minus to zoom, or pinch on touch screens.</p>
+      <p class="visually-hidden" id="scene-help">Drag or touch the product to rotate it. The outer shell becomes translucent as you turn toward the rear. Pause there briefly for a subtle exploded view with technical labels. The available reference shows a circuit board, a main chip, copper traces and fixing points; the wire routing is illustrative. Use arrow keys to rotate and plus or minus to zoom, or pinch on touch screens.</p>
       <p class="visually-hidden" id="scene-status" role="status" aria-live="polite">Loading interactive product model.</p>
     </section>
 
@@ -509,7 +509,7 @@
       if (!entry.isIntersecting) return;
       const sceneScript = document.createElement('script');
       sceneScript.type = 'module';
-      sceneScript.src = '/assets/product-scene.js?v=20261003-3';
+      sceneScript.src = '/assets/product-scene.js?v=20261003-4';
       sceneScript.onerror = () => {
         sceneWrap.classList.add('is-fallback');
         document.getElementById('scene-status').textContent = 'Interactive model unavailable. Showing the product photograph.';

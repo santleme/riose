@@ -170,8 +170,8 @@ function startScene(THREE) {
   rearPin.add(pinPoint);
   addCylinderZ(THREE, rearPin, blackPolymer, 0.19, 0.19, 0.06, -0.68, 0.86);
 
-  // The concept assembly follows the PCB, IC, copper traces and fixings visible
-  // in the supplied internal reference. It does not imply an unverified BOM.
+  // The illustrative assembly is limited to the visible board, IC, traces and
+  // fixings; it does not imply an unverified bill of materials.
   const internals = new THREE.Group();
   internals.visible = false;
   internals.position.z = -0.045;
@@ -305,7 +305,7 @@ function startScene(THREE) {
     motion.engineeringFrom = motion.engineering;
     motion.engineeringStartedAt = performance.now();
     status.textContent = next
-      ? 'Conceptual engineering view. Visible references support a PCB, main IC, copper traces and fixing points; other hardware details are unverified.'
+      ? 'Engineering inspection. The interior is an illustrative assembly based on the available product references.'
       : 'Exterior product view.';
     scheduleFrame();
   };
@@ -364,6 +364,8 @@ function startScene(THREE) {
     document.body.classList.add('is-product-dragging');
     motion.dragging = motion.pointers.size === 1;
     if (startedOnProduct) {
+      // Build the interior before the first rotation can ghost the shell.
+      ensureInterior();
       setProductHover(true);
     }
     if (motion.pointers.size === 2) {
@@ -491,7 +493,8 @@ function startScene(THREE) {
     const frontNormal = new THREE.Vector3(0, 0, 1).applyQuaternion(product.quaternion).normalize();
     const cameraDirection = new THREE.Vector3(0, 0, 1);
     const faceAlignment = frontNormal.dot(cameraDirection);
-    const structuralTarget = 1 - THREE.MathUtils.smoothstep(faceAlignment, 0.08, 0.66);
+    const structuralTarget = 1 - THREE.MathUtils.smoothstep(faceAlignment, 0.34, 0.96);
+    if (structuralTarget > 0.025 && !hasBuiltInterior) ensureInterior();
     motion.structuralTarget = structuralTarget;
     motion.structural += (structuralTarget - motion.structural) * (prefersReducedMotion ? 1 : 1 - Math.exp(-7.5 * dt));
     const zoomEase = prefersReducedMotion ? 1 : 1 - Math.exp(-13 * dt);
@@ -514,9 +517,9 @@ function startScene(THREE) {
     if (currentView !== announcedView) {
       announcedView = currentView;
       status.textContent = currentView === 'engineering'
-        ? 'Engineering view: conceptual PCB, main IC, copper traces and fixing points are labeled; other internals are not verified.'
+        ? 'Engineering inspection: main board, integrated circuit, copper traces and fixing points are shown.'
         : currentView === 'structural'
-          ? 'Structural reveal: the shell is translucent. Internal layout is conceptual and only partly supported by the available reference.'
+          ? 'Structural reveal: the shell is translucent. The internal assembly is illustrative and based on the available product reference.'
           : 'Exterior product view.';
     }
     for (const material of shellMaterials) material.userData.setStructuralReveal(motion.structural);
@@ -542,7 +545,7 @@ function startScene(THREE) {
       wrapper.classList.add('is-ready');
       fallback.alt = '';
       fallback.setAttribute('aria-hidden', 'true');
-      status.textContent = 'Interactive product model ready. Rotate toward the side or rear to reveal a conceptual internal study; pause there for engineering annotations.';
+      status.textContent = 'Interactive product model ready. Turn the tag toward its rear to reveal the internal assembly; pause there for a restrained engineering view.';
       warmInteriorWhenIdle();
     }
     scheduleFrame();
@@ -685,7 +688,7 @@ function makeStructuralShellMaterial(THREE, options) {
       .replace('#include <color_fragment>', `#include <color_fragment>
         float shellGhost = smoothstep(0.0, 1.0, uStructuralReveal);
         diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.48, 0.49, 0.46), shellGhost * 0.16);
-        diffuseColor.a *= mix(1.0, 0.18, shellGhost);`);
+    diffuseColor.a *= mix(1.0, 0.08, shellGhost);`);
   };
   material.customProgramCacheKey = () => 'riose-angle-structural-reveal-v6';
   material.userData.setStructuralReveal = (value) => {
@@ -708,7 +711,7 @@ function addCylinderZ(THREE, parent, material, top, bottom, length, z, y, x = 0)
 function buildInterior(THREE, group) {
   const boardLayer = new THREE.Group();
   group.add(boardLayer);
-  const boardMaterial = new THREE.MeshStandardMaterial({ color: 0x17201b, roughness: 0.82, metalness: 0.035 });
+  const boardMaterial = new THREE.MeshStandardMaterial({ color: 0x17201b, roughness: 0.82, metalness: 0.035, side: THREE.DoubleSide });
   const boardShape = makeBoardShape(THREE);
   const pcb = new THREE.Mesh(new THREE.ExtrudeGeometry(boardShape, {
     depth: 0.042, bevelEnabled: true, bevelSegments: 3, bevelSize: 0.012, bevelThickness: 0.009, curveSegments: 18,
@@ -719,18 +722,20 @@ function buildInterior(THREE, group) {
   // Raised packages, edge contacts and routed traces give the assembly depth
   // while staying within the components visible in the reference image.
   const mainIc = new THREE.Group();
-  mainIc.position.set(-0.08, -0.48, 0.05);
+  // Keep the populated face toward the rear of the tag. The outside hero view
+  // must remain clean; these parts become visible when the tag is turned over.
+  mainIc.position.set(-0.08, -0.48, -0.043);
   boardLayer.add(mainIc);
   const mainChipBody = new THREE.Mesh(roundedBox(THREE, 0.47, 0.42, 0.09, 0.04), new THREE.MeshStandardMaterial({ color: 0x252a27, roughness: 0.64, metalness: 0.08 }));
   mainIc.add(mainChipBody);
   const packageTop = new THREE.Mesh(roundedBox(THREE, 0.39, 0.34, 0.025, 0.027), new THREE.MeshStandardMaterial({ color: 0x111513, roughness: 0.76, metalness: 0.025 }));
-  packageTop.position.z = 0.053;
+  packageTop.position.z = -0.012;
   mainIc.add(packageTop);
 
   const smallComponents = new THREE.Group();
   boardLayer.add(smallComponents);
   const componentMaterial = new THREE.MeshStandardMaterial({ color: 0x292e2b, roughness: 0.55, metalness: 0.1 });
-  for (const [x, y, w, h, z] of [[0.43, -0.35, 0.15, 0.11, 0.034], [0.42, -0.69, 0.18, 0.12, 0.034], [0.06, -0.91, 0.13, 0.085, 0.034], [-0.47, -0.91, 0.12, 0.08, 0.034]]) {
+  for (const [x, y, w, h, z] of [[0.43, -0.35, 0.15, 0.11, -0.031], [0.42, -0.69, 0.18, 0.12, -0.031], [0.06, -0.91, 0.13, 0.085, -0.031], [-0.47, -0.91, 0.12, 0.08, -0.031]]) {
     const component = new THREE.Mesh(roundedBox(THREE, w, h, 0.035, 0.016), componentMaterial);
     component.position.set(x, y, z);
     smallComponents.add(component);
@@ -747,8 +752,40 @@ function buildInterior(THREE, group) {
     [[0.18, -0.61], [0.29, -0.61], [0.34, -0.57]],
   ];
   for (const coords of paths) {
-    const curve = new THREE.CatmullRomCurve3(coords.map(([x, y]) => new THREE.Vector3(x, y, 0.02)));
+    // Traces sit on the rear-facing board surface, inside the shell.
+    const curve = new THREE.CatmullRomCurve3(coords.map(([x, y]) => new THREE.Vector3(x, y, -0.015)));
     copperLayer.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 36, 0.008, 5, false), copper));
+  }
+
+  // A short insulated jumper pair provides the cable detail requested for the
+  // internal study. Its exact routing is illustrative, not a verified BOM.
+  const wireLayer = new THREE.Group();
+  boardLayer.add(wireLayer);
+  const wireMaterials = [
+    new THREE.MeshStandardMaterial({ color: 0x272522, roughness: 0.7, metalness: 0.01 }),
+    new THREE.MeshStandardMaterial({ color: 0x8b4c37, roughness: 0.68, metalness: 0.015 }),
+  ];
+  const wireRoutes = [
+    [[0.13, -0.37, -0.038], [0.28, -0.32, -0.025], [0.46, -0.39, -0.018], [0.51, -0.54, -0.018], [0.49, -0.72, -0.028], [0.36, -0.81, -0.046]],
+    [[0.13, -0.45, -0.039], [0.27, -0.43, -0.024], [0.42, -0.49, -0.014], [0.46, -0.62, -0.015], [0.43, -0.74, -0.026], [0.29, -0.78, -0.045]],
+  ];
+  wireRoutes.forEach((coords, index) => {
+    const curve = new THREE.CatmullRomCurve3(coords.map(([x, y, z]) => new THREE.Vector3(x, y, z)));
+    wireLayer.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 48, 0.014, 8, false), wireMaterials[index]));
+  });
+  const wireTerminal = new THREE.MeshStandardMaterial({ color: 0xb88a5d, roughness: 0.38, metalness: 0.62 });
+  for (const [x, y, z] of [[0.36, -0.81, -0.046], [0.29, -0.78, -0.045]]) {
+    const terminal = new THREE.Mesh(new THREE.SphereGeometry(0.021, 14, 10), wireTerminal);
+    terminal.position.set(x, y, z);
+    wireLayer.add(terminal);
+  }
+
+  const reverseComponents = new THREE.Group();
+  boardLayer.add(reverseComponents);
+  for (const [x, y, w, h] of [[-0.3, -0.3, 0.17, 0.11], [0.35, -0.55, 0.18, 0.12], [-0.18, -0.83, 0.14, 0.09]]) {
+    const component = new THREE.Mesh(roundedBox(THREE, w, h, 0.038, 0.015), componentMaterial);
+    component.position.set(x, y, -0.037);
+    reverseComponents.add(component);
   }
 
   const contacts = new THREE.Group();
@@ -801,10 +838,10 @@ function buildInterior(THREE, group) {
   const groups = [boardLayer, fixings, supportRibs];
   const basePositions = groups.map((part) => part.position.clone());
   const anchors = {
-    pcb: new THREE.Vector3(-0.02, -0.52, -0.01),
-    ic: new THREE.Vector3(-0.08, -0.48, 0.095),
-    traces: new THREE.Vector3(-0.4, -0.69, 0.015),
-    fixings: new THREE.Vector3(0.57, -1.02, 0.035),
+    pcb: { parent: boardLayer, point: new THREE.Vector3(-0.02, -0.52, -0.01) },
+    ic: { parent: mainIc, point: new THREE.Vector3(0, 0, 0) },
+    traces: { parent: copperLayer, point: new THREE.Vector3(-0.4, -0.69, -0.015) },
+    fixings: { parent: fixings, point: new THREE.Vector3(0.57, -1.02, 0.035) },
   };
   return {
     anchors,
@@ -812,10 +849,12 @@ function buildInterior(THREE, group) {
       boardLayer.position.set(basePositions[0].x - 0.035 * amount, basePositions[0].y - 0.035 * amount, basePositions[0].z + 0.11 * amount);
       fixings.position.set(basePositions[1].x, basePositions[1].y, basePositions[1].z + 0.15 * amount);
       supportRibs.position.set(basePositions[2].x + 0.018 * amount, basePositions[2].y, basePositions[2].z - 0.045 * amount);
-      mainIc.position.z = 0.05 + 0.13 * amount;
-      smallComponents.position.z = 0.055 * amount;
-      copperLayer.position.z = 0.035 * amount;
-      contacts.position.z = 0.02 * amount;
+      mainIc.position.z = -0.043 - 0.045 * amount;
+      smallComponents.position.z = -0.018 * amount;
+      copperLayer.position.z = -0.025 * amount;
+      wireLayer.position.z = -0.035 * amount;
+      contacts.position.z = -0.018 * amount;
+      reverseComponents.position.z = -0.03 * amount;
     },
   };
 }
@@ -845,10 +884,10 @@ function createTechnicalAnnotations(wrapper) {
   svg.setAttribute('aria-hidden', 'true');
   wrapper.appendChild(svg);
   const entries = [
-    ['pcb', 'PCB · concept', 1],
-    ['ic', 'Main IC · reference', -1],
-    ['traces', 'Copper traces · reference', 1],
-    ['fixings', 'Fixing points · reference', -1],
+    ['pcb', 'Circuit board', 1],
+    ['ic', 'Main IC', -1],
+    ['traces', 'Copper traces', 1],
+    ['fixings', 'Mounting points', -1],
   ];
   const nodes = entries.map(([key, label, direction]) => {
     const line = document.createElementNS(namespace, 'path');
@@ -860,31 +899,29 @@ function createTechnicalAnnotations(wrapper) {
     svg.append(line, text);
     return { key, label, direction, line, text };
   });
-  const note = document.createElementNS(namespace, 'text');
-  note.setAttribute('class', 'annotation-note');
-  note.textContent = 'CONCEPT STUDY · INTERNAL LAYOUT NOT VERIFIED';
-  svg.appendChild(note);
   return {
     update(camera, product, parts, visible) {
       svg.classList.toggle('is-visible', visible && !!parts);
       if (!visible || !parts) return;
       const bounds = wrapper.getBoundingClientRect();
       svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
-      note.setAttribute('x', '40');
-      note.setAttribute('y', '54');
       for (const node of nodes) {
-        const point = parts.anchors[node.key].clone();
-        product.localToWorld(point);
+        const anchor = parts.anchors[node.key];
+        const point = anchor.point.clone();
+        anchor.parent.localToWorld(point);
         point.project(camera);
+        const onScreen = point.z >= -1 && point.z <= 1 && Math.abs(point.x) <= 1 && Math.abs(point.y) <= 1;
+        node.line.style.opacity = onScreen ? '1' : '0';
+        node.text.style.opacity = onScreen ? '1' : '0';
+        if (!onScreen) continue;
         const x = (point.x * 0.5 + 0.5) * bounds.width;
         const y = (-point.y * 0.5 + 0.5) * bounds.height;
-        const labelX = x + node.direction * Math.min(92, bounds.width * 0.16);
-        const labelY = y + (node.key === 'ic' || node.key === 'fixings' ? -15 : 20);
+        const labelX = THREE.MathUtils.clamp(x + node.direction * Math.min(92, bounds.width * 0.16), 76, bounds.width - 76);
+        const labelY = THREE.MathUtils.clamp(y + (node.key === 'ic' || node.key === 'fixings' ? -15 : 20), 30, bounds.height - 20);
         const elbowX = x + node.direction * 24;
         node.line.setAttribute('d', `M ${x.toFixed(1)} ${y.toFixed(1)} L ${elbowX.toFixed(1)} ${y.toFixed(1)} L ${labelX.toFixed(1)} ${labelY.toFixed(1)}`);
         node.text.setAttribute('x', labelX.toFixed(1));
         node.text.setAttribute('y', labelY.toFixed(1));
-        node.style.opacity = point.z < 1 ? '1' : '0';
       }
     },
   };
