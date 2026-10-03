@@ -15,13 +15,14 @@ RIOSE should feel like a small hardware research project: quiet, precise, and gr
 
 - Wordmark and navigation: a restrained technical grotesk, medium to semibold, with modest tracking. Never use a fashion serif or sci-fi display face.
 - Header identity uses live “Riose” text in Sora SemiBold, with the supplied emblem as a small raised mark and a glass definition that opens on hover, focus, or touch.
-- The hero thesis uses a restrained medium grotesk at 72–88px on desktop, with soft charcoal color and generous line spacing; it stays above the hardware and never adds an initial subtitle.
+- The hero headline uses a restrained regular grotesk at 72–96px on desktop, with a 0.98 line height and soft charcoal color. Its supporting line stays quieter at 20–24px.
 - Editorial copy and metadata: system monospace, small and legible. Use spacing and hierarchy rather than oversized text or decorative rules.
 - Keep the interface to these two typographic roles.
 
 ## Interaction and motion
 
 - Keep the product dominant and the page naturally scrollable.
+- Lower the hero model by roughly 60–112px to create room above the ear attachment without changing the model or camera.
 - Product rotation is direct manipulation with a short, damped physical inertia. Keep zoom bounded.
 - A first product hover wakes the model with less than one degree of pointer response and a small lighting change; never add continuous auto-rotation.
 - The internal study stays hidden on hover. Reveal it gradually only during a held, rear-facing inspection, then restore the shell as the pointer is released.

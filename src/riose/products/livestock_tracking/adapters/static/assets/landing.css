@@ -13,6 +13,7 @@
       --quiet: #73746f;
       --hero-copy-runway: clamp(112px, 14vh, 156px);
       --hero-stage-height: max(100svh, 560px);
+      --product-scene-offset: clamp(60px, 8vh, 112px);
       --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       --sans: "Arial", "Helvetica Neue", Helvetica, sans-serif;
       font-family: var(--sans);
@@ -199,7 +200,7 @@
       --hero-copy-shift: 0px;
       position: absolute;
       z-index: 2;
-      top: clamp(138px, 18vh, 205px);
+      top: clamp(110px, 14vh, 164px);
       left: 50%;
       width: min(94vw, 1040px);
       pointer-events: none;
@@ -211,12 +212,12 @@
 
     .hero-headline {
       margin: 0;
-      color: rgb(20 20 20 / 74%);
-      font-family: var(--sans);
-      font-size: clamp(4.5rem, 6.2vw, 5.5rem);
-      font-weight: 500;
-      letter-spacing: -.045em;
-      line-height: 1.17;
+      color: rgb(20 20 20 / 68%);
+      font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+      font-size: clamp(72px, 6.4vw, 96px);
+      font-weight: 400;
+      letter-spacing: -.05em;
+      line-height: .98;
       text-wrap: balance;
     }
 
@@ -228,10 +229,11 @@
     }
 
     .hero-copy-subtitle {
-      max-width: 520px;
-      margin: 18px auto 0;
-      color: rgb(20 20 20 / 58%);
-      font-size: clamp(14px, 1.15vw, 16px);
+      max-width: 860px;
+      margin: 22px auto 0;
+      color: rgb(20 20 20 / 49%);
+      font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+      font-size: clamp(20px, 1.7vw, 24px);
       font-weight: 400;
       line-height: 1.55;
       letter-spacing: .002em;
@@ -254,6 +256,7 @@
       height: min(100svh, 980px);
       min-height: 560px;
       margin: 0 auto;
+      transform: translate3d(0, var(--product-scene-offset), 0);
       touch-action: pan-y;
       cursor: default;
       outline: none;
@@ -409,9 +412,10 @@
       .location { font-size: 11px; }
       .floating-header.is-scrolled { width: 128px; min-height: 44px; padding: 0 10px; }
       :root { --hero-copy-runway: clamp(88px, 14svh, 112px); }
-      .hero-copy { top: clamp(126px, 18vh, 165px); width: calc(100vw - 24px); }
-      .hero-headline { font-size: clamp(1.75rem, 8.7vw, 3.1rem); letter-spacing: -.04em; line-height: 1.17; }
-      .hero-copy-subtitle { max-width: 390px; margin-top: 13px; font-size: 13px; line-height: 1.5; }
+      :root { --product-scene-offset: clamp(60px, 9svh, 82px); }
+      .hero-copy { top: clamp(96px, 13vh, 136px); width: calc(100vw - 24px); }
+      .hero-headline { font-size: clamp(32px, 9.2vw, 58px); letter-spacing: -.045em; line-height: .98; }
+      .hero-copy-subtitle { max-width: 390px; margin-top: 16px; font-size: 18px; line-height: 1.45; }
       .scene-wrap { width: 100vw; height: 100svh; min-height: 500px; }
       .scene-fallback { padding: 80px 0 5vh; }
       .annotation-label { font-size: 8px; }
@@ -423,6 +427,13 @@
       .paper-title { margin-top: 24px; font-size: clamp(24px, 7.2vw, 31px); }
       .abstract { margin-top: 30px; font-size: 13px; line-height: 1.85; }
       .paper-link { margin-top: 34px; }
+    }
+
+    @media (min-width: 641px) and (max-width: 840px) {
+      .hero-copy { top: clamp(104px, 13vh, 132px); }
+      .hero-headline { font-size: clamp(52px, 8vw, 68px); }
+      .hero-copy-subtitle { max-width: 660px; font-size: 18px; }
+      :root { --product-scene-offset: clamp(60px, 8vh, 76px); }
     }
 
     @media (prefers-reduced-motion: reduce) {
