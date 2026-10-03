@@ -100,7 +100,8 @@ def test_landing_page_and_static_product_assets(tmp_path):
     assert "RIOSE — Livestock technology" in page.text
     assert "Machine learning-assisted self-powered ear tag for animal welfare" in page.text
     assert 'id="inspection-toggle"' not in page.text
-    assert "Pause the pointer over the product" in page.text
+    assert "turn toward a side or rear angle" in page.text
+    assert "internal assembly is conceptual" in page.text
     assert "Xiaoyu Su, Peidi Fan, Ying Liu, Jianfeng Ping, Xunjia Li and Yuxiang Pan" in page.text
     assert "Independent study" in page.text
     assert "5,399 sampling windows from three animals" in page.text
@@ -116,6 +117,8 @@ def test_landing_page_and_static_product_assets(tmp_path):
     scene = client.get("/assets/product-scene.js")
     assert scene.status_code == 200
     assert "WebGLRenderer" in scene.text
+    assert "smoothstep(faceAlignment" in scene.text
+    assert "createTechnicalAnnotations" in scene.text
 
     three = client.get("/assets/vendor/three.module.js")
     assert three.status_code == 200
