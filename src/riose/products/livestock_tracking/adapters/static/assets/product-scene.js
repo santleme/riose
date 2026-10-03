@@ -224,8 +224,8 @@ function startScene(THREE) {
     targetExploded: 0,
     explodedFrom: 0,
     explodedStartedAt: performance.now(),
-    explodedTimer: 0,
     dragging: false,
+    inspectionActive: false,
     pointers: new Map(),
     lastPointer: null,
     hoverPoint: null,
@@ -295,33 +295,7 @@ function startScene(THREE) {
     wrapper.classList.toggle('is-over-product', isHovering);
   };
 
-  const setExplodedTarget = (value) => {
-    const next = value ? 1 : 0;
-    if (next && !hasBuiltInterior) ensureInterior();
-    if (motion.targetExploded === next) return;
-    motion.targetExploded = next;
-    motion.explodedFrom = motion.exploded;
-    motion.explodedStartedAt = performance.now();
-    motion.engineeringFrom = motion.engineering;
-    motion.engineeringStartedAt = performance.now();
-    status.textContent = next
-      ? 'Engineering inspection. The interior is an illustrative assembly based on the available product references.'
-      : 'Exterior product view.';
-    scheduleFrame();
-  };
   let announcedView = 'surface';
-  const clearExplodedTimer = () => {
-    window.clearTimeout(motion.explodedTimer);
-    motion.explodedTimer = 0;
-  };
-  const scheduleExplodedView = () => {
-    clearExplodedTimer();
-    motion.explodedTimer = window.setTimeout(() => {
-      motion.explodedTimer = 0;
-      if (motion.structural >= 0.58) setExplodedTarget(1);
-      else if (motion.targetExploded) setExplodedTarget(0);
-    }, prefersReducedMotion ? 0 : 650);
-  };
 
   const zoomBy = (amount) => {
     motion.zoom = THREE.MathUtils.clamp(motion.zoom + amount, minZoom, maxZoom);
@@ -366,6 +340,7 @@ function startScene(THREE) {
     if (startedOnProduct) {
       // Build the interior before the first rotation can ghost the shell.
       ensureInterior();
+      motion.inspectionActive = true;
       setProductHover(true);
     }
     if (motion.pointers.size === 2) {
@@ -403,7 +378,6 @@ function startScene(THREE) {
       motion.lastPointer = { x: event.clientX, y: event.clientY };
       motion.lastPointerTime = event.timeStamp;
       scheduleFrame();
-      scheduleExplodedView();
       return;
     }
     motion.lastPointer = { x: event.clientX, y: event.clientY };
@@ -424,10 +398,11 @@ function startScene(THREE) {
     if (motion.pointers.size === 0) {
       document.body.classList.remove('is-product-dragging');
       motion.dragging = false;
+      motion.inspectionActive = false;
       pinchStart = 0;
       motion.lastPointer = null;
       if (!motion.hoverPoint) setProductHover(false);
-      scheduleExplodedView();
+      status.textContent = 'Returning to the exterior view.';
     } else if (motion.pointers.size === 1) {
       const remaining = [...motion.pointers.values()][0];
       motion.lastPointer = remaining;
@@ -441,6 +416,15 @@ function startScene(THREE) {
   wrapper.addEventListener('pointerup', endPointer);
   wrapper.addEventListener('pointercancel', endPointer);
   wrapper.addEventListener('lostpointercapture', endPointer);
+  wrapper.addEventListener('keyup', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+    if (motion.pointers.size === 0) motion.inspectionActive = false;
+    scheduleFrame();
+  });
+  wrapper.addEventListener('blur', () => {
+    if (motion.pointers.size === 0) motion.inspectionActive = false;
+    scheduleFrame();
+  });
   wrapper.addEventListener('pointerleave', () => {
     motion.hoverPoint = null;
     motion.hoverDirty = false;
@@ -462,7 +446,10 @@ function startScene(THREE) {
     else if (event.key === '-') zoomBy(0.25);
     else return;
     event.preventDefault();
-    scheduleExplodedView();
+    if (event.key.startsWith('Arrow')) {
+      ensureInterior();
+      motion.inspectionActive = true;
+    }
     scheduleFrame(true);
   });
 
@@ -493,10 +480,13 @@ function startScene(THREE) {
     const frontNormal = new THREE.Vector3(0, 0, 1).applyQuaternion(product.quaternion).normalize();
     const cameraDirection = new THREE.Vector3(0, 0, 1);
     const faceAlignment = frontNormal.dot(cameraDirection);
-    const structuralTarget = 1 - THREE.MathUtils.smoothstep(faceAlignment, 0.34, 0.96);
+    const structuralTarget = motion.inspectionActive
+      ? 1 - THREE.MathUtils.smoothstep(faceAlignment, 0.34, 0.96)
+      : 0;
     if (structuralTarget > 0.025 && !hasBuiltInterior) ensureInterior();
     motion.structuralTarget = structuralTarget;
-    motion.structural += (structuralTarget - motion.structural) * (prefersReducedMotion ? 1 : 1 - Math.exp(-7.5 * dt));
+    const revealRate = structuralTarget > motion.structural ? 8.5 : 4.8;
+    motion.structural += (structuralTarget - motion.structural) * (prefersReducedMotion ? 1 : 1 - Math.exp(-revealRate * dt));
     const zoomEase = prefersReducedMotion ? 1 : 1 - Math.exp(-13 * dt);
     camera.position.z += (motion.zoom - camera.position.z) * zoomEase;
     if (Math.abs(motion.zoom - camera.position.z) < 0.003) camera.position.z = motion.zoom;
@@ -513,17 +503,17 @@ function startScene(THREE) {
       motion.exploded = motion.explodedFrom + (motion.targetExploded - motion.explodedFrom) * explodedEased;
       if (explodedProgress === 1) motion.exploded = motion.targetExploded;
     }
-    const currentView = motion.exploded > 0.5 ? 'engineering' : motion.structural > 0.58 ? 'structural' : 'surface';
+    const currentView = motion.inspectionActive && motion.structural > 0.58
+      ? 'inspection'
+      : !motion.inspectionActive && motion.structural > 0.015 ? 'restoring' : 'surface';
     if (currentView !== announcedView) {
       announcedView = currentView;
-      status.textContent = currentView === 'engineering'
-        ? 'Engineering inspection: main board, integrated circuit, copper traces and fixing points are shown.'
-        : currentView === 'structural'
-          ? 'Structural reveal: the shell is translucent. The internal assembly is illustrative and based on the available product reference.'
-          : 'Exterior product view.';
+      status.textContent = currentView === 'inspection'
+        ? 'Interior visible while inspecting. Release the product to return to the exterior.'
+        : currentView === 'restoring' ? 'Returning to the exterior view.' : 'Exterior product view.';
     }
     for (const material of shellMaterials) material.userData.setStructuralReveal(motion.structural);
-    internals.visible = motion.structural > 0.015 || motion.engineering > 0.015;
+    internals.visible = motion.structural > 0.015;
     if (interiorParts) interiorParts.setExploded(motion.exploded);
     camera.updateMatrixWorld();
     annotations.update(camera, product, interiorParts, motion.exploded > 0.025 && motion.structural > 0.45);
@@ -545,7 +535,7 @@ function startScene(THREE) {
       wrapper.classList.add('is-ready');
       fallback.alt = '';
       fallback.setAttribute('aria-hidden', 'true');
-      status.textContent = 'Interactive product model ready. Turn the tag toward its rear to reveal the internal assembly; pause there for a restrained engineering view.';
+      status.textContent = 'Interactive product model ready. Hold and turn the tag to inspect its interior; release to return to the exterior.';
       warmInteriorWhenIdle();
     }
     scheduleFrame();

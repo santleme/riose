@@ -83,7 +83,7 @@
       if (!entry.isIntersecting) return;
       const sceneScript = document.createElement('script');
       sceneScript.type = 'module';
-      sceneScript.src = '/assets/product-scene.js?v=20261003-4';
+      sceneScript.src = '/assets/product-scene.js?v=20261003-5';
       sceneScript.onerror = () => {
         sceneWrap.classList.add('is-fallback');
         document.getElementById('scene-status').textContent = 'Interactive model unavailable. Showing the product photograph.';
