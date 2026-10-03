@@ -257,6 +257,23 @@
     .scene-wrap.is-fallback .scene-fallback { opacity: .88; }
     .scene-wrap.is-ready #product-canvas { opacity: 1; }
 
+    .technical-annotations {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 420ms ease;
+    }
+
+    .technical-annotations.is-visible { opacity: 1; }
+    .annotation-leader { fill: none; stroke: rgb(53 56 51 / 44%); stroke-width: .8; vector-effect: non-scaling-stroke; }
+    .annotation-label,
+    .annotation-note { fill: rgb(54 57 52 / 76%); font-family: var(--mono); font-size: 10px; letter-spacing: .015em; }
+    .annotation-note { fill: rgb(54 57 52 / 48%); font-size: 9px; letter-spacing: .09em; }
+
     .research {
       min-height: 100vh;
       padding: clamp(120px, 18vh, 220px) 24px clamp(120px, 20vh, 240px);
@@ -344,6 +361,8 @@
       .floating-header.is-scrolled { width: 128px; min-height: 44px; padding: 0 10px; }
       .scene-wrap { width: 100vw; height: 100svh; min-height: 500px; }
       .scene-fallback { padding: 80px 0 5vh; }
+      .annotation-label { font-size: 8px; }
+      .annotation-note { font-size: 7px; }
       .research { min-height: 82vh; padding: 112px 24px 132px; }
       .paper-meta { font-size: 11px; }
       .authors { font-size: 12px; }
@@ -384,10 +403,10 @@
   <main id="top">
     <section class="hero" aria-label="RIOSE livestock ear tag">
       <div class="scene-wrap" id="scene-wrap" tabindex="0" role="group" aria-label="Interactive 3D product model" aria-describedby="scene-help">
-        <img class="scene-fallback" src="/assets/riose-ear-tag-fallback.webp" alt="Matte yellow RIOCE livestock ear tag with black attachment pin" draggable="false" fetchpriority="high" decoding="async">
+        <img class="scene-fallback" src="/assets/riose-ear-tag-fallback.webp" alt="Matte yellow RIOSE livestock ear tag with black attachment pin" draggable="false" fetchpriority="high" decoding="async">
         <canvas id="product-canvas" aria-hidden="true"></canvas>
       </div>
-      <p class="visually-hidden" id="scene-help">Pause the pointer over the product to reveal an illustrative internal study, or begin dragging to inspect while rotating. Move away to return to the exterior. When using a keyboard, Tab to focus the model, use arrow keys to rotate and plus or minus to zoom. Hold Shift while scrolling to zoom. On touch screens, drag to rotate and reveal the study while touching the product; pinch to zoom.</p>
+      <p class="visually-hidden" id="scene-help">Drag or touch the product to rotate it. The outer shell becomes translucent as you turn toward a side or rear angle. Pause there briefly for a subtle exploded engineering view with technical labels. The internal assembly is conceptual; the available reference only confirms a circuit board, a main chip, copper traces and fixing points. Use arrow keys to rotate and plus or minus to zoom, or pinch on touch screens.</p>
       <p class="visually-hidden" id="scene-status" role="status" aria-live="polite">Loading interactive product model.</p>
     </section>
 
