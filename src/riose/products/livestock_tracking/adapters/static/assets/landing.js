@@ -1,17 +1,19 @@
     const hero = document.querySelector('.hero');
+    const heroStage = document.getElementById('hero-scroll-stage');
     const heroCopy = document.getElementById('hero-copy');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let heroCopyFrame = 0;
 
     const updateHeroCopy = () => {
       heroCopyFrame = 0;
-      const scrollRange = Math.max(1, window.innerHeight * 0.12);
-      const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
+      const scrollRange = Math.max(1, heroStage.offsetHeight - hero.offsetHeight);
+      const stageProgress = -heroStage.getBoundingClientRect().top / scrollRange;
+      const progress = Math.max(0, Math.min(1, stageProgress));
       const opacityForState = hero.classList.contains('is-interacting')
         ? 0.32
         : hero.classList.contains('is-hovering-product') ? 0.72 : 1;
       heroCopy.style.setProperty('--hero-copy-opacity', String((1 - progress) * opacityForState));
-      heroCopy.style.setProperty('--hero-copy-shift', `${reducedMotion ? 0 : -32 * progress}px`);
+      heroCopy.style.setProperty('--hero-copy-shift', `${reducedMotion ? 0 : -115 * progress}%`);
     };
 
     const scheduleHeroCopyUpdate = () => {

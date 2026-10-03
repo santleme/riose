@@ -25,7 +25,7 @@ RIOSE should feel like a small hardware research project: quiet, precise, and gr
 - Product rotation is direct manipulation with a short, damped physical inertia. Keep zoom bounded.
 - A first product hover wakes the model with less than one degree of pointer response and a small lighting change; never add continuous auto-rotation.
 - The internal study stays hidden on hover. Reveal it gradually only during a held, rear-facing inspection, then restore the shell as the pointer is released.
-- The hero thesis dims slightly on product hover, further while dragging, and fades continuously with the first 12vh of downward scroll.
+- The hero copy dims slightly on product hover, further while dragging, and exits during a short pinned scroll runway before the page continues naturally to research.
 - Respect reduced-motion preferences, preserve touch vertical scrolling, and never select page text while dragging the model.
 - The header contracts to a centered wordmark while scrolling. A small dictionary-style definition may appear on wordmark hover, focus, or tap.
 - Header navigation and the São Paulo location link use a restrained lift and animated underline on hover/focus; the location opens its map destination.

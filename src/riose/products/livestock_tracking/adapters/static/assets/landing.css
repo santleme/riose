@@ -11,6 +11,8 @@
       --paper: #f2f2f0;
       --ink: #20211f;
       --quiet: #73746f;
+      --hero-copy-runway: clamp(112px, 14vh, 156px);
+      --hero-stage-height: max(100svh, 560px);
       --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       --sans: "Arial", "Helvetica Neue", Helvetica, sans-serif;
       font-family: var(--sans);
@@ -176,11 +178,17 @@
 
     main { overflow: clip; }
 
-    .hero {
+    .hero-scroll-stage {
       position: relative;
+      height: calc(var(--hero-stage-height) + var(--hero-copy-runway));
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
       display: grid;
-      min-height: 100vh;
-      min-height: 100svh;
+      height: var(--hero-stage-height);
+      min-height: 560px;
       place-items: center;
       overflow: hidden;
       background: var(--paper);
@@ -217,6 +225,23 @@
       opacity: 0;
       translate: 0 10px;
       animation: hero-copy-enter 560ms cubic-bezier(.2, .8, .2, 1) forwards;
+    }
+
+    .hero-copy-subtitle {
+      max-width: 520px;
+      margin: 18px auto 0;
+      color: rgb(20 20 20 / 58%);
+      font-size: clamp(14px, 1.15vw, 16px);
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: .002em;
+    }
+
+    .hero-subtitle-entrance {
+      display: inline-block;
+      opacity: 0;
+      translate: 0 8px;
+      animation: hero-copy-enter 520ms cubic-bezier(.2, .8, .2, 1) 120ms forwards;
     }
 
     @keyframes hero-copy-enter {
@@ -383,8 +408,10 @@
       .brand-meaning.is-open .brand-definition { height: 196px; }
       .location { font-size: 11px; }
       .floating-header.is-scrolled { width: 128px; min-height: 44px; padding: 0 10px; }
+      :root { --hero-copy-runway: clamp(88px, 14svh, 112px); }
       .hero-copy { top: clamp(126px, 18vh, 165px); width: calc(100vw - 24px); }
-      .hero-headline { font-size: clamp(2.1rem, 9.2vw, 3.45rem); letter-spacing: -.04em; line-height: 1.17; }
+      .hero-headline { font-size: clamp(1.75rem, 8.7vw, 3.1rem); letter-spacing: -.04em; line-height: 1.17; }
+      .hero-copy-subtitle { max-width: 390px; margin-top: 13px; font-size: 13px; line-height: 1.5; }
       .scene-wrap { width: 100vw; height: 100svh; min-height: 500px; }
       .scene-fallback { padding: 80px 0 5vh; }
       .annotation-label { font-size: 8px; }
@@ -399,6 +426,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      :root { --hero-copy-runway: 1px; }
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
       .hero-copy { will-change: auto; }

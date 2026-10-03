@@ -10,7 +10,7 @@
   <link rel="modulepreload" href="/assets/vendor/three.module.js">
   <meta name="description" content="RIOSE develops radio-based technology for livestock monitoring in GPS-denied environments.">
   <title>RIOSE — Livestock technology</title>
-  <link rel="stylesheet" href="/assets/landing.css?v=20261003-2">
+  <link rel="stylesheet" href="/assets/landing.css?v=20261003-3">
 </head>
 <body>
   <header class="floating-header" id="floating-header">
@@ -35,17 +35,20 @@
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-headline">
-      <div class="scene-wrap" id="scene-wrap" tabindex="0" role="group" aria-label="Interactive 3D product model" aria-describedby="scene-help">
-        <img class="scene-fallback" src="/assets/riose-ear-tag-fallback.webp" alt="Matte yellow RIOSE livestock ear tag with black attachment pin" draggable="false" fetchpriority="high" decoding="async">
-        <canvas id="product-canvas" aria-hidden="true"></canvas>
-      </div>
-      <div class="hero-copy" id="hero-copy">
-        <h1 class="hero-headline" id="hero-headline"><span class="hero-headline-line">Empires decay.</span><span class="hero-headline-line">Signals remain.</span></h1>
-      </div>
-      <p class="visually-hidden" id="scene-help">On desktop, hover over the tag for a slight response. Hold and drag or touch the product to rotate it; turn toward the rear while holding to reveal the internal assembly, and release to return the shell gradually to the exterior. The circuit board, main chip, copper traces and fixing points follow the available reference; wire routing is illustrative. Hold an arrow key to inspect while rotating, use plus or minus to zoom, or pinch on touch screens.</p>
-      <p class="visually-hidden" id="scene-status" role="status" aria-live="polite">Loading interactive product model.</p>
-    </section>
+    <div class="hero-scroll-stage" id="hero-scroll-stage">
+      <section class="hero" aria-labelledby="hero-headline">
+        <div class="scene-wrap" id="scene-wrap" tabindex="0" role="group" aria-label="Interactive 3D product model" aria-describedby="scene-help">
+          <img class="scene-fallback" src="/assets/riose-ear-tag-fallback.webp" alt="Matte yellow RIOSE livestock ear tag with black attachment pin" draggable="false" fetchpriority="high" decoding="async">
+          <canvas id="product-canvas" aria-hidden="true"></canvas>
+        </div>
+        <div class="hero-copy" id="hero-copy">
+          <h1 class="hero-headline" id="hero-headline"><span class="hero-headline-line">The next-generation</span><span class="hero-headline-line">livestock ear tag.</span></h1>
+          <p class="hero-copy-subtitle"><span class="hero-subtitle-entrance">A hardware platform for sensing, tracking, and understanding the field.</span></p>
+        </div>
+        <p class="visually-hidden" id="scene-help">On desktop, hover over the tag for a slight response. Hold and drag or touch the product to rotate it; turn toward the rear while holding to reveal the internal assembly, and release to return the shell gradually to the exterior. The circuit board, main chip, copper traces and fixing points follow the available reference; wire routing is illustrative. Hold an arrow key to inspect while rotating, use plus or minus to zoom, or pinch on touch screens.</p>
+        <p class="visually-hidden" id="scene-status" role="status" aria-live="polite">Loading interactive product model.</p>
+      </section>
+    </div>
 
     <section class="research" aria-labelledby="paper-title">
       <article class="paper-entry">
@@ -60,6 +63,6 @@
     </section>
   </main>
 
-  <script src="/assets/landing.js?v=20261003-2" defer></script>
+  <script src="/assets/landing.js?v=20261003-3" defer></script>
 </body>
 </html>
