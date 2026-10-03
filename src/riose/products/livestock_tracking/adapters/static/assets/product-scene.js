@@ -1,5 +1,6 @@
 const status = document.getElementById('scene-status');
 const wrapper = document.getElementById('scene-wrap');
+const hero = document.querySelector('.hero');
 const canvas = document.getElementById('product-canvas');
 const fallback = document.querySelector('.scene-fallback');
 
@@ -212,6 +213,13 @@ function startScene(THREE) {
   const motion = {
     yaw: -0.5,
     pitch: 0.12,
+    pointerYaw: 0,
+    pointerPitch: 0,
+    pointerYawTarget: 0,
+    pointerPitchTarget: 0,
+    hoverStrength: 0,
+    hoverStrengthTarget: 0,
+    hasWoken: false,
     velocityX: 0,
     velocityY: 0,
     engineering: 0,
@@ -261,6 +269,9 @@ function startScene(THREE) {
   let animate = () => {};
   const isMotionActive = () => motion.dragging || motion.pointers.size > 0
     || Math.abs(motion.velocityX) > 0.0002 || Math.abs(motion.velocityY) > 0.0002
+    || Math.abs(motion.pointerYawTarget - motion.pointerYaw) > 0.0001
+    || Math.abs(motion.pointerPitchTarget - motion.pointerPitch) > 0.0001
+    || Math.abs(motion.hoverStrengthTarget - motion.hoverStrength) > 0.001
     || Math.abs(motion.targetExploded - motion.exploded) > 0.001
     || Math.abs(motion.structuralTarget - motion.structural) > 0.001
     || motion.hoverDirty
@@ -293,6 +304,16 @@ function startScene(THREE) {
 
   const setProductHover = (isHovering) => {
     wrapper.classList.toggle('is-over-product', isHovering);
+    motion.hoverStrengthTarget = isHovering ? 1 : 0;
+    if (isHovering && !motion.hasWoken) {
+      motion.hasWoken = true;
+      wrapper.classList.add('is-awake');
+    }
+  };
+
+  const setHeroInteraction = (isInteracting) => {
+    hero.classList.toggle('is-interacting', isInteracting);
+    window.dispatchEvent(new Event('riose:hero-interaction'));
   };
 
   let announcedView = 'surface';
@@ -341,6 +362,9 @@ function startScene(THREE) {
       // Build the interior before the first rotation can ghost the shell.
       ensureInterior();
       motion.inspectionActive = true;
+      motion.pointerYawTarget = 0;
+      motion.pointerPitchTarget = 0;
+      setHeroInteraction(true);
       setProductHover(true);
     }
     if (motion.pointers.size === 2) {
@@ -399,6 +423,7 @@ function startScene(THREE) {
       document.body.classList.remove('is-product-dragging');
       motion.dragging = false;
       motion.inspectionActive = false;
+      setHeroInteraction(false);
       pinchStart = 0;
       motion.lastPointer = null;
       if (!motion.hoverPoint) setProductHover(false);
@@ -418,17 +443,28 @@ function startScene(THREE) {
   wrapper.addEventListener('lostpointercapture', endPointer);
   wrapper.addEventListener('keyup', (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
-    if (motion.pointers.size === 0) motion.inspectionActive = false;
+    if (motion.pointers.size === 0) {
+      motion.inspectionActive = false;
+      setHeroInteraction(false);
+    }
     scheduleFrame();
   });
   wrapper.addEventListener('blur', () => {
-    if (motion.pointers.size === 0) motion.inspectionActive = false;
+    if (motion.pointers.size === 0) {
+      motion.inspectionActive = false;
+      setHeroInteraction(false);
+    }
     scheduleFrame();
   });
   wrapper.addEventListener('pointerleave', () => {
     motion.hoverPoint = null;
     motion.hoverDirty = false;
-    if (motion.pointers.size === 0) setProductHover(false);
+    if (motion.pointers.size === 0) {
+      motion.pointerYawTarget = 0;
+      motion.pointerPitchTarget = 0;
+      setProductHover(false);
+      scheduleFrame();
+    }
   });
   wrapper.addEventListener('wheel', (event) => {
     if (!event.shiftKey) return;
@@ -449,6 +485,7 @@ function startScene(THREE) {
     if (event.key.startsWith('Arrow')) {
       ensureInterior();
       motion.inspectionActive = true;
+      setHeroInteraction(true);
     }
     scheduleFrame(true);
   });
@@ -464,6 +501,16 @@ function startScene(THREE) {
       motion.hoverDirty = false;
       const isHoveringProduct = isOverProduct(motion.hoverPoint);
       setProductHover(isHoveringProduct);
+      if (isHoveringProduct) {
+        const bounds = canvas.getBoundingClientRect();
+        const pointerX = ((motion.hoverPoint.clientX - bounds.left) / bounds.width) * 2 - 1;
+        const pointerY = ((motion.hoverPoint.clientY - bounds.top) / bounds.height) * 2 - 1;
+        motion.pointerYawTarget = THREE.MathUtils.clamp(pointerX * 0.009, -0.009, 0.009);
+        motion.pointerPitchTarget = THREE.MathUtils.clamp(-pointerY * 0.006, -0.006, 0.006);
+      } else {
+        motion.pointerYawTarget = 0;
+        motion.pointerPitchTarget = 0;
+      }
     }
 
     if (!motion.dragging && !prefersReducedMotion) {
@@ -477,6 +524,15 @@ function startScene(THREE) {
     }
     product.rotation.y = motion.yaw;
     product.rotation.x = motion.pitch;
+    const pointerEase = prefersReducedMotion ? 1 : 1 - Math.exp(-5.5 * dt);
+    motion.pointerYaw += (motion.pointerYawTarget - motion.pointerYaw) * pointerEase;
+    motion.pointerPitch += (motion.pointerPitchTarget - motion.pointerPitch) * pointerEase;
+    motion.hoverStrength += (motion.hoverStrengthTarget - motion.hoverStrength) * pointerEase;
+    product.rotation.y += motion.pointerYaw;
+    product.rotation.x += motion.pointerPitch;
+    key.intensity = 2.1 + motion.hoverStrength * 0.18;
+    rim.intensity = 0.95 + motion.hoverStrength * 0.12;
+    scene.environmentIntensity = 0.52 + motion.hoverStrength * 0.045;
     const frontNormal = new THREE.Vector3(0, 0, 1).applyQuaternion(product.quaternion).normalize();
     const cameraDirection = new THREE.Vector3(0, 0, 1);
     const faceAlignment = frontNormal.dot(cameraDirection);

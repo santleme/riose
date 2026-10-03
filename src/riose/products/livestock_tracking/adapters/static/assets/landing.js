@@ -1,3 +1,30 @@
+    const hero = document.querySelector('.hero');
+    const heroCopy = document.getElementById('hero-copy');
+    const heroSubtitle = document.getElementById('hero-subtitle');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let heroCopyFrame = 0;
+
+    const updateHeroCopy = () => {
+      heroCopyFrame = 0;
+      const scrollRange = Math.max(1, window.innerHeight * 0.15);
+      const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
+      const interacting = hero.classList.contains('is-interacting');
+      const interactionOpacity = interacting ? 0.58 : 1;
+      const subtitleProgress = Math.max(0, Math.min(1, progress / 0.82));
+      heroCopy.style.setProperty('--hero-copy-opacity', String((1 - progress) * interactionOpacity));
+      heroCopy.style.setProperty('--hero-copy-shift', `${reducedMotion ? 0 : -40 * progress}px`);
+      heroSubtitle.style.setProperty('--hero-subtitle-opacity', String((1 - subtitleProgress) * interactionOpacity));
+      heroSubtitle.style.setProperty('--hero-subtitle-shift', `${reducedMotion ? 0 : -20 * subtitleProgress}px`);
+    };
+
+    const scheduleHeroCopyUpdate = () => {
+      if (!heroCopyFrame) heroCopyFrame = requestAnimationFrame(updateHeroCopy);
+    };
+    scheduleHeroCopyUpdate();
+    window.addEventListener('resize', scheduleHeroCopyUpdate, { passive: true });
+    window.addEventListener('scroll', scheduleHeroCopyUpdate, { passive: true });
+    window.addEventListener('riose:hero-interaction', scheduleHeroCopyUpdate);
+
     const header = document.getElementById('floating-header');
     const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 72);
     updateHeader();
@@ -83,7 +110,7 @@
       if (!entry.isIntersecting) return;
       const sceneScript = document.createElement('script');
       sceneScript.type = 'module';
-      sceneScript.src = '/assets/product-scene.js?v=20261003-5';
+      sceneScript.src = '/assets/product-scene.js?v=20261003-6';
       sceneScript.onerror = () => {
         sceneWrap.classList.add('is-fallback');
         document.getElementById('scene-status').textContent = 'Interactive model unavailable. Showing the product photograph.';
