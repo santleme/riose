@@ -15,7 +15,7 @@ RIOSE should feel like a small hardware research project: quiet, precise, and gr
 
 - Wordmark and navigation: a restrained technical grotesk, medium to semibold, with modest tracking. Never use a fashion serif or sci-fi display face.
 - Header identity uses live “Riose” text in Sora SemiBold, with the supplied emblem as a small raised mark and a glass definition that opens on hover, focus, or touch.
-- The hero's two-line thesis uses that same Sora face at a larger scale; keep the subtitle quiet and unboxed, with typography layered into the product composition rather than framed as a marketing panel.
+- The hero thesis uses a restrained medium grotesk at 72–88px on desktop, with soft charcoal color and generous line spacing; it stays above the hardware and never adds an initial subtitle.
 - Editorial copy and metadata: system monospace, small and legible. Use spacing and hierarchy rather than oversized text or decorative rules.
 - Keep the interface to these two typographic roles.
 
@@ -25,7 +25,7 @@ RIOSE should feel like a small hardware research project: quiet, precise, and gr
 - Product rotation is direct manipulation with a short, damped physical inertia. Keep zoom bounded.
 - A first product hover wakes the model with less than one degree of pointer response and a small lighting change; never add continuous auto-rotation.
 - The internal study stays hidden on hover. Reveal it gradually only during a held, rear-facing inspection, then restore the shell as the pointer is released.
-- The hero thesis dims while the product is being manipulated and fades continuously with the first 15vh of downward scroll; the subtitle clears sooner.
+- The hero thesis dims slightly on product hover, further while dragging, and fades continuously with the first 12vh of downward scroll.
 - Respect reduced-motion preferences, preserve touch vertical scrolling, and never select page text while dragging the model.
 - The header contracts to a centered wordmark while scrolling. A small dictionary-style definition may appear on wordmark hover, focus, or tap.
 - Header navigation and the São Paulo location link use a restrained lift and animated underline on hover/focus; the location opens its map destination.

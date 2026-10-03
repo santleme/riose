@@ -304,6 +304,8 @@ function startScene(THREE) {
 
   const setProductHover = (isHovering) => {
     wrapper.classList.toggle('is-over-product', isHovering);
+    hero.classList.toggle('is-hovering-product', isHovering);
+    window.dispatchEvent(new Event('riose:hero-interaction'));
     motion.hoverStrengthTarget = isHovering ? 1 : 0;
     if (isHovering && !motion.hasWoken) {
       motion.hasWoken = true;
