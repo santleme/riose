@@ -13,7 +13,9 @@ import sqlite3
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ..domain.contracts import Anchor, FarmConfig
@@ -158,6 +160,7 @@ def create_app(db_path: str | Path = "data/cattle_rf.sqlite3") -> FastAPI:
             app.state.store.close()
 
     app = FastAPI(title="Cattle RF Local MVP", version="0.1.0", lifespan=lifespan)
+    app.add_middleware(GZipMiddleware, minimum_size=1024)
 
     @app.exception_handler(RequestValidationError)
     async def validation_error_response(request: Request, exc: RequestValidationError) -> JSONResponse:
@@ -182,9 +185,20 @@ def create_app(db_path: str | Path = "data/cattle_rf.sqlite3") -> FastAPI:
     app.state.last_config = None
     app.state.last_ground_truth = None
 
+    static_dir = Path(__file__).parent / "static"
+    app.mount("/assets", StaticFiles(directory=static_dir / "assets"), name="site-assets")
+
     @app.get("/", response_class=HTMLResponse)
+    def landing_page() -> str:
+        return (static_dir / "landing.html").read_text(encoding="utf-8")
+
+    @app.get("/manifesto", response_class=HTMLResponse)
+    def manifesto_page() -> str:
+        return (static_dir / "manifesto.html").read_text(encoding="utf-8")
+
+    @app.get("/demo", response_class=HTMLResponse)
     def dashboard() -> str:
-        return (Path(__file__).parent / "static" / "index.html").read_text(encoding="utf-8")
+        return (static_dir / "index.html").read_text(encoding="utf-8")
 
     @app.get("/api/health")
     def health() -> dict[str, str]:
