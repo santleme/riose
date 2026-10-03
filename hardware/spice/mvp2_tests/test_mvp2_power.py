@@ -317,7 +317,8 @@ class TraceDrivenPowerTests(unittest.TestCase):
             self.assertEqual(json.loads((Path(tmp) / "missing" / "summary.json").read_text())["status"],
                              "INVALID_INPUT")
             output = Path(tmp) / "output"
-            with contextlib.redirect_stdout(io.StringIO()):
+            with contextlib.redirect_stdout(io.StringIO()), patch.object(
+                    power.shutil, "which", return_value=None):
                 self.assertEqual(power.main([
                     str(schedule), "--period-s", "10", "--period-source", "test fixture",
                     "--period-status", "ASSUMED",
