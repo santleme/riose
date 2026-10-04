@@ -119,7 +119,6 @@ def main(argv: list[str] | None = None) -> int:
     demo.add_argument("--animals", type=int, default=100)
     demo.add_argument("--anchors", type=int, default=8)
     demo.add_argument("--db", default="data/cattle_rf.sqlite3")
-    sub.add_parser("blockchain-demo", help="run the deterministic offline publication and tamper demo")
     benchmark = sub.add_parser("benchmark", help="run multi-method localization scenarios")
     benchmark.add_argument("--output", default="results")
     benchmark.add_argument("--profile", choices=("quick", "full"), default="full")
@@ -146,10 +145,6 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(str(exc))
     if args.command == "demo":
         return run_demo(args)
-    if args.command == "blockchain-demo":
-        from .simulation.blockchain_demo import run_blockchain_demo
-
-        return run_blockchain_demo()
     if args.command == "benchmark":
         run_benchmark(args)
         return 0

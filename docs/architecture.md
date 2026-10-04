@@ -36,7 +36,6 @@ inside livestock tracking.
 
 ```text
 src/riose/
-  evidence/                             # shared status-to-evidence contracts
   products/
     livestock_tracking/
       domain/                            # animal, farm, RF contracts and rules
@@ -60,8 +59,7 @@ hardware/
 tests/{livestock_tracking,ear_tag}/      # tests follow the owning product
 ```
 
-The dependency direction is: shared contracts ← product-local adapters;
-product domain → its application/use cases →
+The dependency direction is: product domain → its application/use cases →
 adapters and entry points. One product must not reach into another product's
 implementation. API, CLI, and hardware-tool integrations are composition
 boundaries; they should call application functions rather than contain domain

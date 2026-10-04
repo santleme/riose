@@ -6,12 +6,9 @@ import json
 import sqlite3
 import threading
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Iterable
+from typing import Any, Iterable
 
 from ...domain.identity import append_event
-
-if TYPE_CHECKING:
-    from ...domain.identity import LocalChainEvidence
 
 
 SCHEMA = """
@@ -29,7 +26,6 @@ CREATE TABLE IF NOT EXISTS animal_events (
   event_id INTEGER PRIMARY KEY AUTOINCREMENT, animal_id TEXT NOT NULL,
   event_type TEXT NOT NULL, timestamp REAL NOT NULL, payload TEXT NOT NULL,
   previous_hash TEXT NOT NULL, hash TEXT NOT NULL, signature TEXT,
-  schema_version TEXT,
   FOREIGN KEY(animal_id) REFERENCES animals(animal_id)
 );
 CREATE TABLE IF NOT EXISTS telemetry (
@@ -58,13 +54,7 @@ CREATE TABLE IF NOT EXISTS run_metrics (
 
 
 class Store:
-    def __init__(
-        self,
-        path: str | Path = "data/cattle_rf.sqlite3",
-        *,
-        enable_publication_outbox: bool = False,
-        enable_publication_receipts: bool = False,
-    ) -> None:
+    def __init__(self, path: str | Path = "data/cattle_rf.sqlite3") -> None:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
@@ -72,25 +62,7 @@ class Store:
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys=ON")
         self.connection.executescript(SCHEMA)
-        columns = {row[1] for row in self.connection.execute("PRAGMA table_info(animal_events)")}
-        if "schema_version" not in columns:
-            # NULL marks rows written before versioned event contracts existed.
-            self.connection.execute("ALTER TABLE animal_events ADD COLUMN schema_version TEXT")
         self.connection.commit()
-        self.publication_outbox = None
-        self.publication_receipts = None
-        if enable_publication_outbox:
-            from .publication_outbox import OUTBOX_SCHEMA, SQLitePublicationOutbox
-
-            self.connection.executescript(OUTBOX_SCHEMA)
-            self.connection.commit()
-            self.publication_outbox = SQLitePublicationOutbox(self)
-        if enable_publication_receipts:
-            from .publication_receipts import RECEIPT_SCHEMA, SQLitePublicationReceiptRepository
-
-            self.connection.executescript(RECEIPT_SCHEMA)
-            self.connection.commit()
-            self.publication_receipts = SQLitePublicationReceiptRepository(self)
 
     def close(self) -> None:
         with self._lock:
@@ -133,12 +105,6 @@ class Store:
         from ...domain.identity import verify_event_chain
         with self._lock:
             return verify_event_chain(self.connection, animal_id)
-
-    def event_chain_evidence(self, animal_id: str) -> LocalChainEvidence | None:
-        """Return a read-only summary without exposing the animal id or payload."""
-        from ...domain.identity import event_chain_evidence
-        with self._lock:
-            return event_chain_evidence(self.connection, animal_id)
 
     def get_animal(self, animal_id: str) -> dict[str, Any] | None:
         with self._lock:
@@ -276,8 +242,7 @@ class Store:
     def events(self, limit: int = 1000) -> list[dict[str, Any]]:
         with self._lock:
             events = [dict(r) for r in self.connection.execute(
-                "SELECT event_id,animal_id,event_type,timestamp,payload,previous_hash,hash,signature "
-                "FROM animal_events ORDER BY event_id DESC LIMIT ?", (limit,))]
+                "SELECT * FROM animal_events ORDER BY event_id DESC LIMIT ?", (limit,))]
             for event in events:
                 try:
                     event["payload"] = json.loads(event["payload"])
