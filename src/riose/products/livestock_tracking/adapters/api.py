@@ -374,7 +374,7 @@ def create_app(db_path: str | Path = "data/cattle_rf.sqlite3") -> FastAPI:
     def capabilities() -> dict[str, Any]:
         from ..simulation.advanced import advanced_capabilities
         return {"advanced_rf": advanced_capabilities(), "hardware": capability_status(),
-                "cellular": "FUTURE", "blockchain": "FUTURE"}
+                "cellular": "FUTURE"}
 
     @app.get("/api/metrics")
     def metrics() -> dict[str, Any]:

@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 import random
-from typing import Protocol
 
 from ..domain.contracts import EvidenceStatus
 
@@ -43,7 +42,3 @@ class CellularObservation:
     cell_id: str | None = None
     rssi_dbm: float | None = None
     status: EvidenceStatus = EvidenceStatus.FUTURE
-
-
-class BlockchainAdapter(Protocol):
-    def publish(self, event_hash: str) -> str: ...

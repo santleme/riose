@@ -37,8 +37,7 @@ The API is served from the same local process. Main routes include
 `/api/positions`, `/api/positions/history`, `/api/events`,
 `/api/simulation/run`, `/api/experiments`, and `/api/metrics`. Normal position
 responses exclude truth fields; `debug=true` is required to request them.
-Animal event hashes are locally verifiable; signatures and public blockchain
-publication are future interfaces.
+Animal event hashes are locally verifiable for event-history integrity.
 
 ## Results
 

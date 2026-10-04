@@ -19,12 +19,6 @@ EVENT_TYPES = frozenset({
 GENESIS_HASH = "0" * 64
 
 
-class BlockchainAdapter(Protocol):
-    """Future optional adapter; local operation never depends on a chain."""
-
-    def publish(self, event_hash: str, payload: dict[str, Any]) -> str: ...
-
-
 class EventSigner(Protocol):
     def sign(self, digest: bytes) -> bytes: ...
 
