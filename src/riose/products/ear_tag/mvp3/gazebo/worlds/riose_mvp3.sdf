@@ -1,166 +1,72 @@
 <?xml version="1.0"?>
-<!--
-  RIOSE MVP 3 base world for Gazebo Harmonic / SDFormat 1.9.
-
-  Edit the two include <pose> elements below to configure the initial model
-  poses. Values are x y z roll pitch yaw in metres and radians.
--->
+<!-- RIOSE MVP3 compact rural twin. Gazebo owns visual scene and physics. -->
 <sdf version="1.9">
   <world name="riose_mvp3">
     <gravity>0 0 -9.81</gravity>
-
-    <physics name="default_physics" type="ignored">
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1.0</real_time_factor>
-    </physics>
-
+    <physics name="default_physics" type="ignored"><max_step_size>0.001</max_step_size><real_time_factor>1.0</real_time_factor></physics>
     <scene>
-      <ambient>0.28 0.30 0.27 1</ambient>
-      <background>0.66 0.76 0.83 1</background>
-      <shadows>true</shadows>
-      <grid>false</grid>
+      <ambient>0.42 0.43 0.40 1</ambient><background>0.66 0.78 0.90 1</background>
+      <shadows>true</shadows><grid>false</grid><sky><time>16</time><sunrise>6</sunrise><sunset>19</sunset><clouds><speed>0.15</speed><humidity>0.25</humidity><mean_size>0.45</mean_size></clouds></sky>
     </scene>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
+    <light name="sun" type="directional"><cast_shadows>true</cast_shadows><pose>0 0 12 0 0 0</pose><diffuse>0.94 0.84 0.69 1</diffuse><specular>0.24 0.23 0.20 1</specular><direction>-0.42 0.30 -1</direction></light>
 
-    <!-- Keep the default server systems explicit because specifying world
-         plugins overrides Gazebo Sim's automatic default-system loading. -->
-    <plugin filename="gz-sim-physics-system"
-            name="gz::sim::systems::Physics"/>
-    <plugin filename="gz-sim-user-commands-system"
-            name="gz::sim::systems::UserCommands"/>
-    <plugin filename="gz-sim-scene-broadcaster-system"
-            name="gz::sim::systems::SceneBroadcaster"/>
-    <plugin filename="gz-sim-imu-system"
-            name="gz::sim::systems::Imu"/>
-    <plugin filename="gz-sim-sensors-system"
-            name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
+    <!-- Compact finite paddock; physical ground remains a simple stable plane. -->
+    <model name="soil_paddock"><static>true</static><link name="ground">
+      <collision name="ground_collision"><geometry><plane><normal>0 0 1</normal><size>200 200</size></plane></geometry></collision>
+      <visual name="soil"><geometry><mesh><uri>model://riose_cow/meshes/soil_ground.obj</uri></mesh></geometry>
+        <material><ambient>0.34 0.30 0.22 1</ambient><diffuse>0.42 0.38 0.29 1</diffuse><pbr><metal><albedo_map>model://riose_cow/meshes/soil_albedo.png</albedo_map><normal_map>model://riose_cow/meshes/soil_normal.png</normal_map><roughness_map>model://riose_cow/meshes/soil_roughness.png</roughness_map><roughness>0.95</roughness><metalness>0</metalness></metal></pbr></material>
+      </visual>
+    </link></model>
+    <!-- Single deterministic batched tuft mesh leaves the animal path clear. -->
+    <model name="paddock_grass"><static>true</static><link name="grass">
+      <pose>0 0 0.004 0 0 0</pose><visual name="grass_instances"><geometry><mesh><uri>model://riose_cow/meshes/grass_patch.obj</uri></mesh></geometry>
+        <material><ambient>0.55 0.65 0.40 1</ambient><diffuse>0.72 0.80 0.57 1</diffuse><pbr><metal><albedo_map>model://riose_cow/meshes/grass_albedo.png</albedo_map><normal_map>model://riose_cow/meshes/grass_normal.png</normal_map><roughness_map>model://riose_cow/meshes/grass_roughness.png</roughness_map><roughness>0.92</roughness><metalness>0</metalness></metal></pbr></material>
+      </visual>
+    </link></model>
 
-    <light name="sun" type="directional">
-      <cast_shadows>true</cast_shadows>
-      <pose>0 0 10 0 0 0</pose>
-      <diffuse>0.92 0.88 0.78 1</diffuse>
-      <specular>0.32 0.30 0.26 1</specular>
-      <direction>-0.42 0.31 -0.86</direction>
-    </light>
+    <!-- Rural boundary rails and posts, with collision geometry for the scene. -->
+    <model name="timber_fence"><static>true</static><link name="rails">
+      <pose>0 0 0 0 0 0</pose>
+      <visual name="back_rail_low"><pose>0 8.5 0.55 0 0 0</pose><geometry><box><size>26 0.11 0.12</size></box></geometry><material><ambient>0.29 0.20 0.12 1</ambient><diffuse>0.40 0.28 0.17 1</diffuse><pbr><metal><roughness>0.86</roughness><metalness>0</metalness></metal></pbr></material></visual>
+      <visual name="back_rail_high"><pose>0 8.5 1.12 0 0 0</pose><geometry><box><size>26 0.11 0.12</size></box></geometry><material><ambient>0.29 0.20 0.12 1</ambient><diffuse>0.40 0.28 0.17 1</diffuse></material></visual>
+      <visual name="side_rail_left"><pose>-13 0 0.56 0 0 1.5708</pose><geometry><box><size>17 0.11 0.12</size></box></geometry><material><ambient>0.29 0.20 0.12 1</ambient><diffuse>0.40 0.28 0.17 1</diffuse></material></visual>
+      <visual name="side_rail_right"><pose>13 0 0.56 0 0 1.5708</pose><geometry><box><size>17 0.11 0.12</size></box></geometry><material><ambient>0.29 0.20 0.12 1</ambient><diffuse>0.40 0.28 0.17 1</diffuse></material></visual>
+      <visual name="posts"><pose>-12.5 8.5 0.75 0 0 0</pose><geometry><box><size>0.16 0.16 1.5</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.23 0.14 1</diffuse></material></visual>
+      <visual name="posts2"><pose>0 8.5 0.75 0 0 0</pose><geometry><box><size>0.16 0.16 1.5</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.23 0.14 1</diffuse></material></visual>
+      <visual name="posts3"><pose>12.5 8.5 0.75 0 0 0</pose><geometry><box><size>0.16 0.16 1.5</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.23 0.14 1</diffuse></material></visual>
+    </link></model>
 
-    <!--
-      The broad ground collision remains planar so experiment contact and
-      trajectory results stay comparable. Field dressing below is visual/static
-      context; it is not a terrain or vegetation physics model.
-    -->
-    <model name="ground_plane">
-      <static>true</static>
-      <link name="ground">
-        <collision name="collision">
-          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
-          <material>
-            <ambient>0.38 0.43 0.34 1</ambient>
-            <diffuse>0.38 0.43 0.34 1</diffuse>
-          </material>
-        </visual>
-      </link>
-    </model>
+    <!-- Compact shade roof, feed trough and receiver anchor. -->
+    <model name="shade_shelter"><static>true</static><link name="shelter">
+      <pose>-7 5.5 0 0 0 0</pose><visual name="roof"><pose>0 0 2.35 0 0 0</pose><geometry><box><size>4.2 2.8 0.18</size></box></geometry><material><ambient>0.31 0.34 0.30 1</ambient><diffuse>0.43 0.47 0.42 1</diffuse><pbr><metal><roughness>0.8</roughness><metalness>0.12</metalness></metal></pbr></material></visual>
+      <visual name="post1"><pose>-1.8 -1.1 1.1 0 0 0</pose><geometry><box><size>0.14 0.14 2.2</size></box></geometry><material><ambient>0.30 0.22 0.14 1</ambient><diffuse>0.41 0.29 0.17 1</diffuse></material></visual>
+      <visual name="post2"><pose>1.8 -1.1 1.1 0 0 0</pose><geometry><box><size>0.14 0.14 2.2</size></box></geometry><material><ambient>0.30 0.22 0.14 1</ambient><diffuse>0.41 0.29 0.17 1</diffuse></material></visual>
+      <visual name="post3"><pose>-1.8 1.1 1.1 0 0 0</pose><geometry><box><size>0.14 0.14 2.2</size></box></geometry><material><ambient>0.30 0.22 0.14 1</ambient><diffuse>0.41 0.29 0.17 1</diffuse></material></visual>
+      <visual name="post4"><pose>1.8 1.1 1.1 0 0 0</pose><geometry><box><size>0.14 0.14 2.2</size></box></geometry><material><ambient>0.30 0.22 0.14 1</ambient><diffuse>0.41 0.29 0.17 1</diffuse></material></visual>
+    </link></model>
+    <model name="feeding_trough"><static>true</static><link name="trough">
+      <pose>2.8 4.8 0.38 0 0 0</pose><visual name="basin"><geometry><box><size>2.8 0.72 0.48</size></box></geometry><material><ambient>0.22 0.29 0.29 1</ambient><diffuse>0.31 0.40 0.40 1</diffuse><pbr><metal><roughness>0.54</roughness><metalness>0.48</metalness></metal></pbr></material></visual>
+      <visual name="water"><pose>0 0 0.245 0 0 0</pose><geometry><box><size>2.55 0.56 0.014</size></box></geometry><material><ambient>0.31 0.53 0.62 0.8</ambient><diffuse>0.36 0.62 0.73 0.8</diffuse></material></visual>
+    </link></model>
+    <model name="riose_anchor" canonical_link="mast" placement_frame="mast"><static>true</static><pose>0 8.0 0 0 0 0</pose><link name="mast">
+      <visual name="pole"><pose>0 0 0.82 0 0 0</pose><geometry><cylinder><radius>0.055</radius><length>1.64</length></cylinder></geometry><material><ambient>0.20 0.23 0.22 1</ambient><diffuse>0.29 0.33 0.31 1</diffuse><pbr><metal><roughness>0.56</roughness><metalness>0.42</metalness></metal></pbr></material></visual>
+      <visual name="receiver"><pose>0 0 1.76 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.25</length></cylinder></geometry><material><ambient>0.12 0.30 0.42 1</ambient><diffuse>0.18 0.46 0.62 1</diffuse><pbr><metal><roughness>0.4</roughness><metalness>0.22</metalness></metal></pbr></material></visual>
+    </link></model>
 
-    <!-- A restrained paddock gives the animal and receiver a useful scale cue. -->
-    <model name="paddock_fence" canonical_link="post_00">
-      <static>true</static>
-      <link name="post_00">
-        <collision name="post_collision"><pose>-9 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry></collision>
-        <visual name="post_00_visual"><pose>-9 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry><material><ambient>0.20 0.15 0.10 1</ambient><diffuse>0.29 0.21 0.13 1</diffuse><specular>0.08 0.07 0.05 1</specular></material></visual>
-        <collision name="post_01_collision"><pose>-3 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry></collision>
-        <visual name="post_01_visual"><pose>-3 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry><material><ambient>0.20 0.15 0.10 1</ambient><diffuse>0.29 0.21 0.13 1</diffuse></material></visual>
-        <collision name="post_02_collision"><pose>3 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry></collision>
-        <visual name="post_02_visual"><pose>3 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry><material><ambient>0.20 0.15 0.10 1</ambient><diffuse>0.29 0.21 0.13 1</diffuse></material></visual>
-        <collision name="post_03_collision"><pose>9 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry></collision>
-        <visual name="post_03_visual"><pose>9 5.5 0.62 0 0 0</pose><geometry><box><size>0.14 0.14 1.24</size></box></geometry><material><ambient>0.20 0.15 0.10 1</ambient><diffuse>0.29 0.21 0.13 1</diffuse></material></visual>
-        <collision name="rail_lower_collision"><pose>0 5.5 0.42 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry></collision>
-        <visual name="rail_lower"><pose>0 5.5 0.42 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="rail_upper_collision"><pose>0 5.5 0.98 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry></collision>
-        <visual name="rail_upper"><pose>0 5.5 0.98 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="far_rail_lower_collision"><pose>0 -5.5 0.42 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry></collision>
-        <visual name="far_rail_lower"><pose>0 -5.5 0.42 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="far_rail_upper_collision"><pose>0 -5.5 0.98 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry></collision>
-        <visual name="far_rail_upper"><pose>0 -5.5 0.98 0 0 0</pose><geometry><box><size>18 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="end_rail_left_lower_collision"><pose>-9 0 0.42 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry></collision>
-        <visual name="end_rail_left_lower"><pose>-9 0 0.42 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="end_rail_left_upper_collision"><pose>-9 0 0.98 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry></collision>
-        <visual name="end_rail_left_upper"><pose>-9 0 0.98 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="end_rail_right_lower_collision"><pose>9 0 0.42 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry></collision>
-        <visual name="end_rail_right_lower"><pose>9 0 0.42 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-        <collision name="end_rail_right_upper_collision"><pose>9 0 0.98 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry></collision>
-        <visual name="end_rail_right_upper"><pose>9 0 0.98 0 0 1.570796</pose><geometry><box><size>11 0.08 0.10</size></box></geometry><material><ambient>0.24 0.17 0.11 1</ambient><diffuse>0.34 0.24 0.15 1</diffuse></material></visual>
-      </link>
-    </model>
+    <!-- Static view cameras. Animal-relative follow and macro cameras live in cow SDF. -->
+    <model name="camera_overview"><static>true</static><pose>4 -7 5.0 0 0.47 2.10</pose><link name="camera_link"><sensor name="camera_overview" type="camera"><always_on>true</always_on><update_rate>12</update_rate><topic>/riose/mvp3/camera/overview</topic><camera><horizontal_fov>0.92</horizontal_fov><image><width>800</width><height>450</height><format>R8G8B8</format></image><clip><near>0.08</near><far>120</far></clip></camera><visualize>true</visualize></sensor></link></model>
+    <model name="camera_anchor"><static>true</static><pose>5 10 3.4 0 0.20 -2.40</pose><link name="camera_link"><sensor name="camera_anchor" type="camera"><always_on>true</always_on><update_rate>12</update_rate><topic>/riose/mvp3/camera/anchor</topic><camera><horizontal_fov>0.90</horizontal_fov><image><width>640</width><height>360</height><format>R8G8B8</format></image><clip><near>0.08</near><far>100</far></clip></camera><visualize>true</visualize></sensor></link></model>
+    <model name="camera_ground_low"><static>true</static><pose>-4 -4 0.62 0 0.15 0.86</pose><link name="camera_link"><sensor name="camera_ground_low" type="camera"><always_on>true</always_on><update_rate>12</update_rate><topic>/riose/mvp3/camera/ground_low</topic><camera><horizontal_fov>0.92</horizontal_fov><image><width>640</width><height>360</height><format>R8G8B8</format></image><clip><near>0.08</near><far>100</far></clip></camera><visualize>true</visualize></sensor></link></model>
 
-    <!-- Water point is outside the nominal x-axis trajectory. -->
-    <model name="water_trough">
-      <static>true</static>
-      <pose>4.0 2.2 0 0 0 0</pose>
-      <link name="body">
-        <collision name="base_collision"><pose>0 0 0.34 0 0 0</pose><geometry><box><size>1.65 0.58 0.55</size></box></geometry></collision>
-        <visual name="basin"><pose>0 0 0.34 0 0 0</pose><geometry><box><size>1.65 0.58 0.55</size></box></geometry><material><ambient>0.28 0.31 0.30 1</ambient><diffuse>0.42 0.47 0.45 1</diffuse><specular>0.48 0.48 0.44 1</specular></material></visual>
-        <visual name="water"><pose>0 0 0.615 0 0 0</pose><geometry><box><size>1.48 0.43 0.012</size></box></geometry><material><ambient>0.15 0.22 0.23 1</ambient><diffuse>0.22 0.33 0.34 1</diffuse><specular>0.3 0.34 0.34 1</specular></material></visual>
-        <visual name="support_left"><pose>-0.58 0 -0.02 0 0 0</pose><geometry><box><size>0.12 0.48 0.66</size></box></geometry><material><ambient>0.22 0.20 0.16 1</ambient><diffuse>0.32 0.29 0.23 1</diffuse></material></visual>
-        <visual name="support_right"><pose>0.58 0 -0.02 0 0 0</pose><geometry><box><size>0.12 0.48 0.66</size></box></geometry><material><ambient>0.22 0.20 0.16 1</ambient><diffuse>0.32 0.29 0.23 1</diffuse></material></visual>
-      </link>
-    </model>
+    <model name="camera_head"><static>true</static><pose>2.6 -3.2 2.65 0 0.39 2.03</pose><link name="camera_link"><sensor name="camera_head" type="camera"><always_on>true</always_on><update_rate>8</update_rate><topic>/riose/mvp3/camera/head</topic><camera><horizontal_fov>0.62</horizontal_fov><image><width>640</width><height>360</height><format>R8G8B8</format></image><clip><near>0.05</near><far>30</far></clip></camera></sensor></link></model>
+    <model name="camera_ear_tag_macro"><static>true</static><pose>0.93 0.90 1.80 0 0.32 -1.35</pose><link name="camera_link"><sensor name="camera_ear_tag_macro" type="camera"><always_on>true</always_on><update_rate>10</update_rate><topic>/riose/mvp3/camera/ear_tag_macro</topic><camera><horizontal_fov>0.52</horizontal_fov><image><width>800</width><height>450</height><format>R8G8B8</format></image><clip><near>0.04</near><far>12</far></clip></camera></sensor></link></model>
 
-    <!-- Distant shed provides a quiet agricultural backdrop and scale. -->
-    <model name="field_shed">
-      <static>true</static>
-      <pose>-13 9 0 0 0 0</pose>
-      <link name="structure">
-        <visual name="walls"><pose>0 0 1.65 0 0 0</pose><geometry><box><size>5.4 3.8 3.3</size></box></geometry><material><ambient>0.47 0.43 0.35 1</ambient><diffuse>0.60 0.54 0.43 1</diffuse></material></visual>
-        <visual name="roof"><pose>0 0 3.45 0 0 0</pose><geometry><box><size>5.9 4.2 0.28</size></box></geometry><material><ambient>0.20 0.22 0.21 1</ambient><diffuse>0.29 0.32 0.30 1</diffuse><specular>0.16 0.16 0.15 1</specular></material></visual>
-        <visual name="open_bay"><pose>2.73 0 1.3 0 0 0</pose><geometry><box><size>0.025 1.9 2.6</size></box></geometry><material><ambient>0.14 0.15 0.14 1</ambient><diffuse>0.18 0.20 0.18 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <!-- One stationary receiver anchor, placed beside the cow's +X travel
-         path so it does not act as a collision obstacle during walking runs.
-         Radio event handling is supplied by the MVP3 bridge. -->
-    <model name="riose_anchor" canonical_link="mast" placement_frame="mast">
-      <static>true</static>
-      <pose>0 3 0 0 0 0</pose>
-      <link name="mast">
-        <collision name="mast_collision">
-          <pose>0 0 0.8 0 0 0</pose>
-          <geometry><box><size>0.12 0.12 1.6</size></box></geometry>
-        </collision>
-        <visual name="mast_visual">
-          <pose>0 0 0.8 0 0 0</pose>
-          <geometry><box><size>0.12 0.12 1.6</size></box></geometry>
-          <material>
-            <ambient>0.12 0.20 0.27 1</ambient>
-            <diffuse>0.12 0.20 0.27 1</diffuse>
-          </material>
-        </visual>
-        <collision name="receiver_collision">
-          <pose>0 0 1.72 0 0 0</pose>
-          <geometry><cylinder><radius>0.18</radius><length>0.24</length></cylinder></geometry>
-        </collision>
-        <visual name="receiver_visual">
-          <pose>0 0 1.72 0 0 0</pose>
-          <geometry><cylinder><radius>0.18</radius><length>0.24</length></cylinder></geometry>
-          <material>
-            <ambient>0.12 0.35 0.78 1</ambient>
-            <diffuse>0.12 0.35 0.78 1</diffuse>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- Resolve model:// URIs by adding the MVP3 gazebo/models directory to
-         GZ_SIM_RESOURCE_PATH in the launch environment. -->
-    <include>
-      <uri>model://riose_cow</uri>
-      <name>riose_cow</name>
-      <pose relative_to="world">0 0 0 0 0 0</pose>
-    </include>
-
+    <include><uri>model://riose_cow</uri><name>riose_cow</name><pose relative_to="world">0 0 0 0 0 0</pose></include>
   </world>
 </sdf>

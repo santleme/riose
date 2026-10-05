@@ -1,0 +1,6 @@
+newmtl coat
+Ka 0.24 0.34 0.18
+Kd 0.32 0.48 0.20
+Ks 0.02 0.02 0.02
+Ns 8
+map_Kd grass_albedo.png

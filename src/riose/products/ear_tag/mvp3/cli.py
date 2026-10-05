@@ -14,6 +14,7 @@ import sys
 import tempfile
 import time
 import xml.etree.ElementTree as ET
+import yaml
 from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
@@ -30,7 +31,9 @@ WORLD = GAZEBO_DIR / "worlds" / "riose_mvp3.sdf"
 MODEL_PATH = GAZEBO_DIR / "models"
 IMU_TOPIC = "/riose/mvp3/imu/data"
 POSE_TOPIC = "/world/riose_mvp3/pose/info"
+CONTACT_TOPIC = "/riose/mvp3/ear_tag/contact"
 JOINT_TOPIC = "/model/riose_cow/joint_trajectory"
+POSE_RECORD_RATE_HZ = 50.0
 
 
 def _ros_environment() -> dict[str, str]:
@@ -73,26 +76,73 @@ def _check_assets() -> None:
         raise RuntimeError("MVP3 Gazebo assets are incomplete: " + ", ".join(missing))
 
 
-def _scenario_assets(scenario: Scenario, target: Path) -> Path:
+def _tag_attachment_config() -> dict:
+    path = MVP3_DIR / "tag_attachment.yaml"
+    value = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict) or value.get("provenance") != "ASSUMED":
+        raise RuntimeError(f"invalid tag attachment configuration: {path}")
+    return value
+
+
+_QUALITY = {
+    "low": (400, 225, 6),
+    "medium": (640, 360, 8),
+    "high": (800, 450, 10),
+    "presentation": (960, 540, 12),
+}
+
+
+def _apply_camera_quality(root: Path, quality: str, *, enabled: bool = True) -> None:
+    width, height, rate = _QUALITY[quality.lower()]
+    for path in (root / "riose_cow" / "model.sdf",):
+        tree = ET.parse(path)
+        for sensor in list(tree.getroot().iter("sensor")):
+            if sensor.get("type") != "camera":
+                continue
+            if not enabled:
+                parent = next(node for node in tree.getroot().iter() if sensor in list(node))
+                parent.remove(sensor)
+                continue
+            image = sensor.find("camera/image")
+            update = sensor.find("update_rate")
+            if image is not None:
+                image.find("width").text = str(width)
+                image.find("height").text = str(height)
+            if update is not None:
+                update.text = str(rate if enabled else 0)
+            always = sensor.find("always_on")
+            if always is not None:
+                always.text = str(enabled).lower()
+        tree.write(path, encoding="utf-8", xml_declaration=True)
+
+
+def _scenario_assets(scenario: Scenario, target: Path, *, quality: str = "medium",
+                     cameras_enabled: bool = True) -> Path:
     """Copy assets into the experiment and apply explicit tag mass/position inputs."""
     model_root = target / "sim_assets" / "models"
     for name in ("riose_cow", "riose_ear_tag"):
         shutil.copytree(MODEL_PATH / name, model_root / name)
+    _apply_camera_quality(model_root, quality, enabled=cameras_enabled)
     tag_sdf = model_root / "riose_ear_tag" / "model.sdf"
+    attachment = _tag_attachment_config()
     tag_tree = ET.parse(tag_sdf)
     tag_model = tag_tree.getroot().find("model")
     assert tag_model is not None
     inertial = tag_model.find("link/inertial")
     assert inertial is not None
-    original_mass = float(inertial.findtext("mass", "0"))
+    original_mass = float(attachment["mass_kg"])
     if original_mass <= 0:
         raise RuntimeError("ear-tag SDF mass must be positive")
     factor = (scenario.tag_mass_g / 1000.0) / original_mass
     inertial.find("mass").text = f"{scenario.tag_mass_g / 1000.0:.9g}"
+    inertial_pose = inertial.find("pose")
+    com = attachment["center_of_mass_m"]
+    inertial_pose.text = " ".join(f"{float(value):.9g}" for value in com) + " 0 0 0"
     inertia = inertial.find("inertia")
     if inertia is not None:
-        for component in inertia:
-            component.text = f"{float(component.text or '0') * factor:.12g}"
+        names = ("ixx", "iyy", "izz")
+        for name, value in zip(names, attachment["inertia_kg_m2"]):
+            inertia.find(name).text = f"{float(value) * factor:.12g}"
     tag_tree.write(tag_sdf, encoding="utf-8", xml_declaration=True)
 
     cow_sdf = model_root / "riose_cow" / "model.sdf"
@@ -100,12 +150,15 @@ def _scenario_assets(scenario: Scenario, target: Path) -> Path:
     cow_model = cow_tree.getroot().find("model")
     assert cow_model is not None
     include_pose = cow_model.find("include/pose")
+    stud_joint = cow_model.find("joint[@name='ear_tag_stud_fixation']")
+    stud_pose = stud_joint.find("pose") if stud_joint is not None else None
     attachment_joint = cow_model.find("joint[@name='riose_ear_tag_attachment']")
     attachment_pose = attachment_joint.find("pose") if attachment_joint is not None else None
-    assert include_pose is not None and attachment_pose is not None
+    assert include_pose is not None and stud_pose is not None and attachment_pose is not None
     xyz = " ".join(f"{value:.9g}" for value in scenario.attachment_position_m)
     include_pose.text = f"{xyz} 1.570796 0 3.141593"
-    attachment_pose.text = f"{xyz} 0 0 0"
+    stud_pose.text = f"{xyz} 0 0 0"
+    attachment_pose.text = "0 0 0 0 0 0"
     axis = attachment_joint.find("axis")
     if axis is None:
         raise RuntimeError("ear-tag attachment joint has no axis")
@@ -113,27 +166,121 @@ def _scenario_assets(scenario: Scenario, target: Path) -> Path:
     dynamics = axis.find("dynamics")
     if limit is None or dynamics is None:
         raise RuntimeError("ear-tag attachment joint needs limit and dynamics")
-    limit.find("lower").text = f"{-abs(scenario.attachment_limit_rad):.9g}"
-    limit.find("upper").text = f"{abs(scenario.attachment_limit_rad):.9g}"
+    lower, upper = attachment["angular_limits_rad"]
+    limit.find("lower").text = f"{max(float(lower), -abs(scenario.attachment_limit_rad)):.9g}"
+    limit.find("upper").text = f"{min(float(upper), abs(scenario.attachment_limit_rad)):.9g}"
     dynamics.find("damping").text = f"{scenario.attachment_damping_nm_s_rad:.9g}"
     dynamics.find("spring_stiffness").text = f"{scenario.attachment_stiffness_nm_rad:.9g}"
     cow_tree.write(cow_sdf, encoding="utf-8", xml_declaration=True)
     return model_root
 
 
-def _scenario_world(target: Path, *, fast_headless: bool) -> Path:
-    if not fast_headless:
-        return WORLD
-    world_path = target / "sim_assets" / "riose_mvp3_fast.sdf"
+def _scenario_world(target: Path, *, fast_headless: bool, quality: str = "medium",
+                    cameras_enabled: bool = True) -> Path:
+    world_path = target / "sim_assets" / "riose_mvp3_runtime.sdf"
     tree = ET.parse(WORLD)
     world = tree.getroot().find("world")
     assert world is not None
     realtime = world.find("physics/real_time_factor")
     if realtime is None:
         raise RuntimeError("MVP3 world physics has no real_time_factor")
-    realtime.text = "0"
+    if fast_headless:
+        realtime.text = "0"
+    # The standalone world lives below the experiment directory. Some Gazebo
+    # GUI builds resolve model:// mesh URIs in world visuals relative to that
+    # copied world before consulting GZ_SIM_RESOURCE_PATH, producing a doubled
+    # experiment path. Model includes remain model://; make only these copied
+    # world mesh/texture references explicit and reproducible.
+    cow_meshes = (target / "sim_assets" / "models" / "riose_cow" / "meshes").resolve()
+    cow_mesh_uri = cow_meshes.as_uri() + "/"
+    for uri in world.iter("uri"):
+        value = uri.text or ""
+        prefix = "model://riose_cow/meshes/"
+        if value.startswith(prefix):
+            uri.text = cow_mesh_uri + value[len(prefix):]
+    width, height, rate = _QUALITY[quality]
+    for sensor in list(world.iter("sensor")):
+        if sensor.get("type") != "camera":
+            continue
+        if not cameras_enabled:
+            parent = next(node for node in world.iter() if sensor in list(node))
+            parent.remove(sensor)
+            continue
+        image = sensor.find("camera/image")
+        update = sensor.find("update_rate")
+        always = sensor.find("always_on")
+        if image is not None:
+            image.find("width").text = str(width)
+            image.find("height").text = str(height)
+        if update is not None:
+            update.text = str(rate if cameras_enabled else 0)
+        if always is not None:
+            always.text = str(cameras_enabled).lower()
+    if not cameras_enabled:
+        for plugin in list(world.findall("plugin")):
+            if plugin.get("name") == "gz::sim::systems::Sensors":
+                world.remove(plugin)
     tree.write(world_path, encoding="utf-8", xml_declaration=True)
     return world_path
+
+
+def capture_camera(name: str, *, output: Path | None = None, quality: str = "high") -> Path:
+    aliases = {"ear-tag": "ear_tag_macro", "ear_tag": "ear_tag_macro", "overview": "overview",
+               "follow": "follow", "head": "head", "anchor": "anchor", "ground-low": "ground_low"}
+    camera = aliases.get(name, name)
+    camera_topics = {"overview", "follow", "head", "ear_tag_macro", "anchor", "ground_low"}
+    if camera not in camera_topics:
+        raise ValueError(f"unknown camera {name!r}; choose from overview, follow, head, ear-tag, anchor, ground-low")
+    quality = quality.lower()
+    if quality not in _QUALITY:
+        raise ValueError(f"quality must be one of {', '.join(_QUALITY)}")
+    target = output or (REPO_ROOT / "results" / "mvp3" / "media" / f"{camera}.png")
+    target = target.resolve()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="riose-mvp3-camera-") as temporary:
+        root = Path(temporary)
+        model_root = root / "models"
+        for model in ("riose_cow", "riose_ear_tag"):
+            shutil.copytree(MODEL_PATH / model, model_root / model)
+        _apply_camera_quality(model_root, quality)
+        width, height, rate = _QUALITY[quality]
+        world_path = root / "riose_mvp3_camera.sdf"
+        tree = ET.parse(WORLD)
+        for sensor in tree.getroot().iter("sensor"):
+            if sensor.get("type") != "camera":
+                continue
+            image = sensor.find("camera/image")
+            update = sensor.find("update_rate")
+            if image is not None:
+                image.find("width").text = str(width)
+                image.find("height").text = str(height)
+            if update is not None:
+                update.text = str(rate)
+        tree.write(world_path, encoding="utf-8", xml_declaration=True)
+        env = _prepare_env(_ros_environment(), model_root)
+        executable = _gz(env)
+        log_path = target.with_suffix(".gazebo.log")
+        with log_path.open("w", encoding="utf-8") as log:
+            server = subprocess.Popen([executable, "sim", "-s", "-r", "--headless-rendering",
+                                       "-v", "2", str(world_path)], env=env,
+                                      stdout=log, stderr=subprocess.STDOUT)
+            try:
+                capture = subprocess.run(["/usr/bin/python3", str(REPO_ROOT / "scripts" / "capture_mvp3_camera.py"),
+                                          f"/riose/mvp3/camera/{camera}", str(target), "--timeout", "35"],
+                                         env=env, text=True, capture_output=True, timeout=45)
+                if capture.returncode:
+                    tail = "\n".join(log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-35:])
+                    raise RuntimeError(f"camera capture failed: {capture.stderr.strip() or capture.stdout.strip()}\n{tail}")
+            finally:
+                server.terminate()
+                try:
+                    server.wait(timeout=8)
+                except subprocess.TimeoutExpired:
+                    server.kill()
+                    server.wait(timeout=4)
+    if not target.is_file() or target.stat().st_size == 0:
+        raise RuntimeError(f"Gazebo did not produce camera image {target}")
+    return target
 
 
 def _publish(env: dict[str, str], executable: str, topic: str, msgtype: str, body: str) -> None:
@@ -350,6 +497,50 @@ def _start_recording(env: dict[str, str], executable: str, output: Path,
     return proc
 
 
+def _summarize_attachment_contacts(path: Path) -> dict:
+    messages = 0
+    tag_contacts = 0
+    max_force = 0.0
+    try:
+        stream = path.open(encoding="utf-8")
+    except OSError:
+        return {"status": "UNAVAILABLE", "reason": "contact topic recording file is missing"}
+    with stream:
+        for line in stream:
+            try:
+                value = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            messages += 1
+            contacts = value.get("contact", value.get("contacts", []))
+            if isinstance(contacts, dict):
+                contacts = [contacts]
+            if not isinstance(contacts, list):
+                continue
+            for contact in contacts:
+                if not isinstance(contact, dict):
+                    continue
+                names = f"{contact.get('collision1', '')} {contact.get('collision2', '')}"
+                if "riose_ear_tag" not in names:
+                    continue
+                tag_contacts += 1
+                wrenches = contact.get("wrench", [])
+                if isinstance(wrenches, dict):
+                    wrenches = [wrenches]
+                for wrench in wrenches if isinstance(wrenches, list) else []:
+                    for body in (wrench.get("body_1_wrench", {}), wrench.get("body_2_wrench", {})):
+                        force = body.get("force", {}) if isinstance(body, dict) else {}
+                        if isinstance(force, dict):
+                            norm = math.sqrt(sum(float(force.get(axis, 0.0))**2 for axis in "xyz"))
+                            max_force = max(max_force, norm)
+    if messages == 0:
+        return {"status": "UNAVAILABLE", "reason": "contact topic produced no parseable messages"}
+    return {"status": "SIMULATED_MEASURED", "message_count": messages,
+            "tag_contact_count": tag_contacts,
+            "peak_contact_force_n": max_force if tag_contacts else None,
+            "force_provenance": "GAZEBO_CONTACT_SENSOR" if tag_contacts else "NO_TAG_CONTACT_OBSERVED"}
+
+
 def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                    seed: int | None = None, sample_period_s: float = 0.05,
                    tag_mass_g: float | None = None,
@@ -360,7 +551,12 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                    duration_s: float | None = None,
                    firmware_trace: Path | None = None,
                    fast_headless: bool = False,
-                   live_lockstep: bool = False) -> Path:
+                   live_lockstep: bool = False,
+                   quality: str = "medium", overlay: bool = True,
+                   capture_video: bool = False) -> Path:
+    quality = quality.lower()
+    if quality not in _QUALITY:
+        raise ValueError(f"quality must be one of {', '.join(_QUALITY)}")
     scenario = get_scenario(name)
     if any(value is not None for value in (seed, tag_mass_g, attachment_position_m,
                                            attachment_stiffness_nm_rad,
@@ -402,8 +598,11 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     target = output or (REPO_ROOT / "results" / "mvp3" / f"{scenario.name}-{stamp}")
     target.mkdir(parents=True, exist_ok=False)
-    asset_root = _scenario_assets(scenario, target)
-    world_path = _scenario_world(target, fast_headless=fast_headless)
+    cameras_enabled = visual or capture_video
+    asset_root = _scenario_assets(scenario, target, quality=quality,
+                                  cameras_enabled=cameras_enabled)
+    world_path = _scenario_world(target, fast_headless=fast_headless, quality=quality,
+                                 cameras_enabled=cameras_enabled)
     env = _prepare_env(_ros_environment(), asset_root)
     executable = _gz(env)
     renode_session = None
@@ -434,6 +633,9 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                            "status": "OFFLINE_REPLAY_ONLY", "clock_master": "GAZEBO_SIMULATION_TIME",
                            "firmware_clock": "RENODE_VIRTUAL_TIME", "live_lockstep": False}),
         "tag_mass_g": scenario.tag_mass_g,
+        "visual_presentation": {"quality": quality.upper(), "telemetry_overlay_requested": overlay,
+                                "renderer": "OGRE2", "fps": _QUALITY[quality][2],
+                                "cameras": ["overview", "follow", "head", "ear_tag_macro", "anchor", "ground_low"]},
         "tag_mass_status": "ASSUMED",
         "attachment_position_m": scenario.attachment_position_m,
         "attachment_dynamics": {"spring_stiffness_nm_rad": scenario.attachment_stiffness_nm_rad,
@@ -441,7 +643,7 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                                 "limit_rad": scenario.attachment_limit_rad,
                                 "status": "ASSUMED"},
         "duration_s": scenario.duration_s,
-        "assets": {"world": str(WORLD), "cow": str(asset_root / "riose_cow" / "model.sdf"),
+        "assets": {"world": str(world_path), "cow": str(asset_root / "riose_cow" / "model.sdf"),
                    "tag": str(asset_root / "riose_ear_tag" / "model.sdf"),
                    "source_cow": str(MODEL_PATH / "riose_cow" / "model.sdf"),
                    "source_tag": str(MODEL_PATH / "riose_ear_tag" / "model.sdf")},
@@ -465,6 +667,8 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
         server = subprocess.Popen(command, env=env, stdout=server_log, stderr=subprocess.STDOUT,
                                   text=True, start_new_session=True)
         recorder = None
+        camera_recorder = None
+        contact_recorder = None
         imu_subscriber = None
         try:
             _find_topic(env, executable, IMU_TOPIC, server)
@@ -475,10 +679,26 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
             recorder = _start_recording(env, executable, target,
                                         None if live_lockstep else scenario.duration_s,
                                         IMU_TOPIC, "gazebo_imu.jsonl")
+            # A contact sensor may not advertise its topic until the first
+            # physics update (and may publish only when touching); subscribe
+            # before unpausing instead of failing on discovery here.
+            contact_recorder = _start_recording(env, executable, target,
+                                                None if live_lockstep else scenario.duration_s,
+                                                CONTACT_TOPIC, "ear_tag_contact.jsonl")
             _find_topic(env, executable, POSE_TOPIC, server)
             pose_recorder = _start_recording(env, executable, target,
                                              None if live_lockstep else scenario.duration_s,
                                              POSE_TOPIC, "gazebo_pose.jsonl")
+            if capture_video:
+                media_dir = target / "media"
+                camera_log = (target / "camera_recorder.log").open("w", encoding="utf-8")
+                camera_recorder = subprocess.Popen(
+                    ["/usr/bin/python3", str(REPO_ROOT / "scripts" / "record_mvp3_cameras.py"),
+                     str(media_dir), "--fps", str(_QUALITY[quality][2])],
+                    env=env, stdout=camera_log,
+                    stderr=subprocess.STDOUT, text=True, start_new_session=True)
+                camera_log.close()
+                time.sleep(0.4)
             _find_topic(env, executable, JOINT_TOPIC, server)
             _publish(env, executable, JOINT_TOPIC, "gz.msgs.JointTrajectory", trajectory)
             time.sleep(0.1)
@@ -580,6 +800,14 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                     server.kill()
             raise
         finally:
+            if camera_recorder is not None:
+                if camera_recorder.poll() is None:
+                    camera_recorder.terminate()
+                try:
+                    camera_recorder.wait(timeout=8)
+                except subprocess.TimeoutExpired:
+                    camera_recorder.kill()
+                    camera_recorder.wait(timeout=4)
             if recorder is not None:
                 if recorder.poll() is None:
                     recorder.terminate()
@@ -588,6 +816,14 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                 except subprocess.TimeoutExpired:
                     recorder.kill()
                 recorder._riose_record_stream.close()
+            if contact_recorder is not None:
+                if contact_recorder.poll() is None:
+                    contact_recorder.terminate()
+                try:
+                    contact_recorder.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    contact_recorder.kill()
+                contact_recorder._riose_record_stream.close()
             if 'pose_recorder' in locals():
                 if pose_recorder.poll() is None:
                     pose_recorder.terminate()
@@ -607,6 +843,8 @@ def run_experiment(name: str, *, visual: bool, output: Path | None = None,
                      "gazebo_start_policy": "PAUSE_AND_RESET_BEFORE_RECORDING",
                      "simulation_time_origin_s": 0.0,
                      "clock_sync": live_bridge if live_lockstep else manifest["clock_sync"]})
+    manifest["attachment_contact_measurement"] = _summarize_attachment_contacts(
+        target / "ear_tag_contact.jsonl")
     (target / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     if not (target / "gazebo_imu.jsonl").stat().st_size:
         raise RuntimeError(f"Gazebo did not publish IMU data; inspect {target / 'server.log'}")
@@ -740,7 +978,7 @@ def _materialize_recordings(target: Path, seed: int, scenario: Scenario) -> None
                              "acceleration_resampling": "INTERPOLATED"})
     raw_imu = _read_jsonl_samples(target / "gazebo_imu.jsonl")
     raw_poses = _read_pose_samples(
-        target / "gazebo_pose.jsonl", max_rate_hz=25.0,
+        target / "gazebo_pose.jsonl", max_rate_hz=POSE_RECORD_RATE_HZ,
         focus_names={"riose_cow", "ear_left", "riose_ear_tag"})
     if not raw_imu or not raw_poses:
         raise RuntimeError("Gazebo IMU and pose recordings are both required")
@@ -771,6 +1009,8 @@ def _materialize_recordings(target: Path, seed: int, scenario: Scenario) -> None
     raw_imu_times = [item[0] for item in raw_imu]
     last_kinematics_index = -1
     current_pose_kinematics = None
+    initial_attachment_quaternion = None
+    attachment_angles: list[float] = []
     with (target / "recording.jsonl").open("w", encoding="utf-8") as stream:
         for row in imu_rows:
             sim_time = imu_origin + row["time_from_capture_start_s"]
@@ -785,11 +1025,20 @@ def _materialize_recordings(target: Path, seed: int, scenario: Scenario) -> None
             if nearest_imu_index and abs(raw_imu_times[nearest_imu_index - 1] - sim_time) < abs(raw_imu_times[nearest_imu_index] - sim_time):
                 nearest_imu_index -= 1
             _, sensor = raw_imu[nearest_imu_index]
+            ear_pose = poses.get("ear_left")
+            tag_pose = poses.get("riose_ear_tag")
+            relative_quaternion = _relative_attachment_quaternion(ear_pose, tag_pose)
+            if initial_attachment_quaternion is None and relative_quaternion is not None:
+                initial_attachment_quaternion = relative_quaternion
+            attachment_angle = _relative_angle_rad(initial_attachment_quaternion, relative_quaternion)
+            if attachment_angle is not None:
+                attachment_angles.append(attachment_angle)
             record = {**row, "simulation_timestamp_s": sim_time,
                       "cow_state": _scenario_state(scenario, sim_time),
                       "animal_pose": poses.get("riose_cow"),
-                      "ear_pose": poses.get("ear_left"),
-                      "tag_pose": poses.get("riose_ear_tag"),
+                      "ear_pose": ear_pose,
+                      "tag_pose": tag_pose,
+                      "tag_attachment_angle_rad": attachment_angle,
                       "pose_kinematics": current_pose_kinematics,
                       "imu_orientation_xyzw": sensor.get("orientation"),
                       "imu_angular_velocity_rad_s": sensor.get("angularVelocity"),
@@ -801,10 +1050,11 @@ def _materialize_recordings(target: Path, seed: int, scenario: Scenario) -> None
         "clock_master": "Gazebo simulation time", "timestamp_origin": "first IMU sample",
         "sample_count": len(imu_rows), "sample_rate_hz": json.loads(manifest_path.read_text())["datasets"][0]["sample_rate_hz"],
         "streams": ["cow_state", "animal_pose", "ear_pose", "tag_pose", "imu_acceleration_g",
-                    "imu_orientation_xyzw", "imu_angular_velocity_rad_s", "pose_kinematics"],
+                    "imu_orientation_xyzw", "imu_angular_velocity_rad_s", "tag_attachment_angle_rad",
+                    "pose_kinematics"],
         "pose_join": "nearest timestamped Gazebo pose sample",
         "pose_recording_processing": {
-            "max_rate_hz": 25.0,
+            "max_rate_hz": POSE_RECORD_RATE_HZ,
             "entities": ["riose_cow", "ear_left", "riose_ear_tag"],
             "status": "SIMULATED_DOWNSAMPLED_FOR_RECORDING_JOIN",
         },
@@ -821,6 +1071,10 @@ def _materialize_recordings(target: Path, seed: int, scenario: Scenario) -> None
     (target / "attachment_metrics.json").write_text(json.dumps({
         "status": "SIMULATED", "attachment_joint": "riose_ear_tag_attachment",
         "relative_pivot_position_drift_max_m": attachment_max_drift_m,
+        "relative_hinge_angle_rad_max": max(attachment_angles, default=None),
+        "hinge_angle_provenance": "DERIVED_FROM_GAZEBO_POSE_QUATERNIONS",
+        "joint_force_measurement": {"status": "UNAVAILABLE",
+                                    "reason": "Gazebo joint/contact wrench sensor is not configured"},
         "validation_tolerance_m": 0.005,
         "result": "PASS" if attachment_validated else "FAIL",
         "samples": len(ear_relative_errors),
@@ -972,6 +1226,26 @@ def _pose_quaternion(pose: dict | None) -> tuple[float, float, float, float] | N
                  (("x", 0.0), ("y", 0.0), ("z", 0.0), ("w", 1.0)))  # type: ignore[return-value]
 
 
+def _relative_attachment_quaternion(ear: dict | None, tag: dict | None):
+    q_ear, q_tag = _pose_quaternion(ear), _pose_quaternion(tag)
+    if q_ear is None or q_tag is None:
+        return None
+    ex, ey, ez, ew = q_ear
+    tx, ty, tz, tw = q_tag
+    # inverse(q_ear) * q_tag, with xyzw quaternion storage.
+    return (ew*tx - ex*tw - ey*tz + ez*ty,
+            ew*ty + ex*tz - ey*tw - ez*tx,
+            ew*tz - ex*ty + ey*tx - ez*tw,
+            ew*tw + ex*tx + ey*ty + ez*tz)
+
+
+def _relative_angle_rad(reference, current) -> float | None:
+    if reference is None or current is None:
+        return None
+    dot = abs(sum(a*b for a, b in zip(reference, current)))
+    return 2.0 * math.acos(max(-1.0, min(1.0, dot)))
+
+
 def _quaternion_delta_velocity(q0, q1, dt: float) -> tuple[float, float, float] | None:
     if dt <= 0 or q0 is None or q1 is None:
         return None
@@ -1038,7 +1312,7 @@ def _parser() -> argparse.ArgumentParser:
     commands.add_parser("setup", help="verify the Gazebo Harmonic runtime")
     commands.add_parser("list", help="list deterministic MVP3 scenarios")
     run = commands.add_parser("run", help="run a physical Gazebo scenario and record IMU samples")
-    run.add_argument("scenario", choices=sorted({*SCENARIOS, "standing", "walking", "running", "head-shake", "mixed", "heavy-tag", "attachment-variation", "radio-event", "long-simulation", "mass-sweep"}))
+    run.add_argument("scenario", choices=sorted({*SCENARIOS, "standing", "walking", "running", "head-shake", "ear-flick", "lower-head", "raise-head", "mixed", "heavy-tag", "attachment-variation", "radio-event", "long-simulation", "mass-sweep"}))
     mode = run.add_mutually_exclusive_group()
     mode.add_argument("--visual", action="store_true", help="open Gazebo GUI")
     mode.add_argument("--headless", action="store_true", help="run Gazebo server without GUI")
@@ -1054,6 +1328,12 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--attachment-limit-rad", type=float)
     run.add_argument("--live-lockstep", action="store_true",
                      help="run the Renode firmware while Gazebo advances in synchronized paused steps; requires RIOSE_ZEPHYR_ELF")
+    run.add_argument("--quality", choices=sorted(_QUALITY), default="medium",
+                     help="OGRE2 camera preset; does not change physics")
+    run.add_argument("--overlay", dest="overlay", action="store_true", default=True,
+                     help="request compact telemetry overlay in presentation outputs")
+    run.add_argument("--no-overlay", dest="overlay", action="store_false",
+                     help="disable the presentation telemetry overlay")
     run.add_argument("--firmware-trace", type=Path,
                      help="optional SIMULATED firmware trace JSONL for MVP2 RF/power adapters")
     run.add_argument("--sample-period", type=float, default=0.05,
@@ -1064,11 +1344,23 @@ def _parser() -> argparse.ArgumentParser:
     report.add_argument("experiment", type=Path)
     replay = commands.add_parser("replay", help="replay a saved IMU experiment through Renode")
     replay.add_argument("experiment", type=Path)
+    replay.add_argument("--presentation", action="store_true",
+                        help="also render the experiment's recorded camera/event presentation")
+    replay.add_argument("--slow-motion", choices=(1.0,0.5,0.25), type=float, default=1.0)
     visualize = commands.add_parser("visualize", help="create an offline IMU viewer for an experiment")
     visualize.add_argument("experiment", type=Path)
     visualize.add_argument("--output", type=Path)
     visual = commands.add_parser("visual", help="Gazebo visual camera presets and clean screenshots")
     visual.add_argument("visual_args", nargs=argparse.REMAINDER)
+    camera = commands.add_parser("camera", help="capture a real OGRE2 frame from a named MVP3 camera")
+    camera.add_argument("name", choices=("overview", "follow", "head", "ear-tag", "anchor", "ground-low"))
+    camera.add_argument("--quality", choices=sorted(_QUALITY), default="high")
+    camera.add_argument("--output", type=Path)
+    cinematic = commands.add_parser("cinematic", help="run a live firmware-linked camera sequence and encode a presentation")
+    cinematic.add_argument("--quality", choices=sorted(_QUALITY), default="presentation")
+    cinematic.add_argument("--slow-motion", choices=(1.0,0.5,0.25), type=float, default=0.5)
+    cinematic.add_argument("--output", type=Path)
+    cinematic.add_argument("--no-overlay", dest="overlay", action="store_false", default=True)
     return parser
 
 
@@ -1093,7 +1385,8 @@ def main(argv: list[str] | None = None) -> int:
                        "duration_s": args.duration_s,
                        "firmware_trace": args.firmware_trace,
                        "fast_headless": args.fast_headless,
-                       "live_lockstep": args.live_lockstep}
+                       "live_lockstep": args.live_lockstep,
+                       "quality": args.quality, "overlay": args.overlay}
             if args.scenario == "mass-sweep":
                 parent = args.output or (REPO_ROOT / "results" / "mvp3" /
                                          f"mass-sweep-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}")
@@ -1119,14 +1412,24 @@ def main(argv: list[str] | None = None) -> int:
             from .reporting import report_experiment
             print(json.dumps(report_experiment(args.experiment), indent=2, sort_keys=True))
         elif args.command == "replay":
-            from .bridge import replay_in_renode
-            print(json.dumps(replay_in_renode(args.experiment), indent=2, sort_keys=True))
+            if args.presentation:
+                from .presentation import replay_presentation
+                print(json.dumps(replay_presentation(args.experiment, slow_motion=args.slow_motion), indent=2, sort_keys=True))
+            else:
+                from .bridge import replay_in_renode
+                print(json.dumps(replay_in_renode(args.experiment), indent=2, sort_keys=True))
         elif args.command == "visualize":
             from .visualization import create_viewer
             print(create_viewer(args.experiment, output=args.output))
         elif args.command == "visual":
             from .visualization.cinematic import main as visual_main
             return visual_main(args.visual_args)
+        elif args.command == "camera":
+            print(capture_camera(args.name, output=args.output, quality=args.quality))
+        elif args.command == "cinematic":
+            from .presentation import run_cinematic
+            print(json.dumps(run_cinematic(quality=args.quality, slow_motion=args.slow_motion,
+                                           output=args.output, overlay=args.overlay), indent=2, sort_keys=True))
         elif args.command == "test":
             from .validation import run_validation
             print(json.dumps(run_validation(live=not args.quick), indent=2, sort_keys=True))

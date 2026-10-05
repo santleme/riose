@@ -1,0 +1,82 @@
+{
+  "checks": {
+    "before_after_and_product_closeup": {
+      "evidence": {
+        "before.png": {
+          "bytes": 21971,
+          "valid": true
+        },
+        "ear_tag_closeup.png": {
+          "bytes": 319664,
+          "valid": true
+        },
+        "overview.png": {
+          "bytes": 477218,
+          "valid": true
+        }
+      },
+      "pass": true
+    },
+    "live_ogre2_camera_capture": {
+      "capture_manifest": true,
+      "evidence": {
+        "anchor": {
+          "clip_bytes": 564077,
+          "frames": 204
+        },
+        "ear_tag_macro": {
+          "clip_bytes": 715733,
+          "frames": 204
+        },
+        "follow": {
+          "clip_bytes": 799957,
+          "frames": 204
+        },
+        "ground_low": {
+          "clip_bytes": 765452,
+          "frames": 204
+        },
+        "head": {
+          "clip_bytes": 1211820,
+          "frames": 204
+        },
+        "overview": {
+          "clip_bytes": 734108,
+          "frames": 204
+        }
+      },
+      "pass": true
+    },
+    "ogre2_camera_rig": {
+      "cameras_present": [
+        "camera_anchor",
+        "camera_ear_tag_macro",
+        "camera_follow",
+        "camera_ground_low",
+        "camera_head",
+        "camera_overview"
+      ],
+      "pass": true,
+      "required": [
+        "camera_anchor",
+        "camera_ear_tag_macro",
+        "camera_follow",
+        "camera_ground_low",
+        "camera_head",
+        "camera_overview"
+      ]
+    },
+    "pbr_assets": {
+      "cow_maps": [
+        "albedo",
+        "normal",
+        "roughness"
+      ],
+      "pass": true,
+      "tag_material": "explicit cool-slate PBR base color + scalar roughness (MVP2 STL has no UVs)"
+    }
+  },
+  "gate": "PHASE_B_VISUAL_REALISM_PASS",
+  "schema_version": "riose.mvp3.phase-b-gate/v1",
+  "status": "SIMULATED"
+}

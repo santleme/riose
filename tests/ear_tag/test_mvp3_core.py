@@ -6,7 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from riose.products.ear_tag.mvp3.cli import _read_pose_samples
+from riose.products.ear_tag.mvp3.cli import (POSE_RECORD_RATE_HZ, _read_pose_samples,
+                                             _relative_angle_rad,
+                                             _relative_attachment_quaternion)
 from riose.products.ear_tag.mvp3.motion import JOINTS, to_gz_joint_trajectory, trajectory_points
 from riose.products.ear_tag.mvp3.scenarios import SCENARIOS, get_scenario
 
@@ -15,7 +17,8 @@ def test_required_mvp3_scenarios_are_present() -> None:
     required = {
         "01_standing", "02_walking", "03_running", "04_head_shake",
         "05_mixed_activity", "06_heavy_tag", "07_attachment_variation",
-        "08_radio_event", "09_long_simulation",
+        "08_radio_event", "09_long_simulation", "10_ear_flick",
+        "11_lower_head", "12_raise_head",
     }
     assert required <= SCENARIOS.keys()
 
@@ -32,6 +35,29 @@ def test_motion_plan_has_increasing_time_and_configured_joint_order() -> None:
     assert all(right.time_s > left.time_s for left, right in zip(points, points[1:]))
     assert all(len(point.positions) == len(JOINTS) for point in points)
     assert points[-1].time_s == scenario.duration_s
+
+
+def test_pose_record_rate_resolves_imu_alignment_at_50_hz() -> None:
+    assert POSE_RECORD_RATE_HZ == 50.0
+
+
+def test_ear_flick_moves_both_independent_ears_and_head_pose_is_interpolated() -> None:
+    flick = trajectory_points(get_scenario("ear-flick"), sample_period_s=0.1)
+    # Joint order: root, head, left ear, right ear, then four legs.
+    active = next(point for point in flick if 2.35 < point.time_s < 2.65)
+    assert active.positions[2] == pytest.approx(-active.positions[3] / 0.72)
+    lower = trajectory_points(get_scenario("lower-head"), sample_period_s=0.1)
+    assert min(point.positions[1] for point in lower) < -0.20
+    assert lower[0].positions[1] == pytest.approx(0.0)
+    assert lower[-1].positions[1] == pytest.approx(0.0)
+
+
+def test_attachment_angle_uses_relative_ear_and_tag_orientation() -> None:
+    identity = {"orientation": {"x": 0, "y": 0, "z": 0, "w": 1}}
+    quarter_turn = {"orientation": {"x": 0, "y": 0, "z": 0.3826834324, "w": 0.9238795325}}
+    initial = _relative_attachment_quaternion(identity, identity)
+    moved = _relative_attachment_quaternion(identity, quarter_turn)
+    assert _relative_angle_rad(initial, moved) == pytest.approx(0.785398, abs=1e-5)
 
 
 def test_gazebo_trajectory_contains_only_physical_joint_targets() -> None:

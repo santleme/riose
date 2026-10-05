@@ -1,0 +1,6 @@
+newmtl coat
+Ka 0.62 0.60 0.56
+Kd 0.88 0.86 0.82
+Ks 0.025 0.025 0.025
+Ns 9
+map_Kd cow_skin.png

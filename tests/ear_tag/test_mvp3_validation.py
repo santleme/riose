@@ -44,8 +44,14 @@ def test_tag_attachment_is_a_cow_scoped_joint_to_nested_tag_link() -> None:
     assert len(attachments) == 1
     attachment = attachments[0]
     assert attachment.get("type") == "revolute"
-    assert attachment.findtext("parent") == "ear_left"
+    assert attachment.findtext("parent") == "attachment_stud"
     assert attachment.findtext("child") == "riose_ear_tag::tag_link"
+    stud, = [joint for joint in cow.findall("joint")
+             if joint.get("name") == "ear_tag_stud_fixation"]
+    assert stud.get("type") == "fixed"
+    assert stud.findtext("parent") == "ear_left"
+    assert stud.findtext("child") == "attachment_stud"
+    assert cow.find("link[@name='ear_left']/self_collide").text == "true"
 
 
 def test_tag_sensor_is_simulated_50_hz_imu_with_stable_topic() -> None:
@@ -57,42 +63,25 @@ def test_tag_sensor_is_simulated_50_hz_imu_with_stable_topic() -> None:
     assert sensor.findtext("topic") == "/riose/mvp3/imu/data"
 
 
-def test_tag_rounded_visual_mesh_is_packaged_without_replacing_collision_proxy(tmp_path: Path) -> None:
+def test_mvp2_tag_mesh_is_packaged_without_replacing_collision_proxy(tmp_path: Path) -> None:
     source_model = MVP3 / "gazebo/models/riose_ear_tag/model.sdf"
     tag = _xml(source_model).find("model")
     assert tag is not None
-    mesh_uri = tag.findtext("link/visual[@name='rounded_housing']/geometry/mesh/uri")
-    assert mesh_uri == "model://riose_ear_tag/meshes/tag_housing.dae"
-    mesh = MVP3 / "gazebo/models/riose_ear_tag/meshes/tag_housing.dae"
-    assert mesh.is_file() and mesh.stat().st_size > 10_000
-    dae = _xml(mesh)
-    namespace = {"c": "http://www.collada.org/2005/11/COLLADASchema"}
-    assert dae.findtext(".//c:library_images/c:image/c:init_from", namespaces=namespace) == \
-        "../materials/textures/yellow_polymer_albedo.png"
-    assert dae.find(".//c:profile_COMMON/c:technique/c:phong/c:diffuse/c:texture", namespace) is not None
-    uv_input = dae.find(".//c:triangles/c:input[@semantic='TEXCOORD']", namespace)
-    assert uv_input is not None and uv_input.get("set") == "0"
-    uv_binding = dae.find(".//c:bind_vertex_input[@input_semantic='TEXCOORD']", namespace)
-    assert uv_binding is not None and uv_binding.get("input_set") == "0"
-    assert tag.find("link/visual[@name='rounded_housing']/material") is None
-    source_obj = MVP3 / "gazebo/models/riose_ear_tag/meshes/tag_housing.obj"
-    assert source_obj.is_file()
-    vertices = [
-        tuple(map(float, line.split()[1:4]))
-        for line in source_obj.read_text(encoding="utf-8").splitlines()
-        if line.startswith("v ")
-    ]
-    assert len(vertices) == 1024
-    assert min(point[0] for point in vertices) == pytest.approx(-0.034, abs=0.0004)
-    assert max(point[0] for point in vertices) == pytest.approx(0.004, abs=0.0004)
-    assert min(point[1] for point in vertices) == pytest.approx(-0.0648, abs=0.0004)
-    assert max(point[1] for point in vertices) == pytest.approx(0.0032, abs=0.0004)
+    housing = tag.find("link/visual[@name='mvp2_cad_enclosure']")
+    assert housing is not None
+    mesh = housing.find("geometry/mesh")
+    assert mesh is not None
+    assert mesh.findtext("uri") == "meshes/ear_tag_assumed.stl"
+    assert tuple(map(float, mesh.findtext("scale", "").split())) == (0.001, 0.001, 0.001)
+    stl = MVP3 / "gazebo/models/riose_ear_tag/meshes/ear_tag_assumed.stl"
+    assert stl.is_file() and stl.stat().st_size > 10_000
+    assert housing.find("material/pbr/metal/roughness") is not None
 
     collisions = tag.findall("link/collision")
     assert len(collisions) == 4
     copied_assets = _scenario_assets(get_scenario("standing"), tmp_path)
-    assert (copied_assets / "riose_ear_tag/meshes/tag_housing.dae").is_file()
-    assert (copied_assets / "riose_ear_tag/materials/textures/yellow_polymer_albedo.png").is_file()
+    assert (copied_assets / "riose_ear_tag/meshes/ear_tag_assumed.stl").is_file()
+    assert (copied_assets / "riose_ear_tag/meshes/polymer_roughness.png").is_file()
 
 
 def test_world_has_physical_paddock_context_without_changing_ground_physics() -> None:
@@ -102,20 +91,17 @@ def test_world_has_physical_paddock_context_without_changing_ground_physics() ->
     assert world.findtext("physics/max_step_size") == "0.001"
 
     models = {model.get("name"): model for model in world.findall("model")}
-    assert {"ground_plane", "paddock_fence", "water_trough", "field_shed", "riose_anchor"} <= models.keys()
-    ground = models["ground_plane"]
-    assert ground is not None
+    assert {"soil_paddock", "paddock_grass", "timber_fence", "shade_shelter",
+            "feeding_trough", "riose_anchor"} <= models.keys()
+    ground = models["soil_paddock"]
     assert ground.find("link/collision/geometry/plane") is not None
+    assert ground.find("link/visual/geometry/mesh/uri") is not None
 
-    fence = models["paddock_fence"]
-    assert fence is not None
-    collisions = {collision.get("name") for collision in fence.findall("link/collision")}
-    visuals = {visual.get("name") for visual in fence.findall("link/visual")}
-    for rail in ("rail_lower", "rail_upper", "far_rail_lower", "far_rail_upper",
-                 "end_rail_left_lower", "end_rail_left_upper",
-                 "end_rail_right_lower", "end_rail_right_upper"):
-        assert rail in visuals
-        assert f"{rail}_collision" in collisions
+    cow = _xml(MVP3 / "gazebo/models/riose_cow/model.sdf").find("model")
+    assert cow is not None
+    assert cow.find(".//sensor[@name='camera_follow']") is not None
+    for camera in ("camera_head", "camera_ear_tag_macro"):
+        assert world.find(f".//sensor[@name='{camera}']") is not None
 
 
 def test_heavy_tag_scenario_changes_the_copied_runtime_asset(tmp_path: Path) -> None:
@@ -126,8 +112,13 @@ def test_heavy_tag_scenario_changes_the_copied_runtime_asset(tmp_path: Path) -> 
     assert tag is not None and cow is not None
     assert float(tag.findtext("link/inertial/mass", "0")) == pytest.approx(0.04)
     include_pose = cow.find("include/pose")
+    stud_pose = cow.find("joint[@name='ear_tag_stud_fixation']/pose")
+    tag_hinge_pose = cow.find("joint[@name='riose_ear_tag_attachment']/pose")
     assert include_pose is not None
+    assert stud_pose is not None and tag_hinge_pose is not None
     assert tuple(map(float, include_pose.text.split()[:3])) == scenario.attachment_position_m
+    assert tuple(map(float, stud_pose.text.split()[:3])) == scenario.attachment_position_m
+    assert tuple(map(float, tag_hinge_pose.text.split()[:3])) == (0, 0, 0)
 
 
 def test_heavy_tag_scenario_has_rest_after_movement_for_firmware_to_settle() -> None:

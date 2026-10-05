@@ -1,0 +1,1945 @@
+{
+  "backend": "Renode SX1262 logical model",
+  "fps": 12.0,
+  "frames": 235,
+  "rf_visualization": "EVENT VISUALIZATION \u2014 NOT RF PROPAGATION",
+  "rssi_dbm": null,
+  "schema_version": "riose.mvp3.cinematic/v1",
+  "shots": [
+    {
+      "camera": "overview",
+      "end_s": 2.5,
+      "playback_rate": 1.0,
+      "start_s": 0.0,
+      "title": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN"
+    },
+    {
+      "camera": "follow",
+      "end_s": 8.4,
+      "playback_rate": 1.0,
+      "start_s": 3.0,
+      "title": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE"
+    },
+    {
+      "camera": "head",
+      "end_s": 10.8,
+      "playback_rate": 1.0,
+      "start_s": 8.4,
+      "title": "SHOT 3 \u00b7 HEAD / EAR RESPONSE"
+    },
+    {
+      "camera": "ear_tag_macro",
+      "end_s": 11.0,
+      "playback_rate": 1.0,
+      "start_s": 10.8,
+      "title": "SHOT 4 \u00b7 RIOSE EAR TAG \u00b7 MVP2 CAD"
+    },
+    {
+      "camera": "head",
+      "end_s": 14.0,
+      "playback_rate": 0.5,
+      "start_s": 11.0,
+      "title": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x"
+    },
+    {
+      "camera": "anchor",
+      "end_s": 15.32614932,
+      "playback_rate": 1.0,
+      "start_s": 14.226149320000001,
+      "title": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND"
+    },
+    {
+      "camera": "ear_tag_macro",
+      "end_s": 17.0,
+      "playback_rate": 1.0,
+      "start_s": 15.0,
+      "title": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY"
+    }
+  ],
+  "slow_motion": 0.5,
+  "snr_db": null,
+  "source_clock": "Gazebo simulation timestamps retained in per-camera CSV and this timeline",
+  "timeline": [
+    {
+      "camera": "overview",
+      "frame": 0,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.0,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.084
+    },
+    {
+      "camera": "overview",
+      "frame": 1,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.08333333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.166
+    },
+    {
+      "camera": "overview",
+      "frame": 2,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.16666666666666666,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.25
+    },
+    {
+      "camera": "overview",
+      "frame": 3,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.25,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.333
+    },
+    {
+      "camera": "overview",
+      "frame": 4,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.3333333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.416
+    },
+    {
+      "camera": "overview",
+      "frame": 5,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.41666666666666663,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.499
+    },
+    {
+      "camera": "overview",
+      "frame": 6,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.49999999999999994,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.582
+    },
+    {
+      "camera": "overview",
+      "frame": 7,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.5833333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.665
+    },
+    {
+      "camera": "overview",
+      "frame": 8,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.6666666666666666,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.748
+    },
+    {
+      "camera": "overview",
+      "frame": 9,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.75,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.831
+    },
+    {
+      "camera": "overview",
+      "frame": 10,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.8333333333333334,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.914
+    },
+    {
+      "camera": "overview",
+      "frame": 11,
+      "playback_rate": 1.0,
+      "playback_time_s": 0.9166666666666667,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 0.997
+    },
+    {
+      "camera": "overview",
+      "frame": 12,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.0,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.08
+    },
+    {
+      "camera": "overview",
+      "frame": 13,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.0833333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.163
+    },
+    {
+      "camera": "overview",
+      "frame": 14,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.1666666666666665,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.246
+    },
+    {
+      "camera": "overview",
+      "frame": 15,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.2499999999999998,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.329
+    },
+    {
+      "camera": "overview",
+      "frame": 16,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.333333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.412
+    },
+    {
+      "camera": "overview",
+      "frame": 17,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.4166666666666663,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.495
+    },
+    {
+      "camera": "overview",
+      "frame": 18,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.4999999999999996,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.578
+    },
+    {
+      "camera": "overview",
+      "frame": 19,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.5833333333333328,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.661
+    },
+    {
+      "camera": "overview",
+      "frame": 20,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.666666666666666,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.744
+    },
+    {
+      "camera": "overview",
+      "frame": 21,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.7499999999999993,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.827
+    },
+    {
+      "camera": "overview",
+      "frame": 22,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.8333333333333326,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.91
+    },
+    {
+      "camera": "overview",
+      "frame": 23,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.9166666666666659,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 1.993
+    },
+    {
+      "camera": "overview",
+      "frame": 24,
+      "playback_rate": 1.0,
+      "playback_time_s": 1.9999999999999991,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.076
+    },
+    {
+      "camera": "overview",
+      "frame": 25,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.0833333333333326,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.159
+    },
+    {
+      "camera": "overview",
+      "frame": 26,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.166666666666666,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.242
+    },
+    {
+      "camera": "overview",
+      "frame": 27,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.2499999999999996,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.325
+    },
+    {
+      "camera": "overview",
+      "frame": 28,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.333333333333333,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.408
+    },
+    {
+      "camera": "overview",
+      "frame": 29,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.4166666666666665,
+      "shot": "SHOT 1 \u00b7 RIOSE RURAL DIGITAL TWIN",
+      "sim_time_s": 2.491
+    },
+    {
+      "camera": "follow",
+      "frame": 30,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.5,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.072
+    },
+    {
+      "camera": "follow",
+      "frame": 31,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.5833333333333335,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.155
+    },
+    {
+      "camera": "follow",
+      "frame": 32,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.666666666666667,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.238
+    },
+    {
+      "camera": "follow",
+      "frame": 33,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.7500000000000004,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.321
+    },
+    {
+      "camera": "follow",
+      "frame": 34,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.833333333333334,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.404
+    },
+    {
+      "camera": "follow",
+      "frame": 35,
+      "playback_rate": 1.0,
+      "playback_time_s": 2.9166666666666674,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.487
+    },
+    {
+      "camera": "follow",
+      "frame": 36,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.000000000000001,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.57
+    },
+    {
+      "camera": "follow",
+      "frame": 37,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.0833333333333344,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.653
+    },
+    {
+      "camera": "follow",
+      "frame": 38,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.166666666666668,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.736
+    },
+    {
+      "camera": "follow",
+      "frame": 39,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.2500000000000013,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.819
+    },
+    {
+      "camera": "follow",
+      "frame": 40,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.333333333333335,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.902
+    },
+    {
+      "camera": "follow",
+      "frame": 41,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.4166666666666683,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 3.985
+    },
+    {
+      "camera": "follow",
+      "frame": 42,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.5000000000000018,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.068
+    },
+    {
+      "camera": "follow",
+      "frame": 43,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.5833333333333353,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.151
+    },
+    {
+      "camera": "follow",
+      "frame": 44,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.6666666666666687,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.234
+    },
+    {
+      "camera": "follow",
+      "frame": 45,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.750000000000002,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.317
+    },
+    {
+      "camera": "follow",
+      "frame": 46,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.8333333333333357,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.4
+    },
+    {
+      "camera": "follow",
+      "frame": 47,
+      "playback_rate": 1.0,
+      "playback_time_s": 3.916666666666669,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.483
+    },
+    {
+      "camera": "follow",
+      "frame": 48,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.000000000000003,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.566
+    },
+    {
+      "camera": "follow",
+      "frame": 49,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.083333333333336,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.649
+    },
+    {
+      "camera": "follow",
+      "frame": 50,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.166666666666669,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.732
+    },
+    {
+      "camera": "follow",
+      "frame": 51,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.250000000000002,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.815
+    },
+    {
+      "camera": "follow",
+      "frame": 52,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.333333333333335,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.898
+    },
+    {
+      "camera": "follow",
+      "frame": 53,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.416666666666668,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 4.981
+    },
+    {
+      "camera": "follow",
+      "frame": 54,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.500000000000001,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.064
+    },
+    {
+      "camera": "follow",
+      "frame": 55,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.583333333333334,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.147
+    },
+    {
+      "camera": "follow",
+      "frame": 56,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.666666666666667,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.23
+    },
+    {
+      "camera": "follow",
+      "frame": 57,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.75,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.313
+    },
+    {
+      "camera": "follow",
+      "frame": 58,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.833333333333333,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.396
+    },
+    {
+      "camera": "follow",
+      "frame": 59,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.916666666666666,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.479
+    },
+    {
+      "camera": "follow",
+      "frame": 60,
+      "playback_rate": 1.0,
+      "playback_time_s": 4.999999999999999,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.562
+    },
+    {
+      "camera": "follow",
+      "frame": 61,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.083333333333332,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.645
+    },
+    {
+      "camera": "follow",
+      "frame": 62,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.166666666666665,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.728
+    },
+    {
+      "camera": "follow",
+      "frame": 63,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.249999999999998,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.811
+    },
+    {
+      "camera": "follow",
+      "frame": 64,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.333333333333331,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.894
+    },
+    {
+      "camera": "follow",
+      "frame": 65,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.416666666666664,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 5.977
+    },
+    {
+      "camera": "follow",
+      "frame": 66,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.499999999999997,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.06
+    },
+    {
+      "camera": "follow",
+      "frame": 67,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.58333333333333,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.143
+    },
+    {
+      "camera": "follow",
+      "frame": 68,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.666666666666663,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.226
+    },
+    {
+      "camera": "follow",
+      "frame": 69,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.7499999999999964,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.309
+    },
+    {
+      "camera": "follow",
+      "frame": 70,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.8333333333333295,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.392
+    },
+    {
+      "camera": "follow",
+      "frame": 71,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.9166666666666625,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.475
+    },
+    {
+      "camera": "follow",
+      "frame": 72,
+      "playback_rate": 1.0,
+      "playback_time_s": 5.999999999999996,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.558
+    },
+    {
+      "camera": "follow",
+      "frame": 73,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.083333333333329,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.641
+    },
+    {
+      "camera": "follow",
+      "frame": 74,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.166666666666662,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.724
+    },
+    {
+      "camera": "follow",
+      "frame": 75,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.249999999999995,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.807
+    },
+    {
+      "camera": "follow",
+      "frame": 76,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.333333333333328,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.89
+    },
+    {
+      "camera": "follow",
+      "frame": 77,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.416666666666661,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 6.973
+    },
+    {
+      "camera": "follow",
+      "frame": 78,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.499999999999994,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.056
+    },
+    {
+      "camera": "follow",
+      "frame": 79,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.583333333333327,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.139
+    },
+    {
+      "camera": "follow",
+      "frame": 80,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.66666666666666,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.222
+    },
+    {
+      "camera": "follow",
+      "frame": 81,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.749999999999993,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.305
+    },
+    {
+      "camera": "follow",
+      "frame": 82,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.833333333333326,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.388
+    },
+    {
+      "camera": "follow",
+      "frame": 83,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.916666666666659,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.471
+    },
+    {
+      "camera": "follow",
+      "frame": 84,
+      "playback_rate": 1.0,
+      "playback_time_s": 6.999999999999992,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.554
+    },
+    {
+      "camera": "follow",
+      "frame": 85,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.083333333333325,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.637
+    },
+    {
+      "camera": "follow",
+      "frame": 86,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.166666666666658,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.72
+    },
+    {
+      "camera": "follow",
+      "frame": 87,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.249999999999991,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.803
+    },
+    {
+      "camera": "follow",
+      "frame": 88,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.333333333333324,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.886
+    },
+    {
+      "camera": "follow",
+      "frame": 89,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.416666666666657,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 7.969
+    },
+    {
+      "camera": "follow",
+      "frame": 90,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.49999999999999,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 8.052
+    },
+    {
+      "camera": "follow",
+      "frame": 91,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.583333333333323,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 8.135
+    },
+    {
+      "camera": "follow",
+      "frame": 92,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.666666666666656,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 8.218
+    },
+    {
+      "camera": "follow",
+      "frame": 93,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.749999999999989,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 8.301
+    },
+    {
+      "camera": "follow",
+      "frame": 94,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.833333333333322,
+      "shot": "SHOT 2 \u00b7 WALKING \u00b7 PHYSICAL IMU TRACE",
+      "sim_time_s": 8.384
+    },
+    {
+      "camera": "head",
+      "frame": 95,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.916666666666655,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.467
+    },
+    {
+      "camera": "head",
+      "frame": 96,
+      "playback_rate": 1.0,
+      "playback_time_s": 7.9999999999999885,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.55
+    },
+    {
+      "camera": "head",
+      "frame": 97,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.083333333333321,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.633
+    },
+    {
+      "camera": "head",
+      "frame": 98,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.166666666666655,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.716
+    },
+    {
+      "camera": "head",
+      "frame": 99,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.24999999999999,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.799
+    },
+    {
+      "camera": "head",
+      "frame": 100,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.333333333333323,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.882
+    },
+    {
+      "camera": "head",
+      "frame": 101,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.416666666666657,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 8.965
+    },
+    {
+      "camera": "head",
+      "frame": 102,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.499999999999991,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.048
+    },
+    {
+      "camera": "head",
+      "frame": 103,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.583333333333325,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.131
+    },
+    {
+      "camera": "head",
+      "frame": 104,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.666666666666659,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.214
+    },
+    {
+      "camera": "head",
+      "frame": 105,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.749999999999993,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.297
+    },
+    {
+      "camera": "head",
+      "frame": 106,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.833333333333327,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.38
+    },
+    {
+      "camera": "head",
+      "frame": 107,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.91666666666666,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.463
+    },
+    {
+      "camera": "head",
+      "frame": 108,
+      "playback_rate": 1.0,
+      "playback_time_s": 8.999999999999995,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.546
+    },
+    {
+      "camera": "head",
+      "frame": 109,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.083333333333329,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.629
+    },
+    {
+      "camera": "head",
+      "frame": 110,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.166666666666663,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.712
+    },
+    {
+      "camera": "head",
+      "frame": 111,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.249999999999996,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.795
+    },
+    {
+      "camera": "head",
+      "frame": 112,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.33333333333333,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.878
+    },
+    {
+      "camera": "head",
+      "frame": 113,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.416666666666664,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 9.961
+    },
+    {
+      "camera": "head",
+      "frame": 114,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.499999999999998,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.044
+    },
+    {
+      "camera": "head",
+      "frame": 115,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.583333333333332,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.127
+    },
+    {
+      "camera": "head",
+      "frame": 116,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.666666666666666,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.21
+    },
+    {
+      "camera": "head",
+      "frame": 117,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.75,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.293
+    },
+    {
+      "camera": "head",
+      "frame": 118,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.833333333333334,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.376
+    },
+    {
+      "camera": "head",
+      "frame": 119,
+      "playback_rate": 1.0,
+      "playback_time_s": 9.916666666666668,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.459
+    },
+    {
+      "camera": "head",
+      "frame": 120,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.000000000000002,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.542
+    },
+    {
+      "camera": "head",
+      "frame": 121,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.083333333333336,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.625
+    },
+    {
+      "camera": "head",
+      "frame": 122,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.16666666666667,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.708
+    },
+    {
+      "camera": "head",
+      "frame": 123,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.250000000000004,
+      "shot": "SHOT 3 \u00b7 HEAD / EAR RESPONSE",
+      "sim_time_s": 10.791
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 124,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.333333333333337,
+      "shot": "SHOT 4 \u00b7 RIOSE EAR TAG \u00b7 MVP2 CAD",
+      "sim_time_s": 10.874
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 125,
+      "playback_rate": 1.0,
+      "playback_time_s": 10.416666666666671,
+      "shot": "SHOT 4 \u00b7 RIOSE EAR TAG \u00b7 MVP2 CAD",
+      "sim_time_s": 10.957
+    },
+    {
+      "camera": "head",
+      "frame": 126,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.500000000000005,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.04
+    },
+    {
+      "camera": "head",
+      "frame": 127,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.58333333333334,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.04
+    },
+    {
+      "camera": "head",
+      "frame": 128,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.666666666666673,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.123
+    },
+    {
+      "camera": "head",
+      "frame": 129,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.750000000000007,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.123
+    },
+    {
+      "camera": "head",
+      "frame": 130,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.833333333333341,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.206
+    },
+    {
+      "camera": "head",
+      "frame": 131,
+      "playback_rate": 0.5,
+      "playback_time_s": 10.916666666666675,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.206
+    },
+    {
+      "camera": "head",
+      "frame": 132,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.000000000000009,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.289
+    },
+    {
+      "camera": "head",
+      "frame": 133,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.083333333333343,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.289
+    },
+    {
+      "camera": "head",
+      "frame": 134,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.166666666666677,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.372
+    },
+    {
+      "camera": "head",
+      "frame": 135,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.25000000000001,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.372
+    },
+    {
+      "camera": "head",
+      "frame": 136,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.333333333333345,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.455
+    },
+    {
+      "camera": "head",
+      "frame": 137,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.416666666666679,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.455
+    },
+    {
+      "camera": "head",
+      "frame": 138,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.500000000000012,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.538
+    },
+    {
+      "camera": "head",
+      "frame": 139,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.583333333333346,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.538
+    },
+    {
+      "camera": "head",
+      "frame": 140,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.66666666666668,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.621
+    },
+    {
+      "camera": "head",
+      "frame": 141,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.750000000000014,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.621
+    },
+    {
+      "camera": "head",
+      "frame": 142,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.833333333333348,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.704
+    },
+    {
+      "camera": "head",
+      "frame": 143,
+      "playback_rate": 0.5,
+      "playback_time_s": 11.916666666666682,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.704
+    },
+    {
+      "camera": "head",
+      "frame": 144,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.000000000000016,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.787
+    },
+    {
+      "camera": "head",
+      "frame": 145,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.08333333333335,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.787
+    },
+    {
+      "camera": "head",
+      "frame": 146,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.166666666666684,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.87
+    },
+    {
+      "camera": "head",
+      "frame": 147,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.250000000000018,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.87
+    },
+    {
+      "camera": "head",
+      "frame": 148,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.333333333333352,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.953
+    },
+    {
+      "camera": "head",
+      "frame": 149,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.416666666666686,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 11.953
+    },
+    {
+      "camera": "head",
+      "frame": 150,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.50000000000002,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.036
+    },
+    {
+      "camera": "head",
+      "frame": 151,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.583333333333353,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.036
+    },
+    {
+      "camera": "head",
+      "frame": 152,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.666666666666687,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.119
+    },
+    {
+      "camera": "head",
+      "frame": 153,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.750000000000021,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.119
+    },
+    {
+      "camera": "head",
+      "frame": 154,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.833333333333355,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.202
+    },
+    {
+      "camera": "head",
+      "frame": 155,
+      "playback_rate": 0.5,
+      "playback_time_s": 12.91666666666669,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.202
+    },
+    {
+      "camera": "head",
+      "frame": 156,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.000000000000023,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.285
+    },
+    {
+      "camera": "head",
+      "frame": 157,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.083333333333357,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.285
+    },
+    {
+      "camera": "head",
+      "frame": 158,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.166666666666691,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.368
+    },
+    {
+      "camera": "head",
+      "frame": 159,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.250000000000025,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.368
+    },
+    {
+      "camera": "head",
+      "frame": 160,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.333333333333359,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.451
+    },
+    {
+      "camera": "head",
+      "frame": 161,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.416666666666693,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.451
+    },
+    {
+      "camera": "head",
+      "frame": 162,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.500000000000027,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.534
+    },
+    {
+      "camera": "head",
+      "frame": 163,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.58333333333336,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.534
+    },
+    {
+      "camera": "head",
+      "frame": 164,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.666666666666694,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.617
+    },
+    {
+      "camera": "head",
+      "frame": 165,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.750000000000028,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.617
+    },
+    {
+      "camera": "head",
+      "frame": 166,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.833333333333362,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.7
+    },
+    {
+      "camera": "head",
+      "frame": 167,
+      "playback_rate": 0.5,
+      "playback_time_s": 13.916666666666696,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.7
+    },
+    {
+      "camera": "head",
+      "frame": 168,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.00000000000003,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.783
+    },
+    {
+      "camera": "head",
+      "frame": 169,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.083333333333364,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.783
+    },
+    {
+      "camera": "head",
+      "frame": 170,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.166666666666698,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.866
+    },
+    {
+      "camera": "head",
+      "frame": 171,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.250000000000032,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.866
+    },
+    {
+      "camera": "head",
+      "frame": 172,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.333333333333366,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.949
+    },
+    {
+      "camera": "head",
+      "frame": 173,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.4166666666667,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 12.949
+    },
+    {
+      "camera": "head",
+      "frame": 174,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.500000000000034,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.032
+    },
+    {
+      "camera": "head",
+      "frame": 175,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.583333333333368,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.032
+    },
+    {
+      "camera": "head",
+      "frame": 176,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.666666666666702,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.115
+    },
+    {
+      "camera": "head",
+      "frame": 177,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.750000000000036,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.115
+    },
+    {
+      "camera": "head",
+      "frame": 178,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.83333333333337,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.198
+    },
+    {
+      "camera": "head",
+      "frame": 179,
+      "playback_rate": 0.5,
+      "playback_time_s": 14.916666666666703,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.198
+    },
+    {
+      "camera": "head",
+      "frame": 180,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.000000000000037,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.281
+    },
+    {
+      "camera": "head",
+      "frame": 181,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.083333333333371,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.281
+    },
+    {
+      "camera": "head",
+      "frame": 182,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.166666666666705,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.364
+    },
+    {
+      "camera": "head",
+      "frame": 183,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.250000000000039,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.364
+    },
+    {
+      "camera": "head",
+      "frame": 184,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.333333333333373,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.447
+    },
+    {
+      "camera": "head",
+      "frame": 185,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.416666666666707,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.447
+    },
+    {
+      "camera": "head",
+      "frame": 186,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.50000000000004,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.53
+    },
+    {
+      "camera": "head",
+      "frame": 187,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.583333333333375,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.53
+    },
+    {
+      "camera": "head",
+      "frame": 188,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.666666666666709,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.613
+    },
+    {
+      "camera": "head",
+      "frame": 189,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.750000000000043,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.613
+    },
+    {
+      "camera": "head",
+      "frame": 190,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.833333333333377,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.696
+    },
+    {
+      "camera": "head",
+      "frame": 191,
+      "playback_rate": 0.5,
+      "playback_time_s": 15.91666666666671,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.696
+    },
+    {
+      "camera": "head",
+      "frame": 192,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.000000000000043,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.779
+    },
+    {
+      "camera": "head",
+      "frame": 193,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.083333333333375,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.779
+    },
+    {
+      "camera": "head",
+      "frame": 194,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.166666666666707,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.862
+    },
+    {
+      "camera": "head",
+      "frame": 195,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.25000000000004,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.862
+    },
+    {
+      "camera": "head",
+      "frame": 196,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.33333333333337,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.945
+    },
+    {
+      "camera": "head",
+      "frame": 197,
+      "playback_rate": 0.5,
+      "playback_time_s": 16.416666666666703,
+      "shot": "SHOT 5 \u00b7 HEAD SHAKE \u00b7 0.5x",
+      "sim_time_s": 13.945
+    },
+    {
+      "camera": "anchor",
+      "frame": 198,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.500000000000036,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.277
+    },
+    {
+      "camera": "anchor",
+      "frame": 199,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.583333333333368,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.36
+    },
+    {
+      "camera": "anchor",
+      "frame": 200,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.6666666666667,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.443
+    },
+    {
+      "camera": "anchor",
+      "frame": 201,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.750000000000032,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.526
+    },
+    {
+      "camera": "anchor",
+      "frame": 202,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.833333333333364,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.609
+    },
+    {
+      "camera": "anchor",
+      "frame": 203,
+      "playback_rate": 1.0,
+      "playback_time_s": 16.916666666666696,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.692
+    },
+    {
+      "camera": "anchor",
+      "frame": 204,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.00000000000003,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.775
+    },
+    {
+      "camera": "anchor",
+      "frame": 205,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.08333333333336,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.858
+    },
+    {
+      "camera": "anchor",
+      "frame": 206,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.166666666666693,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 14.941
+    },
+    {
+      "camera": "anchor",
+      "frame": 207,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.250000000000025,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 15.024
+    },
+    {
+      "camera": "anchor",
+      "frame": 208,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.333333333333357,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 15.107
+    },
+    {
+      "camera": "anchor",
+      "frame": 209,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.41666666666669,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 15.19
+    },
+    {
+      "camera": "anchor",
+      "frame": 210,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.50000000000002,
+      "shot": "SHOT 6 \u00b7 TX EVENT \u00b7 LOGICAL BACKEND",
+      "sim_time_s": 15.273
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 211,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.583333333333353,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.024
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 212,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.666666666666686,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.107
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 213,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.750000000000018,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.19
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 214,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.83333333333335,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.273
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 215,
+      "playback_rate": 1.0,
+      "playback_time_s": 17.916666666666682,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.356
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 216,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.000000000000014,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.439
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 217,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.083333333333346,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.522
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 218,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.16666666666668,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.605
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 219,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.25000000000001,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.688
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 220,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.333333333333343,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.771
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 221,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.416666666666675,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.854
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 222,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.500000000000007,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 15.937
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 223,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.58333333333334,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.02
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 224,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.66666666666667,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.103
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 225,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.750000000000004,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.186
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 226,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.833333333333336,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.269
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 227,
+      "playback_rate": 1.0,
+      "playback_time_s": 18.916666666666668,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.352
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 228,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.0,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.435
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 229,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.083333333333332,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.518
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 230,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.166666666666664,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.601
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 231,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.249999999999996,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.684
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 232,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.33333333333333,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.767
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 233,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.41666666666666,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.85
+    },
+    {
+      "camera": "ear_tag_macro",
+      "frame": 234,
+      "playback_rate": 1.0,
+      "playback_time_s": 19.499999999999993,
+      "shot": "SHOT 7 \u00b7 PRODUCT / LIVE FIRMWARE TELEMETRY",
+      "sim_time_s": 16.933
+    }
+  ],
+  "video": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/cinematic.mp4"
+}

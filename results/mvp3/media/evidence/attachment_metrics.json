@@ -1,0 +1,15 @@
+{
+  "attachment_joint": "riose_ear_tag_attachment",
+  "evidence": "Gazebo PosePublisher world poses for ear_left and nested riose_ear_tag",
+  "hinge_angle_provenance": "DERIVED_FROM_GAZEBO_POSE_QUATERNIONS",
+  "joint_force_measurement": {
+    "reason": "Gazebo joint/contact wrench sensor is not configured",
+    "status": "UNAVAILABLE"
+  },
+  "relative_hinge_angle_rad_max": 0.06628782249612804,
+  "relative_pivot_position_drift_max_m": 0.0019478964388260488,
+  "result": "PASS",
+  "samples": 598,
+  "status": "SIMULATED",
+  "validation_tolerance_m": 0.005
+}

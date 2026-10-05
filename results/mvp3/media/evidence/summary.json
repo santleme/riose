@@ -1,0 +1,97 @@
+{
+  "animal_motion_metrics": {
+    "active_forward_duration_s": 8.0,
+    "displacement_ratio": 0.20167989182346227,
+    "expected_forward_displacement_m": 4.0,
+    "measured_root_displacement_m": 0.8067195672938491,
+    "provenance": "SIMULATED",
+    "status": "SIMULATED"
+  },
+  "checks": {
+    "animal_model_operational": {
+      "evidence": "Gazebo model-load evidence",
+      "status": "PASS"
+    },
+    "ear_attachment_operational": {
+      "evidence": "max relative pivot drift 0.0019478964388260488 m",
+      "status": "PASS"
+    },
+    "firmware_wake_tx_operational": {
+      "evidence": "movement-derived IRQ, firmware wake and follow-up TX evidence",
+      "status": "PASS"
+    },
+    "gazebo_operational": {
+      "evidence": "Gazebo process exited successfully",
+      "status": "PASS"
+    },
+    "imu_integration_operational": {
+      "evidence": "221 Gazebo IMU samples",
+      "status": "PASS"
+    },
+    "physical_movement_generated": {
+      "evidence": "cow root moved 0.807 m; requested forward displacement 4.000 m",
+      "status": "PASS"
+    },
+    "power_integration_operational": {
+      "evidence": "validated SIMULATED power schedule and native analysis output",
+      "status": "PASS"
+    },
+    "recording_operational": {
+      "evidence": "validated IMU/pose sample count, monotonic simulation timestamps, finite sensor values, and nearest-pose time alignment",
+      "status": "PASS"
+    },
+    "renode_bridge_operational": {
+      "evidence": "Live Gazebo IMU samples reached the Renode LIS2DW12; Zephyr and SX1262 ran in the same lockstep session",
+      "status": "PASS"
+    },
+    "rf_anchor_operational": {
+      "evidence": "logical radio receiver evidence",
+      "status": "PASS"
+    },
+    "scenario_completed": {
+      "evidence": "successful Gazebo exit with IMU and validated recording artifacts",
+      "status": "PASS"
+    }
+  },
+  "checks_passed": 11,
+  "checks_required": 11,
+  "ear_attachment_metrics": {
+    "attachment_joint": "riose_ear_tag_attachment",
+    "evidence": "Gazebo PosePublisher world poses for ear_left and nested riose_ear_tag",
+    "hinge_angle_provenance": "DERIVED_FROM_GAZEBO_POSE_QUATERNIONS",
+    "joint_force_measurement": {
+      "reason": "Gazebo joint/contact wrench sensor is not configured",
+      "status": "UNAVAILABLE"
+    },
+    "relative_hinge_angle_rad_max": 0.06628782249612804,
+    "relative_pivot_position_drift_max_m": 0.0019478964388260488,
+    "result": "PASS",
+    "samples": 598,
+    "status": "SIMULATED",
+    "validation_tolerance_m": 0.005
+  },
+  "experiment": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z",
+  "gate": "MVP3_DIGITAL_INTEGRATION_PASSED",
+  "imu_sample_count": 221,
+  "logical_anchor_accept_count": 3,
+  "peak_abs_acceleration_g_by_axis": {
+    "x": 2.71530535,
+    "y": 1.421955045,
+    "z": 0.637041525
+  },
+  "physical_rf_result": "ANTENNA_MODEL_UNVALIDATED",
+  "physical_validation": "NOT_PERFORMED",
+  "power_analysis": {
+    "charge_status": "SIMULATED_AT_ASSUMED_REGULATOR_OUTPUT_VOLTAGE",
+    "electrical_metrics_status": "PASS",
+    "modeled_charge_uah": 1.1318944444444314,
+    "modeled_window_s": 17.0,
+    "provenance": "SIMULATED",
+    "status": "COMPLETED"
+  },
+  "provenance": "SIMULATED",
+  "rssi_dbm": null,
+  "scenario": "05_mixed_activity",
+  "schema_version": "riose.mvp3.report/v1",
+  "status": "SIMULATED"
+}

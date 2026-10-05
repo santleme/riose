@@ -11,6 +11,7 @@ JOINTS = (
     "body_translation_joint",
     "head_pitch_joint",
     "ear_left_joint",
+    "ear_right_joint",
     "front_left_leg_joint",
     "front_right_leg_joint",
     "rear_left_leg_joint",
@@ -49,10 +50,16 @@ def trajectory_points(scenario: Scenario, *, sample_period_s: float = 0.05) -> l
             angle = 2 * math.pi * phase.leg_frequency_hz * local_t
             leg = 0.34 if phase.behavior == "WALKING" else 0.62
             stride = leg * math.sin(angle)
+            ramp = min(1.0, local_t / 0.4, max(0.0, (phase.duration_s - local_t) / 0.4))
+            smooth_ramp = ramp * ramp * (3.0 - 2.0 * ramp)
+            ear_wave = phase.ear_amplitude_rad * math.sin(
+                2 * math.pi * max(phase.leg_frequency_hz, 1.8) * local_t + 0.4)
             positions = (
                 start_x + phase.forward_speed_m_s * local_t,
-                phase.head_amplitude_rad * math.sin(2 * math.pi * (1.8 if phase.behavior == "HEAD_SHAKE" else 0.45) * local_t),
-                phase.ear_amplitude_rad * math.sin(2 * math.pi * max(phase.leg_frequency_hz, 1.8) * local_t + 0.4),
+                phase.head_offset_rad * smooth_ramp + phase.head_amplitude_rad * math.sin(
+                    2 * math.pi * (1.8 if phase.behavior == "HEAD_SHAKE" else 0.45) * local_t),
+                ear_wave,
+                -ear_wave * 0.72,
                 stride,
                 -stride,
                 -stride,

@@ -1,0 +1,7 @@
+Source: hardware/mechanical/model.py current MVP2 geometry report
+Inputs: results/mvp2/mechanical/geometry.json
+Author: RIOSE project contributors; generated deterministically by scripts/build_mvp3_visual_assets.py
+Reference: local repository source; no third-party mesh or texture URL was used.
+License: no standalone SPDX license found in this checkout; generated project asset, rights remain unspecified.
+Modifications: external enclosure shell exported from MVP2 CadQuery geometry; cool-slate PBR base color and scalar roughness used because STL has no UVs.
+Dimensions/materials/mass remain ASSUMED; physical validation not performed.

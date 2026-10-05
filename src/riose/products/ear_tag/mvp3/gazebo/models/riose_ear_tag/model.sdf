@@ -32,14 +32,17 @@
         Four envelope boxes leave a 4 x 4 mm square relief around the nominal
         mounting hole. Shapes and mass properties remain provisional proxies.
       -->
-      <visual name="rounded_housing">
-        <geometry>
-          <mesh>
-            <uri>model://riose_ear_tag/meshes/tag_housing.dae</uri>
-          </mesh>
-        </geometry>
+      <visual name="mvp2_cad_enclosure">
+        <pose>-0.015 -0.0308 -0.00925 0 0 0</pose>
+        <geometry><mesh><uri>meshes/ear_tag_assumed.stl</uri><scale>0.001 0.001 0.001</scale></mesh></geometry>
+        <material>
+          <ambient>0.48 0.56 0.59 1</ambient>
+          <diffuse>0.72 0.80 0.82 1</diffuse>
+          <specular>0.12 0.12 0.12 1</specular>
+          <!-- STL has no UV coordinates, so use an explicit PBR base color. -->
+          <pbr><metal><roughness>0.82</roughness><metalness>0.02</metalness></metal></pbr>
+        </material>
       </visual>
-
       <!-- ASSUMED visual-only polymer locking pin in the nominal mounting bore.
            It is not a validated part or a change to the ear-tag attachment. -->
       <visual name="provisional_black_locking_pin">

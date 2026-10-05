@@ -1,0 +1,21 @@
+schema_version: 1
+provenance: ASSUMED
+source: results/mvp2/mechanical/geometry.json plus MVP3 articulated-ear fit hypothesis
+position_m: [0.0, 0.025, -0.015]
+rotation_rad: [1.570796, 0.0, 3.141593]
+mass_kg: 0.0271588325228
+# Source-CAD COM transformed to the SDF link origin at the mounting hole.
+center_of_mass_m: [-0.017147632, -0.022791022, -0.001500205]
+# Diagonal uniform-envelope estimate; STEP-derived tensor is not available in
+# the checked-in inputs, so all terms remain explicitly ASSUMED.
+inertia_kg_m2: [1.12398e-5, 4.04271e-6, 1.37333e-5]
+pivot:
+  link: ear_left
+  axis: [1.0, 0.0, 0.0]
+  point_m: [0.0, 0.0, 0.0]
+  stud_diameter_m: 0.004
+  stud_length_m: 0.012
+  stud_mass_kg: 0.001
+damping_nm_s_rad: 0.02
+stiffness_nm_rad: 0.1
+angular_limits_rad: [-0.523599, 0.523599]

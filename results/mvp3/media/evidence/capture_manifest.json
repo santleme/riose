@@ -1,0 +1,22 @@
+{
+  "clips": {
+    "anchor": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/anchor.mp4",
+    "ear_tag_macro": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/ear_tag_macro.mp4",
+    "follow": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/follow.mp4",
+    "ground_low": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/ground_low.mp4",
+    "head": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/head.mp4",
+    "overview": "/home/lucas_coimbra/.codex/worktrees/mvp3-visual-digital-twin/riose/results/mvp3/cinematic-20261005T165530Z/media/overview.mp4"
+  },
+  "fps_encoding": 12.0,
+  "frames_by_camera": {
+    "anchor": 204,
+    "ear_tag_macro": 204,
+    "follow": 204,
+    "ground_low": 204,
+    "head": 204,
+    "overview": 204
+  },
+  "provenance": "GAZEBO_OGRE2_IMAGE_TOPICS",
+  "schema_version": "riose.mvp3.camera_capture/v1",
+  "timestamps": "Gazebo simulation time from gz.msgs.Image header"
+}

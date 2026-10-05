@@ -16,6 +16,7 @@ class MotionPhase:
     leg_frequency_hz: float = 0.0
     head_amplitude_rad: float = 0.0
     ear_amplitude_rad: float = 0.0
+    head_offset_rad: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -46,6 +47,15 @@ SCENARIOS: dict[str, Scenario] = {
     "04_head_shake": Scenario("04_head_shake", "Head oscillation with a passive ear/tag response.", (
         MotionPhase(2.0, "STANDING"), MotionPhase(4.0, "HEAD_SHAKE", 0.0, 0.0, 0.25, 0.25),
         MotionPhase(2.0, "STANDING"))),
+    "10_ear_flick": Scenario("10_ear_flick", "Short isolated ear flick followed by recovery.", (
+        MotionPhase(2.0, "STANDING"), MotionPhase(0.8, "EAR_FLICK", 0.0, 0.0, 0.0, 0.42),
+        MotionPhase(2.0, "STANDING"))),
+    "11_lower_head": Scenario("11_lower_head", "Smooth head lowering and hold.", (
+        MotionPhase(2.0, "STANDING"), MotionPhase(2.0, "LOWER_HEAD", head_offset_rad=-0.22),
+        MotionPhase(2.0, "STANDING"))),
+    "12_raise_head": Scenario("12_raise_head", "Smooth head raising and hold.", (
+        MotionPhase(2.0, "STANDING"), MotionPhase(2.0, "RAISE_HEAD", head_offset_rad=0.18),
+        MotionPhase(2.0, "STANDING"))),
     "05_mixed_activity": Scenario("05_mixed_activity", "Standing, walking, head shake, then rest.", (
         MotionPhase(3.0, "STANDING"), MotionPhase(8.0, "WALKING", 0.5, 1.7, 0.08, 0.16),
         MotionPhase(3.0, "HEAD_SHAKE", 0.0, 0.0, 0.24, 0.22), MotionPhase(3.0, "STANDING"))),
@@ -71,6 +81,8 @@ def get_scenario(name: str) -> Scenario:
     """Return a known scenario or accept its short CLI alias."""
     aliases = {"standing": "01_standing", "walking": "02_walking", "running": "03_running",
                "head-shake": "04_head_shake", "mixed": "05_mixed_activity",
+               "ear-flick": "10_ear_flick", "lower-head": "11_lower_head",
+               "raise-head": "12_raise_head",
                "heavy-tag": "06_heavy_tag", "attachment-variation": "07_attachment_variation",
                "radio-event": "08_radio_event", "long-simulation": "09_long_simulation",
                "random-activity": "scenario_random_activity"}
