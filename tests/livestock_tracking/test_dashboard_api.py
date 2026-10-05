@@ -106,6 +106,8 @@ def test_landing_page_and_static_product_assets(tmp_path):
     assert "Nature Communications · 2026" in page.text
     assert "Independent study" not in page.text
     assert "5,399 sampling windows from three animals" in page.text
+    assert 'id="product-canvas"' in page.text
+    assert "scene-fallback" not in page.text
     assert "/assets/product-scene.js" in page.text
     assert "/assets/landing.css" in page.text
     assert "/assets/landing.js" in page.text
@@ -153,8 +155,7 @@ def test_landing_page_and_static_product_assets(tmp_path):
     assert three.headers.get("content-encoding") == "gzip"
 
     fallback = client.get("/assets/riose-ear-tag-fallback.webp")
-    assert fallback.status_code == 200
-    assert fallback.headers["content-type"] == "image/webp"
+    assert fallback.status_code == 404
 
 
 def test_dashboard_closes_sqlite_store_on_lifespan_shutdown(tmp_path):
