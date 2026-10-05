@@ -283,7 +283,6 @@
     .scene-wrap.is-over-product:active { cursor: grabbing; }
     .scene-wrap:focus-visible { outline: 1px solid rgb(40 40 38 / 28%); outline-offset: -8px; }
 
-    .scene-fallback,
     #product-canvas {
       position: absolute;
       inset: 0;
@@ -291,23 +290,18 @@
       height: 100%;
     }
 
-    .scene-fallback {
-      box-sizing: border-box;
-      object-fit: contain;
-      padding: clamp(54px, 8vh, 100px) 4vw 2vh;
-      /* The source photograph has a warm gray studio backdrop. Brighten it
-         toward the page paper instead of multiplying it into a visible square. */
-      filter: brightness(1.1);
-      opacity: 0;
-      transition: opacity 180ms ease;
-      pointer-events: none;
-      -webkit-user-drag: none;
-      user-drag: none;
-    }
-
     #product-canvas { display: block; opacity: 0; transition: opacity 180ms ease-out; }
-    .scene-wrap.is-fallback .scene-fallback { opacity: .88; }
     .scene-wrap.is-ready #product-canvas { opacity: 1; }
+    .scene-wrap.is-error::after {
+      position: absolute;
+      inset: 50% 24px auto;
+      transform: translateY(-50%);
+      color: rgb(40 40 38 / 68%);
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+      content: "The 3D model could not start. Enable WebGL and reload the page.";
+    }
 
     .technical-annotations {
       position: absolute;
@@ -417,7 +411,6 @@
       .hero-headline { font-size: clamp(32px, 9.2vw, 58px); letter-spacing: -.045em; line-height: .98; }
       .hero-copy-subtitle { max-width: 390px; margin-top: 16px; font-size: 18px; line-height: 1.45; }
       .scene-wrap { width: 100vw; height: 100svh; min-height: 500px; }
-      .scene-fallback { padding: 80px 0 5vh; }
       .annotation-label { font-size: 8px; }
       .annotation-note { font-size: 7px; }
       .research { min-height: 82vh; padding: 112px 24px 132px; }

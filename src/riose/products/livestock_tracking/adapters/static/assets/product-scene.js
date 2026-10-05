@@ -2,15 +2,14 @@ const status = document.getElementById('scene-status');
 const wrapper = document.getElementById('scene-wrap');
 const hero = document.querySelector('.hero');
 const canvas = document.getElementById('product-canvas');
-const fallback = document.querySelector('.scene-fallback');
 
 let THREE;
 try {
   THREE = await import('./vendor/three.module.js');
 } catch (error) {
-  console.warn('RIOSE 3D scene is unavailable; showing the product photograph.', error);
-  wrapper.classList.add('is-fallback');
-  status.textContent = 'Interactive model unavailable. Showing the product photograph.';
+  console.error('RIOSE 3D scene could not be loaded.', error);
+  wrapper.classList.add('is-error');
+  status.textContent = 'The 3D model could not be loaded. Enable WebGL and reload the page.';
 }
 
 if (THREE) startScene(THREE);
@@ -20,9 +19,9 @@ function startScene(THREE) {
   try {
     renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true, powerPreference: 'high-performance' });
   } catch (error) {
-    console.warn('WebGL could not initialize; showing the product photograph.', error);
-    wrapper.classList.add('is-fallback');
-    status.textContent = 'Interactive model unavailable. Showing the product photograph.';
+    console.error('WebGL could not initialize the RIOSE 3D model.', error);
+    wrapper.classList.add('is-error');
+    status.textContent = 'The 3D model could not start. Enable WebGL and reload the page.';
     return;
   }
 
@@ -580,19 +579,16 @@ function startScene(THREE) {
       renderer.render(scene, camera);
     } catch (error) {
       renderFailed = true;
-      console.error('RIOSE 3D rendering failed; retaining the product photograph.', error);
+      console.error('RIOSE 3D rendering failed.', error);
       wrapper.classList.remove('is-ready');
-      wrapper.classList.add('is-fallback');
-      fallback.alt = 'Matte yellow RIOSE livestock ear tag with black attachment pin';
-      fallback.removeAttribute('aria-hidden');
-      status.textContent = 'Interactive model unavailable. Showing the product photograph.';
+      wrapper.classList.add('is-error');
+      status.textContent = 'The 3D model stopped rendering. Reload the page to try again.';
       return;
     }
     if (!hasRendered) {
       hasRendered = true;
       wrapper.classList.add('is-ready');
-      fallback.alt = '';
-      fallback.setAttribute('aria-hidden', 'true');
+      wrapper.classList.remove('is-error');
       status.textContent = 'Interactive product model ready. Hold and turn the tag to inspect its interior; release to return to the exterior.';
       warmInteriorWhenIdle();
     }

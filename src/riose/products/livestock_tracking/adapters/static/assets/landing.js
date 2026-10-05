@@ -109,10 +109,10 @@
       if (!entry.isIntersecting) return;
       const sceneScript = document.createElement('script');
       sceneScript.type = 'module';
-      sceneScript.src = '/assets/product-scene.js?v=20261003-6';
+      sceneScript.src = '/assets/product-scene.js?v=20261005-1';
       sceneScript.onerror = () => {
-        sceneWrap.classList.add('is-fallback');
-        document.getElementById('scene-status').textContent = 'Interactive model unavailable. Showing the product photograph.';
+        sceneWrap.classList.add('is-error');
+        document.getElementById('scene-status').textContent = 'The 3D model could not be loaded. Enable WebGL and reload the page.';
       };
       document.head.append(sceneScript);
       sceneObserver.disconnect();
