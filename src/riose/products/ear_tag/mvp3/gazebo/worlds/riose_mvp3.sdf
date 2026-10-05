@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!--
+  RIOSE MVP 3 base world for Gazebo Harmonic / SDFormat 1.9.
+
+  Edit the two include <pose> elements below to configure the initial model
+  poses. Values are x y z roll pitch yaw in metres and radians.
+-->
+<sdf version="1.9">
+  <world name="riose_mvp3">
+    <gravity>0 0 -9.81</gravity>
+
+    <physics name="default_physics" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <scene>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.72 0.82 0.92 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Keep the default server systems explicit because specifying world
+         plugins overrides Gazebo Sim's automatic default-system loading. -->
+    <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.85 0.82 0.75 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.25 -1</direction>
+    </light>
+
+    <!-- Flat, static ground plane. -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="ground">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.38 0.43 0.34 1</ambient>
+            <diffuse>0.38 0.43 0.34 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- One stationary receiver anchor, placed beside the cow's +X travel
+         path so it does not act as a collision obstacle during walking runs.
+         Radio event handling is supplied by the MVP3 bridge. -->
+    <model name="riose_anchor" canonical_link="mast" placement_frame="mast">
+      <static>true</static>
+      <pose>0 3 0 0 0 0</pose>
+      <link name="mast">
+        <collision name="mast_collision">
+          <pose>0 0 0.8 0 0 0</pose>
+          <geometry><box><size>0.12 0.12 1.6</size></box></geometry>
+        </collision>
+        <visual name="mast_visual">
+          <pose>0 0 0.8 0 0 0</pose>
+          <geometry><box><size>0.12 0.12 1.6</size></box></geometry>
+          <material>
+            <ambient>0.12 0.20 0.27 1</ambient>
+            <diffuse>0.12 0.20 0.27 1</diffuse>
+          </material>
+        </visual>
+        <collision name="receiver_collision">
+          <pose>0 0 1.72 0 0 0</pose>
+          <geometry><cylinder><radius>0.18</radius><length>0.24</length></cylinder></geometry>
+        </collision>
+        <visual name="receiver_visual">
+          <pose>0 0 1.72 0 0 0</pose>
+          <geometry><cylinder><radius>0.18</radius><length>0.24</length></cylinder></geometry>
+          <material>
+            <ambient>0.12 0.35 0.78 1</ambient>
+            <diffuse>0.12 0.35 0.78 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Resolve model:// URIs by adding the MVP3 gazebo/models directory to
+         GZ_SIM_RESOURCE_PATH in the launch environment. -->
+    <include>
+      <uri>model://riose_cow</uri>
+      <name>riose_cow</name>
+      <pose relative_to="world">0 0 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

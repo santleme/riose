@@ -1,0 +1,1578 @@
+{
+  "status": "SIMULATED",
+  "input_status": "ASSUMED_OR_TRACE_DERIVED_NOT_MEASURED",
+  "modeled_window_s": 3600.0,
+  "trace_window_s": 3600.0,
+  "period_s": null,
+  "total_charge_mah_window": 0.009335000000004557,
+  "mAh_per_day": null,
+  "mAh_per_day_period_s": null,
+  "mAh_per_day_provenance": null,
+  "repeat_period_provenance": null,
+  "trace_provenance": {
+    "path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/firmware_trace.jsonl",
+    "schema_version": "riose.firmware.trace/v1",
+    "sha256": "b19dc3ec59b94a3a4a17b8c9741ea2edcf30cfa9a5dcbe86e6515106c3faf076",
+    "status": "SIMULATED"
+  },
+  "trace_event_coverage": {
+    "BOOT": {
+      "count": 1,
+      "handling": "STRUCTURAL_MARKER_NO_SEPARATE_LOAD"
+    },
+    "PACKET_CREATED": {
+      "count": 21,
+      "handling": "STRUCTURAL_MARKER_NO_SEPARATE_LOAD"
+    },
+    "TX_DONE": {
+      "count": 21,
+      "handling": "PAIRED_RADIO_INTERVAL"
+    },
+    "TX_START": {
+      "count": 21,
+      "handling": "PAIRED_RADIO_INTERVAL"
+    }
+  },
+  "mAh_per_day_status": "NOT_REPORTED_NO_REPEAT_PERIOD",
+  "ideal_capacity_division": null,
+  "ideal_capacity_division_status": "NOT_AVAILABLE_INVALID_SIMULATED_CONSUMPTION",
+  "ideal_capacity_division_details": {
+    "status": "NOT_AVAILABLE_INVALID_SIMULATED_CONSUMPTION",
+    "classification": "THEORETICAL_IDEAL_NOMINAL_ONLY",
+    "nominal_capacity": {
+      "value": 1100.0,
+      "unit": "mAh",
+      "status": "DATASHEET",
+      "source": "hardware/spec.yaml:components.battery.nominal_capacity_mah (DATASHEET: Datasheet rated at 1 mA to 2.0 V; not usable-capacity evidence for this rail)"
+    },
+    "simulated_consumption": null,
+    "formula": "nominal_capacity_mAh / simulated_consumption_mAh_per_day",
+    "value_days": null,
+    "caveat": "This is only mathematical division of nominal capacity by simulated consumption. It does not represent usable capacity, aging, temperature, discharge curve, cutoff, real efficiency, or predicted product autonomy."
+  },
+  "event_charge": [
+    {
+      "event": "IDLE_BASELINE",
+      "component": "idle_baseline",
+      "charge_uah": 1.46,
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ],
+      "duration_provenance": [],
+      "energy_mj": 17.3448,
+      "energy_status": "SIMULATED_AT_ASSUMED_REGULATOR_OUTPUT_VOLTAGE"
+    },
+    {
+      "event": "TX",
+      "component": "sx1262",
+      "charge_uah": 7.875000000004559,
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime"
+      ],
+      "duration_provenance": [
+        "TRACE_TIMESTAMP"
+      ],
+      "energy_mj": 93.55500000005415,
+      "energy_status": "SIMULATED_AT_ASSUMED_REGULATOR_OUTPUT_VOLTAGE"
+    }
+  ],
+  "component_charge_uah": {
+    "idle_baseline": 1.46,
+    "sx1262": 7.875000000004559
+  },
+  "component_provenance": {
+    "idle_baseline": [
+      "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+    ],
+    "sx1262": [
+      "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime"
+    ]
+  },
+  "energy_by_event_mj": {
+    "IDLE_BASELINE": 17.3448,
+    "TX": 93.55500000005415
+  },
+  "energy_provenance": {
+    "load_sources": [
+      "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+      "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+    ],
+    "rail_voltage_assumption": {
+      "source": "hardware/spec.yaml:regulator.output_voltage_v (ASSUMED: MVP1 candidate output)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 3.3
+    }
+  },
+  "energy_tx_mj": 93.55500000005415,
+  "energy_wake_mj": 93.55803534005415,
+  "energy_sleep_mj": 0.0,
+  "energy_status": "SIMULATED_AT_ASSUMED_REGULATOR_OUTPUT_VOLTAGE",
+  "model_provenance": {
+    "battery_esr_ohm": {
+      "source": "hardware/spec.yaml:components.battery.esr_ohm (ASSUMED: MVP1 illustrative ngspice pulse profile; sweep required)",
+      "status": "ASSUMED",
+      "unit": "ohm",
+      "value": 0.25
+    },
+    "battery_voltage_v": {
+      "source": "hardware/spec.yaml:components.battery.nominal_voltage_v (DATASHEET: TLL-5902 datasheet nominal voltage)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 3.6
+    },
+    "brownout_threshold_v": {
+      "source": "hardware/spec.yaml:gate.provisional_limits.minimum_rail_voltage_v (ASSUMED: MVP1 candidate engineering threshold; not a measured brownout point)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 2.7
+    },
+    "idle_current_ma": {
+      "source": "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current",
+      "status": "ASSUMED",
+      "unit": "mA",
+      "value": 0.00146
+    },
+    "nominal_capacity_mah": {
+      "source": "hardware/spec.yaml:components.battery.nominal_capacity_mah (DATASHEET: Datasheet rated at 1 mA to 2.0 V; not usable-capacity evidence for this rail)",
+      "status": "DATASHEET",
+      "unit": "mAh",
+      "value": 1100.0
+    },
+    "output_capacitance_f": {
+      "source": "hardware/spec.yaml:capacitors.rail_output_f (ASSUMED: MVP1 candidate power sweep; no selected component)",
+      "status": "ASSUMED",
+      "unit": "F",
+      "value": 4.7e-05
+    },
+    "pwl_edge_s": {
+      "source": "hardware/spec.yaml:power_profiles.pwl_edge_s (ASSUMED: Numerical transition approximation for SPICE input)",
+      "status": "ASSUMED",
+      "unit": "s",
+      "value": 1e-06
+    },
+    "regulator_dropout_v": {
+      "source": "hardware/spec.yaml:regulator.dropout_headroom_v (ASSUMED: MVP1 averaged transient model simplification)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 0.1
+    },
+    "regulator_efficiency": {
+      "source": "hardware/spec.yaml:regulator.efficiency (ASSUMED: MVP1 assumption; load-dependent and unmeasured)",
+      "status": "ASSUMED",
+      "unit": "fraction",
+      "value": 0.85
+    },
+    "regulator_output_resistance_ohm": {
+      "source": "hardware/spec.yaml:regulator.effective_output_resistance_ohm (ASSUMED: MVP1 averaged transient model placeholder)",
+      "status": "ASSUMED",
+      "unit": "ohm",
+      "value": 0.15
+    },
+    "regulator_output_v": {
+      "source": "hardware/spec.yaml:regulator.output_voltage_v (ASSUMED: MVP1 candidate output)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 3.3
+    },
+    "regulator_quiescent_ma": {
+      "source": "hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA",
+      "status": "ASSUMED",
+      "unit": "mA",
+      "value": 5.9999999999999995e-05
+    },
+    "temperature_c": {
+      "source": "hardware/spec.yaml:power_profiles.temperature_c (ASSUMED: Nominal simulated environment assumption only)",
+      "status": "ASSUMED",
+      "unit": "degC",
+      "value": 25.0
+    }
+  },
+  "idle_current_ma_assumed": 0.00146,
+  "timeline": [
+    {
+      "timestamp_start_s": 0.0,
+      "timestamp_end_s": 0.00816,
+      "duration_s": 0.00816,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 0.00816,
+      "timestamp_end_s": 0.03816,
+      "duration_s": 0.03,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 0.03816,
+      "timestamp_end_s": 5.76023,
+      "duration_s": 5.7220699999999995,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 5.76023,
+      "timestamp_end_s": 5.79023,
+      "duration_s": 0.03000000000000025,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 5.79023,
+      "timestamp_end_s": 15.76144,
+      "duration_s": 9.97121,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 15.76144,
+      "timestamp_end_s": 15.79144,
+      "duration_s": 0.02999999999999936,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 15.79144,
+      "timestamp_end_s": 25.762381,
+      "duration_s": 9.970941000000002,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 25.762381,
+      "timestamp_end_s": 25.792381,
+      "duration_s": 0.029999999999997584,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 25.792381,
+      "timestamp_end_s": 35.76345,
+      "duration_s": 9.971069,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 35.76345,
+      "timestamp_end_s": 35.79345,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 35.79345,
+      "timestamp_end_s": 45.760231,
+      "duration_s": 9.966780999999997,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 45.760231,
+      "timestamp_end_s": 45.790231,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 45.790231,
+      "timestamp_end_s": 55.760333,
+      "duration_s": 9.970102000000004,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 55.760333,
+      "timestamp_end_s": 55.790333,
+      "duration_s": 0.02999999999999403,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 55.790333,
+      "timestamp_end_s": 65.760229,
+      "duration_s": 9.969895999999999,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 65.760229,
+      "timestamp_end_s": 65.790229,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 65.790229,
+      "timestamp_end_s": 75.760341,
+      "duration_s": 9.970112,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 75.760341,
+      "timestamp_end_s": 75.790341,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 75.790341,
+      "timestamp_end_s": 85.760229,
+      "duration_s": 9.969887999999997,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 85.760229,
+      "timestamp_end_s": 85.790229,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 85.790229,
+      "timestamp_end_s": 95.760355,
+      "duration_s": 9.970126000000008,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 95.760355,
+      "timestamp_end_s": 95.790355,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 95.790355,
+      "timestamp_end_s": 105.760229,
+      "duration_s": 9.96987399999999,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 105.760229,
+      "timestamp_end_s": 105.790229,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 105.790229,
+      "timestamp_end_s": 115.760489,
+      "duration_s": 9.97026000000001,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 115.760489,
+      "timestamp_end_s": 115.790489,
+      "duration_s": 0.029999999999986926,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 115.790489,
+      "timestamp_end_s": 125.760229,
+      "duration_s": 9.969740000000002,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 125.760229,
+      "timestamp_end_s": 125.790229,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 125.790229,
+      "timestamp_end_s": 135.760371,
+      "duration_s": 9.970141999999996,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 135.760371,
+      "timestamp_end_s": 135.790371,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 135.790371,
+      "timestamp_end_s": 145.761438,
+      "duration_s": 9.971067000000005,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 145.761438,
+      "timestamp_end_s": 145.791438,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 145.791438,
+      "timestamp_end_s": 155.762381,
+      "duration_s": 9.970943000000005,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 155.762381,
+      "timestamp_end_s": 155.792381,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 155.792381,
+      "timestamp_end_s": 165.763448,
+      "duration_s": 9.971067000000005,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 165.763448,
+      "timestamp_end_s": 165.793448,
+      "duration_s": 0.030000000000001137,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 165.793448,
+      "timestamp_end_s": 1065.764343,
+      "duration_s": 899.970895,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 1065.764343,
+      "timestamp_end_s": 1065.794343,
+      "duration_s": 0.029999999999972715,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 1065.794343,
+      "timestamp_end_s": 1965.764718,
+      "duration_s": 899.9703749999999,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 1965.764718,
+      "timestamp_end_s": 1965.794718,
+      "duration_s": 0.03000000000020009,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 1965.794718,
+      "timestamp_end_s": 2865.76563,
+      "duration_s": 899.9709119999998,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 2865.76563,
+      "timestamp_end_s": 2865.79563,
+      "duration_s": 0.03000000000020009,
+      "load_current_ma": 45.00146,
+      "active_events": "TX",
+      "active_components": "sx1262",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk; fallback duration ASSUMED from MVP1 configured profile; not measured airtime",
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    },
+    {
+      "timestamp_start_s": 2865.79563,
+      "timestamp_end_s": 3600.0,
+      "duration_s": 734.2043699999999,
+      "load_current_ma": 0.00146,
+      "active_events": "IDLE",
+      "active_components": "",
+      "status": "SIMULATED",
+      "current_status": [
+        "ASSUMED"
+      ],
+      "input_provenance": [
+        "hardware/spec.yaml:components.imu.low_power_current_ma (ASSUMED: MVP1 configured estimate within datasheet summary; exact mode/ODR pending); hardware/spec.yaml:components.radio.sleep_current_ma (ASSUMED: MVP1 board-level allowance; requires selected module/configuration); hardware/spec.yaml:regulator.quiescent_current_a (DATASHEET: TPS62840 typical datasheet IQ; configuration/conditions apply); converted A to mA; aggregate sleep baseline excludes MCU stop current"
+      ]
+    }
+  ],
+  "fault_profile": null,
+  "fault_profile_provenance": null,
+  "ngspice": {
+    "status": "PASS",
+    "return_code": 0,
+    "rail_min_v": 3.2932,
+    "rail_max_v": 3.30039,
+    "battery_min_v": 3.58787,
+    "battery_current_peak_a": 0.048531,
+    "voltage_droop_v": 0.006799999999999695,
+    "recovery_to_99pct_s": 0.0,
+    "recovery_status": "RECOVERED_TO_99PCT",
+    "functional_margin_v": 0.5932,
+    "detail": null,
+    "log": "ngspice.log",
+    "trace": "power_waveform.dat",
+    "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+    "electrical_trace_csv": "electrical_trace.csv",
+    "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+    "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+    "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+    "brownout_threshold_v_assumed": 2.7,
+    "brownout_threshold_provenance": {
+      "source": "hardware/spec.yaml:gate.provisional_limits.minimum_rail_voltage_v (ASSUMED: MVP1 candidate engineering threshold; not a measured brownout point)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 2.7
+    },
+    "version": "ngspice-47 : Circuit level simulation program",
+    "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT"
+  },
+  "sweep": {
+    "status": "PASS_WITH_TEMPERATURE_AXIS_NOT_MODELED",
+    "case_count": 19,
+    "attempted_case_count": 16,
+    "executed_case_count": 16,
+    "not_modeled_axes": [
+      "temperature_c_assumption"
+    ],
+    "cases": [
+      {
+        "case": "BASELINE",
+        "overrides": {},
+        "override_provenance": {},
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "00-BASELINE/power_trace.cir"
+      },
+      {
+        "case": "battery_voltage_v=3",
+        "overrides": {
+          "battery_voltage_v": 3.0
+        },
+        "override_provenance": {
+          "battery_voltage_v": {
+            "value": 3.0,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_voltage_v"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 2.87854,
+          "rail_max_v": 3.0654,
+          "battery_min_v": 2.98544,
+          "battery_current_peak_a": 0.0582372,
+          "voltage_droop_v": 0.4214599999999997,
+          "recovery_to_99pct_s": null,
+          "recovery_status": "NOT_RECOVERED_WITHIN_SIMULATED_WINDOW",
+          "functional_margin_v": 0.17853999999999992,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "48fabb0c00b09925f2d2aee5ce5120b79045afe361a4100701689dadac3a2e77",
+          "netlist_sha256": "0494e7f0da767909a4314dee880253a9d739bddfb5ec33b11b1e7d8468659835",
+          "waveform_sha256": "c3b2b06b7cbe0329f4d24fab7c394c211a69001fab419defa7e0488244117cf6",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "01-battery_voltage_v-3/power_trace.cir"
+      },
+      {
+        "case": "battery_voltage_v=3.3",
+        "overrides": {
+          "battery_voltage_v": 3.3
+        },
+        "override_provenance": {
+          "battery_voltage_v": {
+            "value": 3.3,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_voltage_v"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.17988,
+          "rail_max_v": 3.24135,
+          "battery_min_v": 3.28676,
+          "battery_current_peak_a": 0.052943,
+          "voltage_droop_v": 0.12012,
+          "recovery_to_99pct_s": null,
+          "recovery_status": "NOT_RECOVERED_WITHIN_SIMULATED_WINDOW",
+          "functional_margin_v": 0.47987999999999964,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "8b8dd266ca0c5bf735d0d72d55b2ab0e16e8bbdebfe8e3959aa94f8892495f4d",
+          "netlist_sha256": "e8158ac25c2341772eb18822ed95025afcaafa3547590ed7acdc51db049d7b2c",
+          "waveform_sha256": "b92fe062a2a65c710b3b284fc88ce1d87430f7c3c6f160df5e7c15d55adfe229",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "02-battery_voltage_v-3.3/power_trace.cir"
+      },
+      {
+        "case": "battery_voltage_v=3.6",
+        "overrides": {
+          "battery_voltage_v": 3.6
+        },
+        "override_provenance": {
+          "battery_voltage_v": {
+            "value": 3.6,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_voltage_v"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "03-battery_voltage_v-3.6/power_trace.cir"
+      },
+      {
+        "case": "battery_esr_ohm=0.1",
+        "overrides": {
+          "battery_esr_ohm": 0.1
+        },
+        "override_provenance": {
+          "battery_esr_ohm": {
+            "value": 0.1,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_esr_ohm"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.59515,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "c220367aea3a3061a4a56edf9ab7a0f11f61f59ddc5e94402aa22c823fec7be2",
+          "netlist_sha256": "d70bb7697b5afbfe1e500f9f498bd2e77ff5da507337fad5630eca4d5213f28b",
+          "waveform_sha256": "44dbf19a1304af02cbbc9a27b9db0a7bd2deb9898595a6d90800dd88bdd9efd1",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "04-battery_esr_ohm-0.1/power_trace.cir"
+      },
+      {
+        "case": "battery_esr_ohm=0.25",
+        "overrides": {
+          "battery_esr_ohm": 0.25
+        },
+        "override_provenance": {
+          "battery_esr_ohm": {
+            "value": 0.25,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_esr_ohm"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "05-battery_esr_ohm-0.25/power_trace.cir"
+      },
+      {
+        "case": "battery_esr_ohm=0.5",
+        "overrides": {
+          "battery_esr_ohm": 0.5
+        },
+        "override_provenance": {
+          "battery_esr_ohm": {
+            "value": 0.5,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: battery_esr_ohm"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.57573,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "37c57687835bdd5c8dd1a012b5e47d598e47c03cba735794ab8b49a3d84030c1",
+          "netlist_sha256": "217556b6bc9890a1ab9f4a5cee152273e0a0d42b773c6e9e0e918baab5d37cbc",
+          "waveform_sha256": "18d4f0df1c5be488e4c5be524343d116ac813584e7569cee896b5ea23903ba48",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "06-battery_esr_ohm-0.5/power_trace.cir"
+      },
+      {
+        "case": "regulator_efficiency=0.7",
+        "overrides": {
+          "regulator_efficiency": 0.7
+        },
+        "override_provenance": {
+          "regulator_efficiency": {
+            "value": 0.7,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: regulator_efficiency"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58527,
+          "battery_current_peak_a": 0.0589305,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "a58880ed8625de3d623a7c21cb109f95dc882e90b01d16ac71ed0a7307f11cd5",
+          "netlist_sha256": "35019bef015947ff9e53aedd5ebf16daecd7010f21ad1118999d2801eac20e22",
+          "waveform_sha256": "c5d486449736e251534d8938d0306a119033301f8b0f70d5d1922704be0e6768",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "07-regulator_efficiency-0.7/power_trace.cir"
+      },
+      {
+        "case": "regulator_efficiency=0.85",
+        "overrides": {
+          "regulator_efficiency": 0.85
+        },
+        "override_provenance": {
+          "regulator_efficiency": {
+            "value": 0.85,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: regulator_efficiency"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "08-regulator_efficiency-0.85/power_trace.cir"
+      },
+      {
+        "case": "regulator_efficiency=0.95",
+        "overrides": {
+          "regulator_efficiency": 0.95
+        },
+        "override_provenance": {
+          "regulator_efficiency": {
+            "value": 0.95,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: regulator_efficiency"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58914,
+          "battery_current_peak_a": 0.0434225,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "26efed583421b870e254e15e73a35f1c208483cfc31fb386259110db7d06f551",
+          "netlist_sha256": "9ac94ccea21b4256052e83d9f98fbb8a5a364fa9e4ce6991365fcc5e33090336",
+          "waveform_sha256": "11687d70485e7e0dc32f268daedb29f026f87e74dc29910e9d461885773b5c49",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "09-regulator_efficiency-0.95/power_trace.cir"
+      },
+      {
+        "case": "output_capacitance_f=3.76e-05",
+        "overrides": {
+          "output_capacitance_f": 3.76e-05
+        },
+        "override_provenance": {
+          "output_capacitance_f": {
+            "value": 3.76e-05,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: output_capacitance_f"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.29322,
+          "rail_max_v": 3.30032,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006780000000000008,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932199999999996,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "1f9fca167f6468a85d5ca8bc58bc5062087db40e90ad1d8f28602972e42e0f97",
+          "netlist_sha256": "81e2aa4bbf9087810637f6d1a4aca71ae3261e8b5a96f4f003d261ed2f0f1d8b",
+          "waveform_sha256": "e8bc9227c62f561c76f99dbdc8cc811cbe53a0b17bdfb565a757d60a2f1ca8aa",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "10-output_capacitance_f-3.76e-05/power_trace.cir"
+      },
+      {
+        "case": "output_capacitance_f=4.7e-05",
+        "overrides": {
+          "output_capacitance_f": 4.7e-05
+        },
+        "override_provenance": {
+          "output_capacitance_f": {
+            "value": 4.7e-05,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: output_capacitance_f"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "11-output_capacitance_f-4.7e-05/power_trace.cir"
+      },
+      {
+        "case": "output_capacitance_f=5.64e-05",
+        "overrides": {
+          "output_capacitance_f": 5.6399999999999995e-05
+        },
+        "override_provenance": {
+          "output_capacitance_f": {
+            "value": 5.6399999999999995e-05,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: output_capacitance_f"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.29323,
+          "rail_max_v": 3.30044,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006769999999999943,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932299999999997,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "adec92aebbb759e83cae4e8a009de1a5b3c8c434ab193425613bdfc8ecd55501",
+          "netlist_sha256": "a2e9c6b7125dc1ffc6d80910178fd4f0b1c61807b932ada68a19431aadfccd06",
+          "waveform_sha256": "9ff2c8cc5e2d76719f815c5a062238bfe0b5a207d20880c0ab4c787fe5c16c71",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "12-output_capacitance_f-5.64e-05/power_trace.cir"
+      },
+      {
+        "case": "temperature_c_assumption=-10",
+        "overrides": {
+          "temperature_c_assumption": -10.0
+        },
+        "override_provenance": {
+          "temperature_c_assumption": {
+            "value": -10.0,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: temperature_c_assumption"
+          }
+        },
+        "temperature_status": "ASSUMED_SCENARIO_ONLY_NO_TEMPERATURE_MODEL",
+        "temperature_model": null,
+        "netlist": null,
+        "status": "NOT_MODELED_NO_TEMPERATURE_DEPENDENCY"
+      },
+      {
+        "case": "temperature_c_assumption=25",
+        "overrides": {
+          "temperature_c_assumption": 25.0
+        },
+        "override_provenance": {
+          "temperature_c_assumption": {
+            "value": 25.0,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: temperature_c_assumption"
+          }
+        },
+        "temperature_status": "ASSUMED_SCENARIO_ONLY_NO_TEMPERATURE_MODEL",
+        "temperature_model": null,
+        "netlist": null,
+        "status": "NOT_MODELED_NO_TEMPERATURE_DEPENDENCY"
+      },
+      {
+        "case": "temperature_c_assumption=50",
+        "overrides": {
+          "temperature_c_assumption": 50.0
+        },
+        "override_provenance": {
+          "temperature_c_assumption": {
+            "value": 50.0,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: temperature_c_assumption"
+          }
+        },
+        "temperature_status": "ASSUMED_SCENARIO_ONLY_NO_TEMPERATURE_MODEL",
+        "temperature_model": null,
+        "netlist": null,
+        "status": "NOT_MODELED_NO_TEMPERATURE_DEPENDENCY"
+      },
+      {
+        "case": "tx_current_scale=0.8",
+        "overrides": {
+          "tx_current_scale": 0.8
+        },
+        "override_provenance": {
+          "tx_current_scale": {
+            "value": 0.8,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: tx_current_scale"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.29456,
+          "rail_max_v": 3.30031,
+          "battery_min_v": 3.59029,
+          "battery_current_peak_a": 0.0388252,
+          "voltage_droop_v": 0.005439999999999667,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.59456,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "51ca39a9181d2731a6a338470094e6407eae8b14807aec12f956f91eb5aff1a1",
+          "netlist_sha256": "3a9feda770f57b989c0ef7feb49c87dfcd0574a24aef51de1bd2efca41d1ff1e",
+          "waveform_sha256": "a39b33f5372eb85073627086a9caa914c0a779f4ea764f5669fe01aae529ca74",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "16-tx_current_scale-0.8/power_trace.cir"
+      },
+      {
+        "case": "tx_current_scale=1",
+        "overrides": {
+          "tx_current_scale": 1.0
+        },
+        "override_provenance": {
+          "tx_current_scale": {
+            "value": 1.0,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: tx_current_scale"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.2932,
+          "rail_max_v": 3.30039,
+          "battery_min_v": 3.58787,
+          "battery_current_peak_a": 0.048531,
+          "voltage_droop_v": 0.006799999999999695,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5932,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+          "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+          "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "17-tx_current_scale-1/power_trace.cir"
+      },
+      {
+        "case": "tx_current_scale=1.2",
+        "overrides": {
+          "tx_current_scale": 1.2
+        },
+        "override_provenance": {
+          "tx_current_scale": {
+            "value": 1.2,
+            "status": "ASSUMED",
+            "source": "MVP2 one-factor-at-a-time sensitivity axis: tx_current_scale"
+          }
+        },
+        "temperature_status": null,
+        "temperature_model": null,
+        "status": "PASS",
+        "ngspice": {
+          "status": "PASS",
+          "return_code": 0,
+          "rail_min_v": 3.29184,
+          "rail_max_v": 3.30046,
+          "battery_min_v": 3.58544,
+          "battery_current_peak_a": 0.0582369,
+          "voltage_droop_v": 0.008159999999999723,
+          "recovery_to_99pct_s": 0.0,
+          "recovery_status": "RECOVERED_TO_99PCT",
+          "functional_margin_v": 0.5918399999999999,
+          "detail": null,
+          "log": "ngspice.log",
+          "trace": "power_waveform.dat",
+          "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+          "electrical_trace_csv": "electrical_trace.csv",
+          "simulation_id": "5af79357da465e7d5551df0662bb220808c1c6998776491b6ee94708dce542db",
+          "netlist_sha256": "bbe9dab961f53916168f8703a12aad19bc6131832acb28a7812f323a98a60e49",
+          "waveform_sha256": "f6e1fe90a6154e636d67d87ff49383384eb2ae242ab6fd17bc21993bc4ff057b",
+          "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+          "version": "ngspice-47 : Circuit level simulation program"
+        },
+        "netlist_path": "18-tx_current_scale-1.2/power_trace.cir"
+      }
+    ]
+  },
+  "result_status": "SIMULATED"
+}

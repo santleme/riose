@@ -24,6 +24,16 @@ class TraceDrivenPowerTests(unittest.TestCase):
              "duration_s": 1.0, "load_current_ma": 40.0, "end_s": 2.0},
         ]
 
+    def test_ngspice_time_axis_allows_duplicate_discontinuity_samples(self):
+        self.assertTrue(power._has_valid_time_axis([
+            (0.0, 3.3, 3.6, 0.0),
+            (1.0, 3.3, 3.6, 0.0),
+            (1.0, 3.2, 3.5, 0.1),
+            (2.0, 3.3, 3.6, 0.0),
+        ]))
+        self.assertFalse(power._has_valid_time_axis([(0.0,), (0.0,)]))
+        self.assertFalse(power._has_valid_time_axis([(0.0,), (1.0,), (0.5,)]))
+
     def test_overlapping_event_energy_and_idle_gap_are_integrated(self):
         result = power.analyze_schedule(self.rows, self.assumptions, period_s=10.0,
             period_source="test repeat period", period_status="ASSUMED")

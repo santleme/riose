@@ -202,6 +202,10 @@ class FirmwareTraceAdapterTests(unittest.TestCase):
         tx = next(row for row in rows if row["event"] == "TX")
         self.assertAlmostEqual(tx["timestamp_s"], 0.02)
         self.assertAlmostEqual(tx["duration_s"], 0.01)
+        extended = adapter.trace_to_schedule(trace, loads, trace_duration_s=2.0)
+        self.assertTrue(all(row["trace_window_end_s"] == 2.0 for row in extended))
+        with self.assertRaisesRegex(adapter.TraceConversionError, "must be positive and cover"):
+            adapter.trace_to_schedule(trace, loads, trace_duration_s=1.0)
 
     def test_unmodeled_trace_state_is_not_silently_dropped(self):
         trace = [record(0, "STATE", "BOOT"), record(1, "STATE", "SLEEP")]

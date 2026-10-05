@@ -1,0 +1,283 @@
+{
+  "activity_labels_sent_to_firmware": false,
+  "anchor_receive_count": 21,
+  "animal_model_loaded": true,
+  "animal_motion_metrics": {
+    "active_forward_duration_s": 0,
+    "displacement_ratio": null,
+    "expected_forward_displacement_m": 0.0,
+    "measured_root_displacement_m": 0.005297009263538371,
+    "provenance": "SIMULATED",
+    "status": "SIMULATED"
+  },
+  "assets": {
+    "cow": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/sim_assets/models/riose_cow/model.sdf",
+    "source_cow": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/src/riose/products/ear_tag/mvp3/gazebo/models/riose_cow/model.sdf",
+    "source_tag": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/src/riose/products/ear_tag/mvp3/gazebo/models/riose_ear_tag/model.sdf",
+    "tag": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/sim_assets/models/riose_ear_tag/model.sdf",
+    "world": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/src/riose/products/ear_tag/mvp3/gazebo/worlds/riose_mvp3.sdf"
+  },
+  "attachment_dynamics": {
+    "damping_nm_s_rad": 0.02,
+    "limit_rad": 0.523599,
+    "spring_stiffness_nm_rad": 0.1,
+    "status": "ASSUMED"
+  },
+  "attachment_position_m": [
+    0.0,
+    0.025,
+    -0.015
+  ],
+  "clock": {
+    "execution_mode": "HEADLESS_RTF_1",
+    "firmware_clock": "Renode virtual time controlled at each Gazebo IMU timestamp",
+    "master": "Gazebo simulation time",
+    "physics_step_s": 0.001,
+    "requested_real_time_factor": 1.0
+  },
+  "clock_mapping": {
+    "alignment_basis": "Gazebo advanced in paused batches; Renode reached each same simulation timestamp before the next batch",
+    "barrier_evidence": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/live_clock_evidence.jsonl",
+    "live_lockstep": true,
+    "method": "LIVE_GAZEBO_MASTER_LOCKSTEP",
+    "offset_s": 0.0,
+    "scale": 1.0,
+    "schema_version": "riose.mvp3.clock_mapping/v1",
+    "source_clock": "RENODE_VIRTUAL_TIME",
+    "status": "SIMULATED",
+    "target_clock": "GAZEBO_SIMULATION_TIME"
+  },
+  "clock_sync": {
+    "batch_count": 18000,
+    "clock_error_s": "0.000",
+    "clock_evidence": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/live_clock_evidence.jsonl",
+    "clock_master": "GAZEBO_SIMULATION_TIME",
+    "gazebo_imu_raw_samples_recorded": 180001,
+    "gazebo_imu_samples_injected": 180001,
+    "injected_acceleration_unit": "g",
+    "injection_policy": "EVERY_TIMESTAMPED_GAZEBO_IMU_SAMPLE",
+    "last_gazebo_imu_timestamp_s": "3600.0",
+    "live_lockstep": true,
+    "max_observed_clock_error_s": "0",
+    "mode": "GAZEBO_MASTER_PAUSED_STEPPING",
+    "physics_step_s": "0.001",
+    "renode_clock_observation": "MONITOR_CURRENT_TIME_AT_EACH_BATCH_BARRIER",
+    "renode_duration_s": "3600.0",
+    "simulation_duration_s": "3600.000",
+    "source_acceleration_unit": "m/s^2",
+    "status": "SIMULATED",
+    "steps_per_batch": 200
+  },
+  "description": "One virtual hour of low-rate walking/rest cycles.",
+  "duration_s": 3600.0,
+  "ear_attachment_evidence": {
+    "attachment_joint": "riose_ear_tag_attachment",
+    "evidence": "Gazebo PosePublisher world poses for ear_left and nested riose_ear_tag",
+    "relative_pivot_position_drift_max_m": 1.6792714037563227e-07,
+    "result": "PASS",
+    "samples": 72055,
+    "status": "SIMULATED",
+    "validation_tolerance_m": 0.005
+  },
+  "ear_attachment_validated": true,
+  "firmware_clock_sync": {
+    "clock_master": "GAZEBO_SIMULATION_TIME",
+    "clock_observation": "MONITOR_CURRENT_TIME_AT_EACH_BATCH_BARRIER",
+    "evidence": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/live_clock_evidence.jsonl",
+    "live_lockstep": true,
+    "max_observed_clock_error_s_at_batch_barriers": "0",
+    "mode": "GAZEBO_MASTER_PAUSED_STEPPING",
+    "sample_injection_count": 180001,
+    "status": "SIMULATED"
+  },
+  "firmware_live_evidence": {
+    "clock_evidence": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/live_clock_evidence.jsonl",
+    "firmware_final_state": "SLEEP",
+    "firmware_final_state_code": 2,
+    "firmware_wake_tx_validated": true,
+    "imu_output_sample_read_count": 466,
+    "last_wakeup_source_value": 12,
+    "lis2dw12_ctrl1": 20,
+    "lis2dw12_sample_rate_hz": 13,
+    "movement_derived_tx_count": 18,
+    "movement_derived_tx_records": [
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 5.76023087,
+        "tx_index": 2
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 15.76144039,
+        "tx_index": 3
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 25.76238164,
+        "tx_index": 4
+      },
+      {
+        "behavior": 2,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 35.76345087,
+        "tx_index": 5
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 45.76023102,
+        "tx_index": 6
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 55.76033319,
+        "tx_index": 7
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 65.76022991,
+        "tx_index": 8
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 75.76034189,
+        "tx_index": 9
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 85.76022976,
+        "tx_index": 10
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 95.76035503,
+        "tx_index": 11
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 105.7602295,
+        "tx_index": 12
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 115.76048917,
+        "tx_index": 13
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 125.76022984,
+        "tx_index": 14
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 135.76037182,
+        "tx_index": 15
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 145.76143894,
+        "tx_index": 16
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 155.76238188,
+        "tx_index": 17
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 165.76344808,
+        "tx_index": 18
+      },
+      {
+        "behavior": 3,
+        "scenario_phase": "WALKING",
+        "timestamp_s": 1065.76434311,
+        "tx_index": 19
+      }
+    ],
+    "post_boot_tx_count": 20,
+    "radio_tx_count": 21,
+    "radio_tx_done_count": 21,
+    "sample_injection_count": 180001,
+    "schema_version": "riose.mvp3.live_firmware_evidence/v1",
+    "state_code_map": [
+      "BOOT",
+      "SELF_TEST",
+      "SLEEP",
+      "IMU_MONITORING",
+      "RF_TX",
+      "RF_RX",
+      "ALERT",
+      "ERROR_RECOVERY"
+    ],
+    "state_trace_gpioa_odr": 6146,
+    "state_trace_pin_bits": [
+      0,
+      1,
+      3
+    ],
+    "status": "SIMULATED_APPROXIMATE_HIGH_PASS_WU",
+    "wakeup_comparator_odr_hz_configured": 13,
+    "wakeup_comparator_sample_count": 45000,
+    "wakeup_comparator_sample_rate_hz_observed": 12.5,
+    "wakeup_event_read_count": 450,
+    "wakeup_generated_event_count": 450,
+    "wakeup_irq_asserted_at_end": false,
+    "wakeup_source_read_count": 467
+  },
+  "firmware_trace": {
+    "anchor_logical_accept_count": 21,
+    "logical_rf_event_count": 21,
+    "path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/firmware_trace.jsonl",
+    "physical_rf_result": "ANTENNA_MODEL_UNVALIDATED",
+    "power_status": "COMPLETED",
+    "rssi_dbm": null,
+    "source_path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/live_firmware_trace.jsonl",
+    "source_scope": "SX1262 logical trace captured from the same Zephyr/Renode session as Gazebo IMU injection; Renode and Gazebo virtual clocks were equal at every recorded barrier. The trace has no physical RF propagation or measured RSSI.",
+    "status": "SIMULATED"
+  },
+  "firmware_wake_tx_validated": true,
+  "gazebo_exit_code": 0,
+  "gazebo_start_policy": "PAUSE_AND_RESET_BEFORE_RECORDING",
+  "imu_topic": "/riose/mvp3/imu/data",
+  "motion_controller_completed": true,
+  "movement_derived_tx_count": 18,
+  "movement_wake_evidence": {
+    "irq_asserted_after_source_read": false,
+    "last_payload_classifier_behavior": 3,
+    "last_wakeup_source_value": 12,
+    "movement_derived_tx_count": 18,
+    "post_boot_tx_count": 20,
+    "post_motion_firmware_state": "SLEEP",
+    "status": "SIMULATED_APPROXIMATE_HIGH_PASS_WU",
+    "wakeup_event_read_count": 450,
+    "wakeup_generated_event_count": 450,
+    "wakeup_source_read_count": 467
+  },
+  "provenance": "SIMULATED",
+  "scenario": "09_long_simulation",
+  "scenario_complete": true,
+  "schema_version": "riose.mvp3.experiment/v1",
+  "seed": 20261003,
+  "simulation_time_origin_s": 0.0,
+  "status": "SIMULATED",
+  "tag_mass_g": 27.1588325228,
+  "tag_mass_status": "ASSUMED",
+  "visual_mode": false,
+  "wall_runtime_s": 43363.669131421
+}

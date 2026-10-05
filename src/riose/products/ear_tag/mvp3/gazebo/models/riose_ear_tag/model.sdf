@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="riose_ear_tag">
+    <static>false</static>
+    <self_collide>false</self_collide>
+    <!--
+      Provisional model inputs from hardware/spec.yaml and
+      results/mvp2/mechanical/geometry.json. These are ASSUMED geometry/mass
+      estimates, not measured or validated physical properties.
+      The tag_link origin is at the mounting-hole/pivot center to simplify the
+      world-level attachment joint. Envelope dimensions: 0.038 x 0.068 x
+      0.0185 m; source hole center: (+0.015, +0.0308) m from the envelope XY
+      center, with its axis centered through the thickness. The opening below
+      is a square 4 mm collision relief proxy for the assumed 4 mm round hole.
+    -->
+    <link name="tag_link">
+      <inertial>
+        <pose>-0.0171476 -0.022791 -0.0015002 0 0 0</pose>
+        <mass>0.0271588</mass>
+        <!-- Uniform-envelope box approximation; diagonal terms only. -->
+        <inertia>
+          <ixx>1.12398e-5</ixx>
+          <iyy>4.04271e-6</iyy>
+          <izz>1.37333e-5</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <!--
+        Four envelope boxes leave a 4 x 4 mm square relief around the nominal
+        mounting hole. Shapes and mass properties remain provisional proxies.
+      -->
+      <visual name="body_left">
+        <pose>-0.018 -0.0308 0 0 0 0</pose>
+        <geometry><box><size>0.032 0.068 0.0185</size></box></geometry>
+        <material>
+          <ambient>0.82 0.68 0.20 1</ambient>
+          <diffuse>0.92 0.76 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="body_right">
+        <pose>0.003 -0.0308 0 0 0 0</pose>
+        <geometry><box><size>0.002 0.068 0.0185</size></box></geometry>
+        <material>
+          <ambient>0.82 0.68 0.20 1</ambient>
+          <diffuse>0.92 0.76 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="body_above_hole">
+        <pose>0 0.0026 0 0 0 0</pose>
+        <geometry><box><size>0.004 0.0012 0.0185</size></box></geometry>
+        <material>
+          <ambient>0.82 0.68 0.20 1</ambient>
+          <diffuse>0.92 0.76 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="body_below_hole">
+        <pose>0 -0.0334 0 0 0 0</pose>
+        <geometry><box><size>0.004 0.0628 0.0185</size></box></geometry>
+        <material>
+          <ambient>0.82 0.68 0.20 1</ambient>
+          <diffuse>0.92 0.76 0.24 1</diffuse>
+        </material>
+      </visual>
+
+      <collision name="body_left_collision">
+        <pose>-0.018 -0.0308 0 0 0 0</pose>
+        <geometry><box><size>0.032 0.068 0.0185</size></box></geometry>
+      </collision>
+      <collision name="body_right_collision">
+        <pose>0.003 -0.0308 0 0 0 0</pose>
+        <geometry><box><size>0.002 0.068 0.0185</size></box></geometry>
+      </collision>
+      <collision name="body_above_hole_collision">
+        <pose>0 0.0026 0 0 0 0</pose>
+        <geometry><box><size>0.004 0.0012 0.0185</size></box></geometry>
+      </collision>
+      <collision name="body_below_hole_collision">
+        <pose>0 -0.0334 0 0 0 0</pose>
+        <geometry><box><size>0.004 0.0628 0.0185</size></box></geometry>
+      </collision>
+
+      <sensor name="imu" type="imu">
+        <!-- Package placement is an ASSUMED candidate from geometry.json. -->
+        <pose>-0.0188 -0.0613 -0.0061 0 0 0</pose>
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <topic>/riose/mvp3/imu/data</topic>
+        <imu/>
+      </sensor>
+    </link>
+
+    <!-- The nominal attachment pivot is the tag_link origin. -->
+    <frame name="attachment_pivot" attached_to="tag_link">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

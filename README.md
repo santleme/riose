@@ -121,3 +121,41 @@ does not validate terminals, tolerances, retention, or physical assembly. No par
 gate can be reached. See [`hardware/spec.yaml`](hardware/spec.yaml) for the
 candidate architecture and provenance.
 
+## MVP 3 digital animal / ear-tag twin
+
+MVP 3 adds a procedural, physically simulated bovine scene in Gazebo Harmonic
+around the existing MVP 2 ear-tag design. The model is an `ASSUMED` mechanical
+placeholder; Gazebo output is `SIMULATED`, and no physical animal, attachment,
+RF, or battery validation is claimed. Read the current gate and experiment
+results in [`docs/mvp3-animal-digital-twin-report.md`](docs/mvp3-animal-digital-twin-report.md).
+
+```sh
+./scripts/setup_mvp3.sh
+./scripts/run_mvp3.sh walking --visual
+./scripts/run_mvp3_headless.sh head-shake
+uv run riose mvp3 run mass-sweep --fast-headless
+uv run riose mvp3 run long-simulation --headless --live-lockstep --duration-s 60
+RIOSE_ZEPHYR_ELF=/tmp/riose-mvp3-renode-build/zephyr/zephyr.elf \
+  uv run riose mvp3 run walking --visual --live-lockstep
+uv run riose mvp3 replay results/mvp3/EXPERIMENT_DIR
+uv run riose mvp3 report results/mvp3/EXPERIMENT_DIR
+uv run riose mvp3 visualize results/mvp3/EXPERIMENT_DIR
+./scripts/test_mvp3.sh --quick
+```
+
+`standing`, `walking`, `running`, `head-shake`, `mixed`, `heavy-tag`,
+`attachment-variation`, `radio-event`, `long-simulation` (one virtual hour),
+and `mass-sweep` are deterministic scenario entry points. Mass, attachment
+position, stiffness, damping, and angular limits can be set from the CLI. The
+animal behavior labels drive only the Gazebo-side trajectory; only acceleration
+samples enter the LIS2DW12 bridge. Offline replay uses Gazebo simulation time
+against the captured trace; `--live-lockstep` instead pauses/steps Gazebo as the
+clock master while the existing Zephyr firmware runs in Renode and receives
+each timestamped IMU sample. Set `RIOSE_ZEPHYR_ELF` to the Renode-profile ELF
+for that mode. It prints a loopback-only live companion-panel URL while the run
+is active; the panel labels logical anchor events and provisional power as
+simulated/assumed. `--duration-s` truncates a longer scenario for staged
+runtime and resource checks. The wake comparator is an explicitly experimental
+approximation, not a silicon-accurate LIS2DW12 model. See the report for gates
+and limits.
+

@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="riose_cow">
+    <static>false</static>
+    <self_collide>false</self_collide>
+    <allow_auto_disable>false</allow_auto_disable>
+    <link name="body">
+      <!-- The link frame is near the torso COM. The model is ground-level at z=0. -->
+      <pose>0 0 1.03 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>450</mass>
+        <inertia><ixx>81</ixx><iyy>285</iyy><izz>256</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia>
+      </inertial>
+      <visual name="barrel_white">
+        <geometry><ellipsoid><radii>0.72 0.30 0.38</radii></ellipsoid></geometry>
+        <material><ambient>0.90 0.88 0.82 1</ambient><diffuse>0.96 0.94 0.88 1</diffuse><specular>0.12 0.12 0.12 1</specular></material>
+      </visual>
+      <collision name="barrel_collision">
+        <geometry><box><size>1.30 0.54 0.62</size></box></geometry>
+      </collision>
+      <!-- Procedural dark coat patches: separate ellipsoids on the barrel surface. -->
+      <visual name="coat_patch_left"><pose>-0.20 0.285 0.10 0.10 0.05 0.12</pose><geometry><ellipsoid><radii>0.25 0.035 0.21</radii></ellipsoid></geometry><material><ambient>0.055 0.055 0.060 1</ambient><diffuse>0.075 0.075 0.085 1</diffuse></material></visual>
+      <visual name="coat_patch_right"><pose>0.38 -0.265 -0.02 -0.08 0.14 -0.20</pose><geometry><ellipsoid><radii>0.23 0.040 0.24</radii></ellipsoid></geometry><material><ambient>0.055 0.055 0.060 1</ambient><diffuse>0.075 0.075 0.085 1</diffuse></material></visual>
+      <visual name="rump_patch_left"><pose>-0.58 0.04 0.25 0.22 0.1 0.28</pose><geometry><ellipsoid><radii>0.19 0.22 0.10</radii></ellipsoid></geometry><material><ambient>0.055 0.055 0.060 1</ambient><diffuse>0.075 0.075 0.085 1</diffuse></material></visual>
+      <visual name="udder"><pose>-0.12 0 -0.34 0 0 0</pose><geometry><ellipsoid><radii>0.25 0.17 0.13</radii></ellipsoid></geometry><material><ambient>0.84 0.60 0.57 1</ambient><diffuse>0.92 0.68 0.64 1</diffuse></material></visual>
+      <!-- The body visual carries the coat; this sensor belongs on the separately modeled ear tag. -->
+    </link>
+
+    <!-- One bounded world-axis DOF gives seeded trajectories root translation. -->
+    <joint name="body_translation_joint" type="prismatic">
+      <pose relative_to="body">0 0 0 0 0 0</pose>
+      <parent>world</parent><child>body</child>
+      <axis>
+        <xyz expressed_in="__model__">1 0 0</xyz>
+        <limit><lower>-50.0</lower><upper>50.0</upper><effort>12000</effort><velocity>3.0</velocity></limit>
+        <!-- ASSUMED kinematic drive for procedural translation. Ground-contact
+             friction otherwise prevents the 450 kg placeholder from tracking
+             scenario displacement; this is not a modeled bovine muscle force. -->
+        <dynamics><damping>4</damping><friction>0.2</friction></dynamics>
+      </axis>
+    </joint>
+
+    <link name="neck">
+      <pose relative_to="body">0.55 0 0.17 0 0.58 0</pose>
+      <inertial><mass>28</mass><inertia><ixx>1.2</ixx><iyy>1.5</iyy><izz>1.2</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="neck_form"><pose>0 0 0.02 0 0 0</pose><geometry><ellipsoid><radii>0.27 0.24 0.54</radii></ellipsoid></geometry><material><ambient>0.90 0.88 0.82 1</ambient><diffuse>0.96 0.94 0.88 1</diffuse></material></visual>
+      <collision name="neck_collision"><geometry><capsule><radius>0.20</radius><length>0.56</length></capsule></geometry></collision>
+    </link>
+    <joint name="neck_fixed_joint" type="fixed">
+      <pose relative_to="body">0.55 0 0.17 0 0.58 0</pose><parent>body</parent><child>neck</child>
+    </joint>
+
+    <link name="head">
+      <pose relative_to="neck">0.43 0 0.34 0 0 0</pose>
+      <inertial><mass>12</mass><inertia><ixx>0.28</ixx><iyy>0.34</iyy><izz>0.30</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="skull"><geometry><ellipsoid><radii>0.28 0.22 0.31</radii></ellipsoid></geometry><material><ambient>0.90 0.88 0.82 1</ambient><diffuse>0.96 0.94 0.88 1</diffuse></material></visual>
+      <collision name="head_collision"><geometry><ellipsoid><radii>0.25 0.19 0.27</radii></ellipsoid></geometry></collision>
+      <visual name="muzzle"><pose>0.25 0 -0.18 0 0.24 0</pose><geometry><ellipsoid><radii>0.23 0.19 0.15</radii></ellipsoid></geometry><material><ambient>0.77 0.49 0.45 1</ambient><diffuse>0.88 0.58 0.53 1</diffuse></material></visual>
+      <visual name="nostril_left"><pose>0.415 0.115 -0.155 0 0.2 0</pose><geometry><sphere><radius>0.028</radius></sphere></geometry><material><ambient>0.10 0.055 0.055 1</ambient><diffuse>0.12 0.065 0.065 1</diffuse></material></visual>
+      <visual name="nostril_right"><pose>0.415 -0.115 -0.155 0 0.2 0</pose><geometry><sphere><radius>0.028</radius></sphere></geometry><material><ambient>0.10 0.055 0.055 1</ambient><diffuse>0.12 0.065 0.065 1</diffuse></material></visual>
+      <visual name="eye_left"><pose>0.08 0.194 0.06 0 0 0</pose><geometry><sphere><radius>0.045</radius></sphere></geometry><material><ambient>0.04 0.035 0.03 1</ambient><diffuse>0.045 0.040 0.035 1</diffuse></material></visual>
+      <visual name="eye_right"><pose>0.08 -0.194 0.06 0 0 0</pose><geometry><sphere><radius>0.045</radius></sphere></geometry><material><ambient>0.04 0.035 0.03 1</ambient><diffuse>0.045 0.040 0.035 1</diffuse></material></visual>
+      <!-- Small cream horn stubs; stylized rather than breed-specific. -->
+      <visual name="horn_left"><pose>-0.06 0.145 0.275 0.28 0 0</pose><geometry><cylinder><radius>0.035</radius><length>0.18</length></cylinder></geometry><material><ambient>0.75 0.69 0.55 1</ambient><diffuse>0.83 0.77 0.62 1</diffuse></material></visual>
+      <visual name="horn_right"><pose>-0.06 -0.145 0.275 -0.28 0 0</pose><geometry><cylinder><radius>0.035</radius><length>0.18</length></cylinder></geometry><material><ambient>0.75 0.69 0.55 1</ambient><diffuse>0.83 0.77 0.62 1</diffuse></material></visual>
+    </link>
+    <joint name="head_pitch_joint" type="revolute">
+      <pose relative_to="neck">0.34 0 0.24 0 0 0</pose><parent>neck</parent><child>head</child>
+      <axis><xyz expressed_in="__model__">0 1 0</xyz><limit><lower>-0.30</lower><upper>0.30</upper><effort>90</effort><velocity>0.8</velocity></limit><dynamics><damping>8</damping><friction>1</friction></dynamics></axis>
+    </joint>
+
+    <!-- Ear link origins are the intended tag-pivot anchors; +Y is the cow's left side. -->
+    <link name="ear_left">
+      <pose relative_to="head">-0.05 0.22 0.20 0 0 0</pose>
+      <inertial><mass>0.12</mass><inertia><ixx>0.0005</ixx><iyy>0.0005</iyy><izz>0.0005</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="ear_left_outer"><pose>0 0.075 0.018 0.08 0 0</pose><geometry><ellipsoid><radii>0.090 0.155 0.040</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse></material></visual>
+      <visual name="ear_left_inner"><pose>0.025 0.087 0.020 0.08 0 0</pose><geometry><ellipsoid><radii>0.050 0.105 0.012</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse></material></visual>
+      <collision name="ear_left_collision"><pose>0 0.07 0 0 0 0</pose><geometry><box><size>0.12 0.25 0.035</size></box></geometry></collision>
+    </link>
+    <joint name="ear_left_joint" type="revolute">
+      <pose relative_to="head">-0.05 0.22 0.20 0 0 0</pose><parent>head</parent><child>ear_left</child>
+      <axis><xyz expressed_in="__model__">1 0 0</xyz><limit><lower>-0.25</lower><upper>0.25</upper><effort>4</effort><velocity>1.0</velocity></limit><dynamics><damping>0.35</damping><friction>0.04</friction></dynamics></axis>
+    </joint>
+
+    <!-- Keep the ear tag nested under the cow so Gazebo Sim can create a
+         model-scoped physical joint. The hole pivot coincides with ear_left;
+         orientation, inertia, hinge limits and spring values are assumptions. -->
+    <include>
+      <uri>model://riose_ear_tag</uri>
+      <name>riose_ear_tag</name>
+      <pose relative_to="ear_left">0 0 0 1.570796 0 3.141593</pose>
+    </include>
+    <joint name="riose_ear_tag_attachment" type="revolute">
+      <pose relative_to="ear_left">0 0 0 0 0 0</pose>
+      <parent>ear_left</parent>
+      <child>riose_ear_tag::tag_link</child>
+      <axis>
+        <xyz expressed_in="ear_left">1 0 0</xyz>
+        <limit><lower>-0.523599</lower><upper>0.523599</upper><effort>1</effort><velocity>6.28</velocity></limit>
+        <dynamics><damping>0.02</damping><spring_reference>0</spring_reference><spring_stiffness>0.1</spring_stiffness></dynamics>
+      </axis>
+    </joint>
+    <link name="ear_right">
+      <pose relative_to="head">-0.05 -0.22 0.20 0 0 0</pose>
+      <inertial><mass>0.12</mass><inertia><ixx>0.0005</ixx><iyy>0.0005</iyy><izz>0.0005</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="ear_right_outer"><pose>0 -0.075 0.018 -0.08 0 0</pose><geometry><ellipsoid><radii>0.090 0.155 0.040</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse></material></visual>
+      <visual name="ear_right_inner"><pose>0.025 -0.087 0.020 -0.08 0 0</pose><geometry><ellipsoid><radii>0.050 0.105 0.012</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse></material></visual>
+      <collision name="ear_right_collision"><pose>0 -0.07 0 0 0 0</pose><geometry><box><size>0.12 0.25 0.035</size></box></geometry></collision>
+    </link>
+    <joint name="ear_right_fixed_joint" type="fixed"><pose relative_to="head">-0.05 -0.22 0.20 0 0 0</pose><parent>head</parent><child>ear_right</child></joint>
+
+    <!-- One revolute hip/shoulder per leg keeps the MVP small and controllable. -->
+    <link name="front_left_leg">
+      <pose relative_to="body">0.43 0.22 -0.31 0 0 0</pose>
+      <inertial><mass>7.5</mass><inertia><ixx>0.18</ixx><iyy>0.18</iyy><izz>0.025</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="upper_leg"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.105</radius><length>0.62</length></cylinder></geometry><material><ambient>0.91 0.89 0.84 1</ambient><diffuse>0.97 0.95 0.89 1</diffuse></material></visual>
+      <visual name="hoof"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry><material><ambient>0.17 0.15 0.13 1</ambient><diffuse>0.22 0.20 0.18 1</diffuse></material></visual>
+      <collision name="leg_collision"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.09</radius><length>0.62</length></cylinder></geometry></collision>
+      <collision name="hoof_collision"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry></collision>
+    </link>
+    <joint name="front_left_leg_joint" type="revolute"><pose relative_to="body">0.43 0.22 -0.31 0 0 0</pose><parent>body</parent><child>front_left_leg</child><axis><xyz expressed_in="__model__">0 1 0</xyz><limit><lower>-0.35</lower><upper>0.35</upper><effort>140</effort><velocity>1.2</velocity></limit><dynamics><damping>12</damping><friction>1</friction></dynamics></axis></joint>
+
+    <link name="front_right_leg">
+      <pose relative_to="body">0.43 -0.22 -0.31 0 0 0</pose>
+      <inertial><mass>7.5</mass><inertia><ixx>0.18</ixx><iyy>0.18</iyy><izz>0.025</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="upper_leg"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.105</radius><length>0.62</length></cylinder></geometry><material><ambient>0.91 0.89 0.84 1</ambient><diffuse>0.97 0.95 0.89 1</diffuse></material></visual>
+      <visual name="hoof"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry><material><ambient>0.17 0.15 0.13 1</ambient><diffuse>0.22 0.20 0.18 1</diffuse></material></visual>
+      <collision name="leg_collision"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.09</radius><length>0.62</length></cylinder></geometry></collision>
+      <collision name="hoof_collision"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry></collision>
+    </link>
+    <joint name="front_right_leg_joint" type="revolute"><pose relative_to="body">0.43 -0.22 -0.31 0 0 0</pose><parent>body</parent><child>front_right_leg</child><axis><xyz expressed_in="__model__">0 1 0</xyz><limit><lower>-0.35</lower><upper>0.35</upper><effort>140</effort><velocity>1.2</velocity></limit><dynamics><damping>12</damping><friction>1</friction></dynamics></axis></joint>
+
+    <link name="rear_left_leg">
+      <pose relative_to="body">-0.48 0.22 -0.31 0 0 0</pose>
+      <inertial><mass>7.5</mass><inertia><ixx>0.18</ixx><iyy>0.18</iyy><izz>0.025</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="upper_leg"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.105</radius><length>0.62</length></cylinder></geometry><material><ambient>0.91 0.89 0.84 1</ambient><diffuse>0.97 0.95 0.89 1</diffuse></material></visual>
+      <visual name="hoof"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry><material><ambient>0.17 0.15 0.13 1</ambient><diffuse>0.22 0.20 0.18 1</diffuse></material></visual>
+      <collision name="leg_collision"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.09</radius><length>0.62</length></cylinder></geometry></collision>
+      <collision name="hoof_collision"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry></collision>
+    </link>
+    <joint name="rear_left_leg_joint" type="revolute"><pose relative_to="body">-0.48 0.22 -0.31 0 0 0</pose><parent>body</parent><child>rear_left_leg</child><axis><xyz expressed_in="__model__">0 1 0</xyz><limit><lower>-0.35</lower><upper>0.35</upper><effort>140</effort><velocity>1.2</velocity></limit><dynamics><damping>12</damping><friction>1</friction></dynamics></axis></joint>
+
+    <link name="rear_right_leg">
+      <pose relative_to="body">-0.48 -0.22 -0.31 0 0 0</pose>
+      <inertial><mass>7.5</mass><inertia><ixx>0.18</ixx><iyy>0.18</iyy><izz>0.025</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
+      <visual name="upper_leg"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.105</radius><length>0.62</length></cylinder></geometry><material><ambient>0.91 0.89 0.84 1</ambient><diffuse>0.97 0.95 0.89 1</diffuse></material></visual>
+      <visual name="hoof"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry><material><ambient>0.17 0.15 0.13 1</ambient><diffuse>0.22 0.20 0.18 1</diffuse></material></visual>
+      <collision name="leg_collision"><pose>0 0 -0.31 0 0 0</pose><geometry><cylinder><radius>0.09</radius><length>0.62</length></cylinder></geometry></collision>
+      <collision name="hoof_collision"><pose>0.015 0 -0.67 0 0 0</pose><geometry><box><size>0.17 0.13 0.10</size></box></geometry></collision>
+    </link>
+    <joint name="rear_right_leg_joint" type="revolute"><pose relative_to="body">-0.48 -0.22 -0.31 0 0 0</pose><parent>body</parent><child>rear_right_leg</child><axis><xyz expressed_in="__model__">0 1 0</xyz><limit><lower>-0.35</lower><upper>0.35</upper><effort>140</effort><velocity>1.2</velocity></limit><dynamics><damping>12</damping><friction>1</friction></dynamics></axis></joint>
+
+    <!-- Gazebo Harmonic built-in controller: deterministic trajectories arrive on the model topic. -->
+    <plugin filename="gz-sim-joint-trajectory-controller-system" name="gz::sim::systems::JointTrajectoryController">
+      <topic>/model/riose_cow/joint_trajectory</topic>
+      <joint_name>body_translation_joint</joint_name>
+      <joint_name>head_pitch_joint</joint_name>
+      <joint_name>ear_left_joint</joint_name>
+      <joint_name>front_left_leg_joint</joint_name>
+      <joint_name>front_right_leg_joint</joint_name>
+      <joint_name>rear_left_leg_joint</joint_name>
+      <joint_name>rear_right_leg_joint</joint_name>
+      <initial_position>0</initial_position><initial_position>0</initial_position><initial_position>0</initial_position>
+      <initial_position>0</initial_position><initial_position>0</initial_position><initial_position>0</initial_position><initial_position>0</initial_position>
+      <position_p_gain>2200</position_p_gain><position_p_gain>22</position_p_gain><position_p_gain>5</position_p_gain>
+      <position_p_gain>35</position_p_gain><position_p_gain>35</position_p_gain><position_p_gain>35</position_p_gain><position_p_gain>35</position_p_gain>
+      <position_d_gain>100</position_d_gain><position_d_gain>6</position_d_gain><position_d_gain>0.7</position_d_gain>
+      <position_d_gain>5</position_d_gain><position_d_gain>5</position_d_gain><position_d_gain>5</position_d_gain><position_d_gain>5</position_d_gain>
+      <position_cmd_min>-12000</position_cmd_min><position_cmd_min>-100</position_cmd_min><position_cmd_min>-8</position_cmd_min>
+      <position_cmd_min>-180</position_cmd_min><position_cmd_min>-180</position_cmd_min><position_cmd_min>-180</position_cmd_min><position_cmd_min>-180</position_cmd_min>
+      <position_cmd_max>12000</position_cmd_max><position_cmd_max>100</position_cmd_max><position_cmd_max>8</position_cmd_max>
+      <position_cmd_max>180</position_cmd_max><position_cmd_max>180</position_cmd_max><position_cmd_max>180</position_cmd_max><position_cmd_max>180</position_cmd_max>
+    </plugin>
+  </model>
+</sdf>

@@ -1,0 +1,72 @@
+{
+  "assumptions": {
+    "current_measurements_available": false,
+    "event_duration_policy": "trace intervals when resolvable; explicit ASSUMED fallback only where the MVP2 adapter requires it",
+    "load_profile": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/power/assumed_load_profile.json",
+    "load_profile_status": "ASSUMED",
+    "spec_path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/hardware/spec.yaml",
+    "spec_sha256": "86829c09816c1adfdfea250c51ab42351e1925c00bf0992b549d6018050fde7a",
+    "status": "ASSUMED"
+  },
+  "charge_status": "SIMULATED_AT_ASSUMED_REGULATOR_OUTPUT_VOLTAGE",
+  "electrical_metrics_status": "PASS",
+  "energy_by_event_mj": {
+    "IDLE_BASELINE": 17.3448,
+    "TX": 93.55500000005415
+  },
+  "limitations": [
+    "Firmware events do not provide current measurements; load currents come from ASSUMED/DATASHEET values in hardware/spec.yaml.",
+    "The estimate covers only the declared firmware trace window; no daily repeat period or battery lifetime is inferred.",
+    "An ngspice PASS is a result from the assumed equivalent-circuit model, not validation of physical hardware."
+  ],
+  "modeled_charge_uah": 9.335000000004557,
+  "modeled_window_s": 3600.0,
+  "native_summary": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/power/mvp2/summary.json",
+  "ngspice": {
+    "battery_current_peak_a": 0.048531,
+    "battery_min_v": 3.58787,
+    "brownout_threshold_provenance": {
+      "source": "hardware/spec.yaml:gate.provisional_limits.minimum_rail_voltage_v (ASSUMED: MVP1 candidate engineering threshold; not a measured brownout point)",
+      "status": "ASSUMED",
+      "unit": "V",
+      "value": 2.7
+    },
+    "brownout_threshold_v_assumed": 2.7,
+    "detail": null,
+    "electrical_trace_csv": "electrical_trace.csv",
+    "functional_margin_status": "SIMULATED_VS_ASSUMED_FUNCTIONAL_LIMIT",
+    "functional_margin_v": 0.5932,
+    "log": "ngspice.log",
+    "netlist_sha256": "a3f36ac811bdc6317702a121eef90c2d449e728708d4f458d339db73f4dbaa7a",
+    "note": "Average regulator model; recovery is found from the raw waveform after the last schedule interval.",
+    "rail_max_v": 3.30039,
+    "rail_min_v": 3.2932,
+    "recovery_status": "RECOVERED_TO_99PCT",
+    "recovery_to_99pct_s": 0.0,
+    "return_code": 0,
+    "simulation_id": "3026e77af2804d90e90d36004238aad801aae78e0dc78cc59327e98eb7f1d863",
+    "status": "PASS",
+    "trace": "power_waveform.dat",
+    "version": "ngspice-47 : Circuit level simulation program",
+    "voltage_droop_v": 0.006799999999999695,
+    "waveform_sha256": "fa0a897744373508ee1f69e17cadb70ebeea2ba8cee0ced0e409e9fed0ebf286"
+  },
+  "outputs": {
+    "native_power_dir": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/power/mvp2",
+    "schedule": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/power/schedule.jsonl"
+  },
+  "result_class": "SIMULATED",
+  "schema_version": "riose.mvp3.power_summary/v1",
+  "status": "COMPLETED",
+  "trace": {
+    "path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/firmware_trace.jsonl",
+    "schema_version": "riose.firmware.trace/v1",
+    "status": "SIMULATED",
+    "trace_provenance": {
+      "path": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1/firmware_trace.jsonl",
+      "schema_version": "riose.firmware.trace/v1",
+      "sha256": "b19dc3ec59b94a3a4a17b8c9741ea2edcf30cfa9a5dcbe86e6515106c3faf076",
+      "status": "SIMULATED"
+    }
+  }
+}

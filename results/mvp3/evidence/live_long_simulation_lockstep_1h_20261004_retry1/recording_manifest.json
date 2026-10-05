@@ -1,0 +1,50 @@
+{
+  "clock_master": "Gazebo simulation time",
+  "firmware_clock_relation": "offline RESD replay; no live lockstep",
+  "pose_join": "nearest timestamped Gazebo pose sample",
+  "pose_kinematics": {
+    "fields": [
+      "linear_velocity_m_s",
+      "linear_acceleration_m_s2",
+      "angular_velocity_rad_s",
+      "angular_acceleration_rad_s2"
+    ],
+    "frame": "world",
+    "method": "finite differences over Gazebo PosePublisher samples",
+    "source_timestamp": "Gazebo simulation time"
+  },
+  "pose_recording_processing": {
+    "entities": [
+      "riose_cow",
+      "ear_left",
+      "riose_ear_tag"
+    ],
+    "max_rate_hz": 25.0,
+    "status": "SIMULATED_DOWNSAMPLED_FOR_RECORDING_JOIN"
+  },
+  "provenance": "SIMULATED",
+  "resampling": [
+    {
+      "method": "linear_interpolation_to_uniform_cadence",
+      "source_sample_interval_max_s": "0.02",
+      "source_sample_interval_min_s": "0.019",
+      "source_samples": 180001,
+      "status": "INTERPOLATED",
+      "target_sample_rate_hz": 13.0
+    }
+  ],
+  "sample_count": 46800,
+  "sample_rate_hz": 13.0,
+  "schema_version": "riose.mvp3.recording/v1",
+  "streams": [
+    "cow_state",
+    "animal_pose",
+    "ear_pose",
+    "tag_pose",
+    "imu_acceleration_g",
+    "imu_orientation_xyzw",
+    "imu_angular_velocity_rad_s",
+    "pose_kinematics"
+  ],
+  "timestamp_origin": "first IMU sample"
+}

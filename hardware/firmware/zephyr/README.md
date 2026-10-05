@@ -173,7 +173,7 @@ linking for the target only. The image was not flashed; radio behavior, IRQ
 wake, rail stability and current still require the actual board, modules,
 power path, and measurement setup.
 
-The LIS2DW12 setup follows ST [AN5038 section 5.4](https://www.st.com/resource/en/application_note/dm00401877-lis2dw12-alwayson-3d-accelerometer-stmicroelectronics.pdf): `CTRL1=0x14` (12.5-Hz low-power ODR), `WAKE_UP_DUR=0x00`, `WAKE_UP_THS=0x02` (62.5 mg at ±2 g), `CTRL4.INT1_WU=0x20`, and `CTRL7.INTERRUPTS_ENABLE=0x20`. Startup reads `WAKE_UP_SRC` and `ALL_INT_SRC` to clear stale sources; after INT1 wakes the MCU, firmware reads `WAKE_UP_SRC` to report and clear WU_IA. These register-level changes and the simulated IRQ tests do not measure physical INT1 polarity, wake latency, or sleep current.
+The LIS2DW12 setup follows ST [AN5038 section 5.4](https://www.st.com/resource/en/application_note/dm00401877-lis2dw12-alwayson-3d-accelerometer-stmicroelectronics.pdf): `CTRL1=0x14` (12.5-Hz high-performance, 14-bit output), `WAKE_UP_DUR=0x00`, `WAKE_UP_THS=0x02` (62.5 mg at ±2 g), `CTRL4.INT1_WU=0x20`, and `CTRL7.INTERRUPTS_ENABLE=0x20`. Startup reads `WAKE_UP_SRC` and `ALL_INT_SRC` to clear stale sources; after INT1 wakes the MCU, firmware reads `WAKE_UP_SRC` to report and clear WU_IA. These register-level changes and the simulated IRQ tests do not measure physical INT1 polarity, wake latency, or sleep current.
 
 Zephyr native_sim has documented SPI, I2C and GPIO emulation support; the bus
 emulators still require peripheral-specific responder implementations:

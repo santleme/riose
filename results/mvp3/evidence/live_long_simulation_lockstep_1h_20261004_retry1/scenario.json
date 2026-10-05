@@ -1,0 +1,21 @@
+{
+  "phases": [
+    {
+      "behavior": "WALKING",
+      "duration_s": 1800.0,
+      "ear_amplitude_rad": 0.14,
+      "forward_speed_m_s": 0.0,
+      "head_amplitude_rad": 0.06,
+      "leg_frequency_hz": 1.6
+    },
+    {
+      "behavior": "STANDING",
+      "duration_s": 1800.0,
+      "ear_amplitude_rad": 0.0,
+      "forward_speed_m_s": 0.0,
+      "head_amplitude_rad": 0.0,
+      "leg_frequency_hz": 0.0
+    }
+  ],
+  "scenario": "09_long_simulation"
+}

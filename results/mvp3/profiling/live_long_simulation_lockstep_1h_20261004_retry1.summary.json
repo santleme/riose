@@ -1,0 +1,24 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    ".",
+    "riose",
+    "mvp3",
+    "run",
+    "long-simulation",
+    "--headless",
+    "--live-lockstep",
+    "--output",
+    "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/evidence/live_long_simulation_lockstep_1h_20261004_retry1"
+  ],
+  "log": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/profiling/live_long_simulation_lockstep_1h_20261004_retry1.log",
+  "maximum_sampled_process_tree_cpu_percent": 219.70000000000002,
+  "minimum_filesystem_free_bytes": 893370449920,
+  "peak_sampled_process_tree_rss_kib": 1150992,
+  "returncode": 0,
+  "samples": "/home/lucas_coimbra/.codex/worktrees/f13e/riose/results/mvp3/profiling/live_long_simulation_lockstep_1h_20261004_retry1.resources.jsonl",
+  "wall_runtime_s": 43700.288208464,
+  "wall_started_utc": "2026-10-04T14:31:14Z"
+}

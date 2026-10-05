@@ -189,6 +189,13 @@ def _validated_period(rows: list[dict], period_s: float | None) -> float | None:
     return value
 
 
+def _has_valid_time_axis(points: list[tuple[float, ...]]) -> bool:
+    """Accept ngspice's repeated timestamps at discontinuities, but not reversals."""
+    return (len(points) >= 2
+            and any(current[0] > previous[0] for previous, current in zip(points, points[1:]))
+            and all(current[0] >= previous[0] for previous, current in zip(points, points[1:])))
+
+
 def _validate_assumptions(assumptions: dict, overrides: dict[str, float] | None = None) -> None:
     overrides = overrides or {}
     values = {key: _value(assumptions, key, overrides.get(key)) for key in (
@@ -532,7 +539,10 @@ def _run_ngspice(deck: Path, binary: str | None, rows: list[dict],
             if not all(math.isfinite(value) for value in values):
                 raise ValueError("waveform contains a non-finite sample")
             waveform_points.append((values[0], values[1], values[2], values[3]))
-        if len(waveform_points) < 2 or any(b[0] <= a[0] for a, b in zip(waveform_points, waveform_points[1:])):
+        # ngspice preserves discontinuities as multiple samples at the same
+        # timestamp. Those rows are meaningful (the load can change instantly),
+        # so require nondecreasing time with at least two distinct timestamps.
+        if not _has_valid_time_axis(waveform_points):
             raise ValueError("waveform has fewer than two increasing-time samples")
         tran_match = re.search(r"^\s*\.?(?:tran)\s+([-+0-9.eE]+)\s+([-+0-9.eE]+)", netlist_text,
                                re.I | re.M)

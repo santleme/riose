@@ -1,0 +1,9 @@
+{
+  "attachment_joint": "riose_ear_tag_attachment",
+  "evidence": "Gazebo PosePublisher world poses for ear_left and nested riose_ear_tag",
+  "relative_pivot_position_drift_max_m": 1.6792714037563227e-07,
+  "result": "PASS",
+  "samples": 72055,
+  "status": "SIMULATED",
+  "validation_tolerance_m": 0.005
+}

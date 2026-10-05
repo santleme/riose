@@ -17,7 +17,7 @@ components:
     model: {value: SX1262, unit: part_number, source: "MVP1 candidate; Semtech product page https://www.semtech.com/products/wireless-rf/lora-connect/sx1262", status: DATASHEET}
     center_frequency_hz: {value: 915000000, unit: Hz, source: "MVP1 firmware prototype setting; not a selected regulatory band", status: ASSUMED}
     tx_power_dbm: {value: 10, unit: dBm, source: "MVP1 firmware configuration", status: ASSUMED}
-    tx_stress_current_ma: {value: 45.0, unit: mA, source: "SX1262 published +14 dBm stress case; not the configured +10 dBm current https://www.semtech.com/amazon-sidewalk", status: DATASHEET}
+    tx_stress_current_ma: {value: 45.0, unit: mA, source: "SX1262 published +14 dBm stress current estimate; firmware TX-power configuration is profile-specific, and this is not a current measurement https://www.semtech.com/amazon-sidewalk", status: DATASHEET}
     rx_current_ma: {value: 4.6, unit: mA, source: "SX1262 product information; configuration dependent", status: DATASHEET}
     sleep_current_ma: {value: 0.0006, unit: mA, source: "MVP1 board-level allowance; requires selected module/configuration", status: ASSUMED}
     tx_duration_s: {value: 0.12, unit: s, source: "MVP1 configured profile; not measured airtime", status: ASSUMED}

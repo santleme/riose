@@ -19,6 +19,11 @@ results/mvp2/mechanical/*.step
 results/mvp2/mechanical/*.stl
 results/mvp2/antenna/ANTENNA_*/
 results/mvp2/power/*/power_waveform.dat
+# MVP3 experiment recordings are regenerated evidence and can exceed tens of GB.
+results/mvp3/evidence/
+results/mvp3/profiling/*.jsonl
+results/mvp3/profiling/*.log
+results/mvp3/profiling/*.summary.json
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm

@@ -70,7 +70,8 @@ def _duration(config: dict[str, Any], key: str, measured_interval_s: float) -> t
 
 
 def trace_to_schedule(records: list[dict[str, Any]],
-                      loads: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+                      loads: dict[str, dict[str, Any]],
+                      trace_duration_s: float | None = None) -> list[dict[str, Any]]:
     """Build power interval rows from firmware JSONL records and a load profile.
 
     `loads` keys use `state:<name>`, `event:<name>`, or
@@ -265,6 +266,12 @@ def trace_to_schedule(records: list[dict[str, Any]],
         sleep_s = _number(terminal_sleep["value0"], "MCU_SLEEP.value0") / 1000.0
         if sleep_s > 0:
             trace_end_s += sleep_s
+    if trace_duration_s is not None:
+        trace_duration_s = _number(trace_duration_s, "trace_duration_s")
+        if trace_duration_s <= 0 or trace_duration_s < trace_end_s - 1e-12:
+            raise TraceConversionError(
+                "trace_duration_s must be positive and cover all firmware trace intervals")
+        trace_end_s = trace_duration_s
     for row in rows:
         if row["timestamp_s"] + row["duration_s"] > trace_end_s + 1e-12:
             raise TraceConversionError(
@@ -299,13 +306,15 @@ def main() -> int:
                         help="ASSUMED JSON load profile generated from hardware/spec.yaml")
     parser.add_argument("--output", required=True, type=Path,
                         help="power-tool-compatible schedule JSONL output")
+    parser.add_argument("--trace-duration-s", type=float,
+                        help="SIMULATED experiment duration when the firmware trace ends before simulation time")
     args = parser.parse_args()
     args.output.unlink(missing_ok=True)
     try:
         trace_bytes = args.trace.read_bytes()
         records = [json.loads(line) for line in trace_bytes.decode("utf-8").splitlines() if line.strip()]
         loads = read_load_profile(args.loads)
-        rows = trace_to_schedule(records, loads)
+        rows = trace_to_schedule(records, loads, args.trace_duration_s)
         trace_provenance = {"path": str(args.trace), "sha256": hashlib.sha256(trace_bytes).hexdigest(),
                             "status": "SIMULATED", "schema_version": "riose.firmware.trace/v1"}
         for row in rows:
