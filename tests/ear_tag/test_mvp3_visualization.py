@@ -237,3 +237,57 @@ def test_live_dashboard_serves_loopback_simulated_status(tmp_path: Path) -> None
         assert "not modeled" in html
     finally:
         dashboard.close()
+import json
+from pathlib import Path
+
+from riose.products.ear_tag.mvp3.visualization.cinematic import _camera_request, _quaternion
+
+
+MVP3 = Path(__file__).parents[2] / "src" / "riose" / "products" / "ear_tag" / "mvp3"
+
+
+def test_camera_presets_cover_named_visual_views_and_valid_targets():
+    config = json.loads((MVP3 / "visualization" / "camera_presets.json").read_text())
+    presets = config["presets"]
+    required = {
+        "CAM_TAG_HERO", "CAM_TAG_MACRO", "CAM_TAG_3Q_FRONT", "CAM_TAG_SIDE",
+        "CAM_TAG_3Q_REAR", "CAM_TAG_REAR", "CAM_CATTLE_TAG_CLOSE",
+        "CAM_CATTLE_MEDIUM", "CAM_FIELD_WIDE", "CAM_GATEWAY", "CAM_TECHNICAL",
+    }
+    assert required <= presets.keys()
+    for preset in presets.values():
+        assert len(preset["position"]) == len(preset["look_at"]) == 3
+        assert preset["fov_deg"] > 0 and preset["duration_s"] > 0
+        assert preset["position"] != preset["look_at"]
+
+
+def test_camera_quaternion_points_local_forward_axis_at_target():
+    position = [2.0, -1.0, 3.0]
+    target = [-2.0, 5.0, 0.5]
+    x, y, z, w = _quaternion(position, target)
+    # Rotate camera-local +X by the camera quaternion, then normalize target ray.
+    forward = (1 - 2 * (y * y + z * z), 2 * (x * y + z * w), 2 * (x * z - y * w))
+    ray = [target[i] - position[i] for i in range(3)]
+    norm = sum(value * value for value in ray) ** 0.5
+    ray = [value / norm for value in ray]
+    assert all(abs(forward[i] - ray[i]) < 1e-9 for i in range(3))
+    request = _camera_request({"position": position, "look_at": target})
+    assert "orientation" in request and "position" in request
+
+
+def test_visual_sequences_are_bounded_and_reference_camera_presets():
+    cameras = json.loads((MVP3 / "visualization" / "camera_presets.json").read_text())["presets"]
+    sequences = json.loads((MVP3 / "visualization" / "sequences.json").read_text())["sequences"]
+    assert set(sequences) == {"pitch_short", "product_demo", "engineering"}
+    assert 20 <= sum(segment["duration_s"] for segment in sequences["pitch_short"]) <= 30
+    assert 45 <= sum(segment["duration_s"] for segment in sequences["product_demo"]) <= 60
+    for sequence in sequences.values():
+        assert all(segment["camera"] in cameras for segment in sequence)
+
+
+def test_visual_lighting_presets_exist_and_keep_three_distinct_rig_profiles():
+    presets = json.loads((MVP3 / "visualization" / "lighting_presets.json").read_text())["presets"]
+    assert set(presets) == {"DAY", "OVERCAST_TECH", "GOLDEN_HOUR"}
+    for preset in presets.values():
+        assert set(preset) == {"ambient", "background", "sun_diffuse", "sun_specular", "sun_direction"}
+        assert all(len(value) == 3 for value in preset.values())

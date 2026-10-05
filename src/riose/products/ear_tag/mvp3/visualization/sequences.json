@@ -1,0 +1,30 @@
+{
+  "schema": "riose.mvp3.camera_sequences/v1",
+  "sequences": {
+    "pitch_short": [
+      {"camera": "CAM_FIELD_WIDE", "duration_s": 4.0, "transition": "cut"},
+      {"camera": "CAM_CATTLE_MEDIUM", "duration_s": 4.0, "transition": "smooth"},
+      {"camera": "CAM_CATTLE_TAG_CLOSE", "duration_s": 5.0, "transition": "smooth"},
+      {"camera": "CAM_GATEWAY", "duration_s": 4.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_HERO", "duration_s": 5.0, "transition": "smooth"}
+    ],
+    "product_demo": [
+      {"camera": "CAM_FIELD_WIDE", "duration_s": 5.0, "transition": "cut"},
+      {"camera": "CAM_CATTLE_MEDIUM", "duration_s": 5.0, "transition": "smooth"},
+      {"camera": "CAM_CATTLE_TAG_CLOSE", "duration_s": 6.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_HERO", "duration_s": 6.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_3Q_FRONT", "duration_s": 6.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_SIDE", "duration_s": 5.0, "transition": "smooth"},
+      {"camera": "CAM_TECHNICAL", "duration_s": 7.0, "transition": "smooth"},
+      {"camera": "CAM_GATEWAY", "duration_s": 5.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_HERO", "duration_s": 6.0, "transition": "smooth"}
+    ],
+    "engineering": [
+      {"camera": "CAM_TAG_3Q_FRONT", "duration_s": 4.0, "transition": "cut"},
+      {"camera": "CAM_TAG_SIDE", "duration_s": 4.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_3Q_REAR", "duration_s": 4.0, "transition": "smooth"},
+      {"camera": "CAM_TAG_REAR", "duration_s": 4.0, "transition": "smooth"},
+      {"camera": "CAM_TECHNICAL", "duration_s": 5.0, "transition": "smooth"}
+    ]
+  }
+}

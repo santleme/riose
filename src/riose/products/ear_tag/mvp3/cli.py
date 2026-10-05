@@ -1067,6 +1067,8 @@ def _parser() -> argparse.ArgumentParser:
     visualize = commands.add_parser("visualize", help="create an offline IMU viewer for an experiment")
     visualize.add_argument("experiment", type=Path)
     visualize.add_argument("--output", type=Path)
+    visual = commands.add_parser("visual", help="Gazebo visual camera presets and clean screenshots")
+    visual.add_argument("visual_args", nargs=argparse.REMAINDER)
     return parser
 
 
@@ -1122,6 +1124,9 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "visualize":
             from .visualization import create_viewer
             print(create_viewer(args.experiment, output=args.output))
+        elif args.command == "visual":
+            from .visualization.cinematic import main as visual_main
+            return visual_main(args.visual_args)
         elif args.command == "test":
             from .validation import run_validation
             print(json.dumps(run_validation(live=not args.quick), indent=2, sort_keys=True))

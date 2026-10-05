@@ -1,0 +1,8 @@
+{
+  "schema": "riose.mvp3.lighting_presets/v1",
+  "presets": {
+    "DAY": {"ambient": [0.28, 0.30, 0.27], "background": [0.66, 0.76, 0.83], "sun_diffuse": [0.92, 0.88, 0.78], "sun_specular": [0.32, 0.30, 0.26], "sun_direction": [-0.42, -0.31, -0.86]},
+    "OVERCAST_TECH": {"ambient": [0.48, 0.49, 0.47], "background": [0.70, 0.73, 0.75], "sun_diffuse": [0.63, 0.66, 0.68], "sun_specular": [0.16, 0.17, 0.18], "sun_direction": [-0.42, -0.31, -0.86]},
+    "GOLDEN_HOUR": {"ambient": [0.34, 0.30, 0.25], "background": [0.82, 0.72, 0.61], "sun_diffuse": [0.96, 0.73, 0.48], "sun_specular": [0.38, 0.28, 0.17], "sun_direction": [-0.78, -0.24, -0.58]}
+  }
+}

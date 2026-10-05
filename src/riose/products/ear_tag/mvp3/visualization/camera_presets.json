@@ -1,0 +1,18 @@
+{
+  "schema": "riose.mvp3.camera_presets/v1",
+  "coordinate_frame": "world",
+  "horizontal_fov_deg_default": 42,
+  "presets": {
+    "CAM_TAG_HERO": {"position": [1.60, 1.63, 1.80], "look_at": [1.22, 0.22, 1.375], "fov_deg": 34, "duration_s": 4.0, "description": "Tag on the animal, face-forward three-quarter hero"},
+    "CAM_TAG_MACRO": {"position": [1.27, 0.78, 1.43], "look_at": [1.22, 0.22, 1.375], "fov_deg": 24, "duration_s": 4.0, "description": "Housing and attachment close-up"},
+    "CAM_TAG_3Q_FRONT": {"position": [2.10, 1.05, 1.65], "look_at": [1.22, 0.22, 1.375], "fov_deg": 34, "duration_s": 3.0, "description": "Three-quarter front"},
+    "CAM_TAG_SIDE": {"position": [1.24, 0.68, 1.31], "look_at": [1.24, 0.22, 1.31], "fov_deg": 34, "duration_s": 3.0, "description": "Side profile"},
+    "CAM_TAG_3Q_REAR": {"position": [0.48, 0.80, 1.55], "look_at": [1.24, 0.22, 1.31], "fov_deg": 38, "duration_s": 3.0, "description": "Three-quarter rear"},
+    "CAM_TAG_REAR": {"position": [1.24, -0.55, 1.31], "look_at": [1.24, 0.22, 1.31], "fov_deg": 34, "duration_s": 3.0, "description": "Rear view"},
+    "CAM_CATTLE_TAG_CLOSE": {"position": [0.70, 1.55, 1.92], "look_at": [1.22, 0.20, 1.40], "fov_deg": 30, "duration_s": 5.0, "description": "Tag with the cow ear and head in context"},
+    "CAM_CATTLE_MEDIUM": {"position": [4.5, 3.5, 3.3], "look_at": [0.50, 0.0, 1.10], "fov_deg": 40, "duration_s": 4.0, "description": "Cow and nearby paddock"},
+    "CAM_FIELD_WIDE": {"position": [13.0, -17.0, 11.0], "look_at": [0.0, 0.0, 0.5], "fov_deg": 48, "duration_s": 4.0, "description": "Paddock, cattle, fence and receiver"},
+    "CAM_GATEWAY": {"position": [4.8, 0.4, 3.0], "look_at": [0.0, 3.0, 1.5], "fov_deg": 42, "duration_s": 4.0, "description": "Receiver mast and paddock edge"},
+    "CAM_TECHNICAL": {"position": [0.55, 1.35, 1.82], "look_at": [1.24, 0.22, 1.31], "fov_deg": 32, "duration_s": 5.0, "description": "Technical product angle; provisional hardware only"}
+  }
+}

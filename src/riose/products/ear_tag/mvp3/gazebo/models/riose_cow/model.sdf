@@ -74,8 +74,9 @@
     <link name="ear_left">
       <pose relative_to="head">-0.05 0.22 0.20 0 0 0</pose>
       <inertial><mass>0.12</mass><inertia><ixx>0.0005</ixx><iyy>0.0005</iyy><izz>0.0005</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
-      <visual name="ear_left_outer"><pose>0 0.075 0.018 0.08 0 0</pose><geometry><ellipsoid><radii>0.090 0.155 0.040</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse></material></visual>
-      <visual name="ear_left_inner"><pose>0.025 0.087 0.020 0.08 0 0</pose><geometry><ellipsoid><radii>0.050 0.105 0.012</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse></material></visual>
+      <!-- Stylized visual ear leaf lies in the XZ plane; the tag hangs below its root. -->
+      <visual name="ear_left_outer"><pose>0 0 0.066 0 0 0</pose><geometry><ellipsoid><radii>0.088 0.020 0.066</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse><specular>0.12 0.10 0.09 1</specular></material></visual>
+      <visual name="ear_left_inner"><pose>0.012 0.014 0.071 0 0 0</pose><geometry><ellipsoid><radii>0.052 0.008 0.044</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse><specular>0.10 0.06 0.06 1</specular></material></visual>
       <collision name="ear_left_collision"><pose>0 0.07 0 0 0 0</pose><geometry><box><size>0.12 0.25 0.035</size></box></geometry></collision>
     </link>
     <joint name="ear_left_joint" type="revolute">
@@ -104,8 +105,8 @@
     <link name="ear_right">
       <pose relative_to="head">-0.05 -0.22 0.20 0 0 0</pose>
       <inertial><mass>0.12</mass><inertia><ixx>0.0005</ixx><iyy>0.0005</iyy><izz>0.0005</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia></inertial>
-      <visual name="ear_right_outer"><pose>0 -0.075 0.018 -0.08 0 0</pose><geometry><ellipsoid><radii>0.090 0.155 0.040</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse></material></visual>
-      <visual name="ear_right_inner"><pose>0.025 -0.087 0.020 -0.08 0 0</pose><geometry><ellipsoid><radii>0.050 0.105 0.012</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse></material></visual>
+      <visual name="ear_right_outer"><pose>0 0 0.066 0 0 0</pose><geometry><ellipsoid><radii>0.088 0.020 0.066</radii></ellipsoid></geometry><material><ambient>0.87 0.83 0.76 1</ambient><diffuse>0.94 0.90 0.82 1</diffuse><specular>0.12 0.10 0.09 1</specular></material></visual>
+      <visual name="ear_right_inner"><pose>0.012 -0.014 0.071 0 0 0</pose><geometry><ellipsoid><radii>0.052 0.008 0.044</radii></ellipsoid></geometry><material><ambient>0.76 0.42 0.42 1</ambient><diffuse>0.88 0.55 0.55 1</diffuse><specular>0.10 0.06 0.06 1</specular></material></visual>
       <collision name="ear_right_collision"><pose>0 -0.07 0 0 0 0</pose><geometry><box><size>0.12 0.25 0.035</size></box></geometry></collision>
     </link>
     <joint name="ear_right_fixed_joint" type="fixed"><pose relative_to="head">-0.05 -0.22 0.20 0 0 0</pose><parent>head</parent><child>ear_right</child></joint>

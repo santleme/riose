@@ -1,0 +1,9 @@
+# SDF PBR values are authoritative when Ogre2 loads this model. This MTL
+# provides a readable fallback for viewers that do not consume SDF PBR.
+newmtl RIOSE_YELLOW_POLYMER
+Ka 0.68 0.48 0.12
+Kd 0.88 0.66 0.18
+Ks 0.22 0.18 0.10
+Ns 55.0
+d 1.0
+map_Kd ../materials/textures/yellow_polymer_albedo.png

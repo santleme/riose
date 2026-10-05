@@ -32,36 +32,30 @@
         Four envelope boxes leave a 4 x 4 mm square relief around the nominal
         mounting hole. Shapes and mass properties remain provisional proxies.
       -->
-      <visual name="body_left">
-        <pose>-0.018 -0.0308 0 0 0 0</pose>
-        <geometry><box><size>0.032 0.068 0.0185</size></box></geometry>
-        <material>
-          <ambient>0.82 0.68 0.20 1</ambient>
-          <diffuse>0.92 0.76 0.24 1</diffuse>
-        </material>
+      <visual name="rounded_housing">
+        <geometry>
+          <mesh>
+            <uri>model://riose_ear_tag/meshes/tag_housing.dae</uri>
+          </mesh>
+        </geometry>
       </visual>
-      <visual name="body_right">
-        <pose>0.003 -0.0308 0 0 0 0</pose>
-        <geometry><box><size>0.002 0.068 0.0185</size></box></geometry>
+
+      <!-- ASSUMED visual-only polymer locking pin in the nominal mounting bore.
+           It is not a validated part or a change to the ear-tag attachment. -->
+      <visual name="provisional_black_locking_pin">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry><cylinder><radius>0.0018</radius><length>0.0225</length></cylinder></geometry>
         <material>
-          <ambient>0.82 0.68 0.20 1</ambient>
-          <diffuse>0.92 0.76 0.24 1</diffuse>
-        </material>
-      </visual>
-      <visual name="body_above_hole">
-        <pose>0 0.0026 0 0 0 0</pose>
-        <geometry><box><size>0.004 0.0012 0.0185</size></box></geometry>
-        <material>
-          <ambient>0.82 0.68 0.20 1</ambient>
-          <diffuse>0.92 0.76 0.24 1</diffuse>
-        </material>
-      </visual>
-      <visual name="body_below_hole">
-        <pose>0 -0.0334 0 0 0 0</pose>
-        <geometry><box><size>0.004 0.0628 0.0185</size></box></geometry>
-        <material>
-          <ambient>0.82 0.68 0.20 1</ambient>
-          <diffuse>0.92 0.76 0.24 1</diffuse>
+          <ambient>0.055 0.060 0.065 1</ambient>
+          <diffuse>0.085 0.095 0.105 1</diffuse>
+          <specular>0.16 0.17 0.18 1</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/black_polymer_albedo.png</albedo_map>
+              <metalness>0</metalness>
+              <roughness>0.62</roughness>
+            </metal>
+          </pbr>
         </material>
       </visual>
 

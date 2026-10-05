@@ -20,11 +20,22 @@ mass come from `hardware/spec.yaml` and
 The canonical link is `riose_ear_tag::tag_link`. Its origin is at the candidate
 mounting-hole center, and `riose_ear_tag::attachment_pivot` is the named frame
 for that origin. Local +Y points toward the hole end; the enclosure extends
-toward local -Y. Shape geometry is a set of boxes with a square 4 mm relief
-around the assumed round hole. The inertial values are a uniform-envelope box
-approximation using the estimated mass; they do not represent measured
-material distribution. If mass, envelope, or pivot changes, update the
-`<inertial>` values and geometry poses together in `model.sdf`.
+toward local -Y. The visible housing is a low-poly rounded-shell COLLADA mesh
+built to the assumed envelope and a 4 mm candidate mounting bore. Gazebo
+Harmonic rendered the corresponding OBJ white even with SDF materials, so the
+COLLADA asset carries an embedded diffuse albedo texture and its UV binding.
+This improves the silhouette while keeping the visual mesh separate from the
+collision proxy.
+The collision remains four boxes with a square relief around the candidate
+hole, and the inertial values remain a uniform-envelope box approximation;
+neither is a detailed product model or measured material distribution. The
+COLLADA mesh is a visualization aid, not fabrication geometry. The OBJ source
+is retained for geometry edits. If mass, envelope, or pivot changes, update
+the visual mesh, collision pieces, and `<inertial>` values together.
+
+The model directory is copied into each experiment. Keep the visual mesh under
+`meshes/` so the `model://riose_ear_tag/meshes/tag_housing.dae` URI continues to
+resolve in both source and copied experiment assets.
 
 ## Cow attachment contract
 
