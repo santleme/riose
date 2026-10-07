@@ -100,8 +100,7 @@ Both cinematic entry points auto-build a Zephyr/Renode ELF into `/tmp` if `RIOSE
 
 ## Verification and limitations
 
-- `python3 scripts/check_mvp3_phase_a.py results/mvp3/phase_a_validation_20261005/final`: `PHASE_A_FUNCTIONAL_REALISM_PASS`.
-- `python3 scripts/check_mvp3_phase_b.py results/mvp3/cinematic-20261005T165530Z`: `PHASE_B_VISUAL_REALISM_PASS` after the final capture.
+- The committed compact gate snapshots are [`phase-a-gate.json`](../results/mvp3/media/evidence/phase-a-gate.json) (`PHASE_A_FUNCTIONAL_REALISM_PASS`) and [`phase-b-gate.json`](../results/mvp3/media/evidence/phase-b-gate.json) (`PHASE_B_VISUAL_REALISM_PASS`). The original full capture directories used to generate them are not included, so those checks cannot be rerun from this checkout alone. The Phase A checker now requires an explicit experiment directory to avoid defaulting to an absent historical path.
 - `uv run --extra dev pytest -q tests/ear_tag/test_mvp3_*.py`: 91 passed on the rebased branch, including the visualization tests from the existing production pass.
 - `scripts/run_mvp3_headless.sh walking --duration-s 2 --output results/mvp3/final_headless_smoke_20261005`: live two-second Gazebo headless smoke completed.
 - `uv run --project . riose mvp3 run mixed --visual --duration-s 2 --output results/mvp3/final_visual_smoke_retry1_20261005`: live GUI smoke completed after fixing copied-world mesh URIs. The first attempt logged a missing grass OBJ because model:// mesh references resolved relative to the copied experiment world; `_scenario_world` now rewrites only those world mesh/texture paths to the copied experiment assets. The retry log has no mesh-load errors.
