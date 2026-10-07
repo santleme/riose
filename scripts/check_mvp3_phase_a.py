@@ -117,7 +117,11 @@ def phase_gate(directory: Path) -> dict:
 
 
 def main() -> int:
-    directory = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results/mvp3/phase_a_validation_20261005/final"
+    if len(sys.argv) != 2:
+        raise SystemExit(f"usage: {Path(sys.argv[0]).name} EXPERIMENT_DIR")
+    directory = Path(sys.argv[1]).resolve()
+    if not directory.is_dir():
+        raise SystemExit(f"experiment directory does not exist: {directory}")
     result = phase_gate(directory)
     output = directory / "phase-a-gate.json"
     output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
